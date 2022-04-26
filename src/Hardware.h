@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <eurorack.h>
 #include <eurorack_dac8164.h>
+#include <eurorack_mcp23s17.h>
 #include "hwconfig.h"
 
 #define MEMPOOL_SIZE 48*1024
@@ -25,28 +26,36 @@ class Hardware {
         #define AnalogOutputDeviceT DAC8164Device
         #define DigitalOutputDeviceT NativeDevice
 
-        AnalogInput(channel1PotPin, A10)
-        AnalogInput(channel2PotPin, A11)
-        AnalogInput(channel3PotPin, A13)
-        AnalogInput(channel4PotPin, A12)
+        AnalogInput(channel1PotPin, A13)
+        AnalogInput(channel2PotPin, A12)
+        AnalogInput(channel3PotPin, A11)
+        AnalogInput(channel4PotPin, A10)
 
-        AnalogInput(channel1InputPin, A9)
-        AnalogInput(channel2InputPin, A8)
-        AnalogInput(channel3InputPin, A7)
-        AnalogInput(channel4InputPin, A6)
+        AnalogInput(channel1InputPin, A7)
+        AnalogInput(channel2InputPin, A6)
+        AnalogInput(channel3InputPin, A8)
+        AnalogInput(channel4InputPin, A9)
 
-        AnalogInput(channel1CvPin, A3)
-        AnalogInput(channel2CvPin, A2)
-        AnalogInput(channel3CvPin, A1)
-        AnalogInput(channel4CvPin, A0)
+        AnalogInput(channel1CvPin, A1)
+        AnalogInput(channel2CvPin, A0)
+        AnalogInput(channel3CvPin, A2)
+        AnalogInput(channel4CvPin, A3)
 
-        DAC8164Device dac8164 = DAC8164Device(-1, DAC_SYNC_PIN);
+        DAC8164Device dac8164Device = DAC8164Device(-1, DAC_SYNC_PIN);
         AnalogOutputPin<DAC8164Device>* cvOutputPins[CHANNEL_COUNT] = {
-            &dac8164.pins[0],
-            &dac8164.pins[1],
-            &dac8164.pins[2],
-            &dac8164.pins[3],
+            &dac8164Device.pins[0],
+            &dac8164Device.pins[1],
+            &dac8164Device.pins[2],
+            &dac8164Device.pins[3],
         };
+
+        MCP23S17Device mcp23s17Device = MCP23S17Device(GPIO_CS_PIN, GPIO_ADDRESS);
+        DigitalInputPin<MCP23S17Device>* clockInputPins[12] = {
+            &mcp23s17Device.pins[0],
+            &mcp23s17Device.pins[1],
+            &mcp23s17Device.pins[2],
+            &mcp23s17Device.pins[3]
+        }; 
 
 };
 

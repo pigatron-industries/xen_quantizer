@@ -2,9 +2,9 @@
 #include <eurorack.h>
 #include <SPI.h>
 #include "hwconfig.h"
-//#include "MainController.h"
+#include "MainController.h"
 
-//MainController mainController = MainController(SAMPLE_RATE);
+MainController mainController = MainController(SAMPLE_RATE);
 
 
 void setup() {
@@ -15,9 +15,9 @@ void setup() {
     Serial.println("=========================================");
     Serial.println();
 
-    //mainController.init();
+    mainController.init();
 }
 
 void loop() {
-    //mainController.update();
+    mainController.update();
 }
