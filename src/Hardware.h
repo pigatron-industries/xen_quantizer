@@ -43,18 +43,18 @@ class Hardware {
 
         DAC8164Device dac8164Device = DAC8164Device(-1, DAC_SYNC_PIN);
         AnalogOutputPin<DAC8164Device>* cvOutputPins[CHANNEL_COUNT] = {
-            &dac8164Device.pins[0],
             &dac8164Device.pins[1],
             &dac8164Device.pins[2],
             &dac8164Device.pins[3],
+            &dac8164Device.pins[0],
         };
 
         MCP23S17Device mcp23s17Device = MCP23S17Device(GPIO_CS_PIN, GPIO_ADDRESS);
-        DigitalInputPin<MCP23S17Device>* clockInputPins[12] = {
-            &mcp23s17Device.pins[0],
-            &mcp23s17Device.pins[1],
-            &mcp23s17Device.pins[2],
-            &mcp23s17Device.pins[3]
+        DigitalInputPin<MCP23S17Device>* clockInputPins[CHANNEL_COUNT] = {
+            &mcp23s17Device.pins[7],
+            &mcp23s17Device.pins[6],
+            &mcp23s17Device.pins[5],
+            &mcp23s17Device.pins[4]
         }; 
 
 };

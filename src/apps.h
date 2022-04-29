@@ -1,4 +1,4 @@
-#include "controllers/QuantizerController.h"
+#include "controllers/quantizer/QuantizerController.h"
 
 #define CONTROLLERS \
 QuantizerController
