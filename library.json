@@ -1,0 +1,21 @@
+{
+  "name": "Quantizer",
+  "version": "0.0.1",
+  "description": "Quantizer",
+  "keywords": "quantizer",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/pigatron-industries/xen_quantizer.git"
+  },
+  "authors":
+  [
+    {
+      "name": "Robert Ellis"
+    }
+  ],
+  "license": "Unlicense",
+  "frameworks": "arduino",
+  "platforms": "*",
+  "srcDir": "src/lib"
+}
