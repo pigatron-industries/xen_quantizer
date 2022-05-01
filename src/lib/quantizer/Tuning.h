@@ -36,7 +36,7 @@ class Tuning {
         }
 
         int getNotes() { return intervals.size(); }
-        Note getNote(int octave, int note) { return Note(octave, note, getNoteValue(octave, note)); }
+        Note getNote(int octave, int note) { return Note(octave, note, getNoteVoltage(octave, note)); }
 
         bool isEnabled(const Note& note) { return note.note > 0 ? intervals[note.note-1].enabled : true; }
         void enable(int note, bool enabled = true);
@@ -51,9 +51,15 @@ class Tuning {
         float repeatInterval;
         float repeatIntervalRecip;
 
-        float getNoteVoltage(int repeat, int note) { return getOctaveValue(repeat) + getIntervalValue(note); }
+        float getNoteVoltage(int repeat, int note) { return getRepeatVoltage(repeat) + getIntervalVoltage(note); }
         float getRepeatVoltage(int repeat) { return repeat * this->repeatInterval; }
-        float getIntervalVoltaage(int note) { return intervals[note].voltage; }
+        float getIntervalVoltage(int note) { return intervals[note].voltage; }
+};
+
+class Scale {
+    public:
+        Scale() {}
+        Array<int, Tuning::MAX_NOTES> notes;
 };
 
 #endif

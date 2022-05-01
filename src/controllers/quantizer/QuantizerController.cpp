@@ -20,8 +20,7 @@ void QuantizerController::process() {
 
     if(clockInput.update() && clockInput.rose()) {
         float value = Hardware::hw.channel1InputPin.analogRead();
-        if(pitchQuantizer.quantize(value)) {
-            Hardware::hw.cvOutputPins[0]->analogWrite(pitchQuantizer.getNote().value);
-        }
+        Note note = pitchQuantizer.quantizeChromatic(value);
+        Hardware::hw.cvOutputPins[0]->analogWrite(note.voltage);
     }
 }

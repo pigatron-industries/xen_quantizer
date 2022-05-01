@@ -6,16 +6,14 @@
 class PitchQuantizer {
     public:
         PitchQuantizer(Tuning& tuning) { this->tuning = &tuning; }
-        void setScale(Tuning& tuning) { this->tuning = &tuning; }
-        bool quantize(float voltage);
+        void setTuning(Tuning& tuning) { this->tuning = &tuning; }
 
-        Note& getNote() { return note; }
+        Note quantizeChromatic(float voltage);
+        Note quantizeToScale(float voltage, Scale& scale);
 
     private:
         Tuning* tuning;
-        Note note;
         
-        bool setNote(Note& note);
         Note& getClosestNote(float value, Note& prevNote, Note& nextNote);
 };
 
