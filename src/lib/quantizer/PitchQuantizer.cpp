@@ -1,13 +1,13 @@
 #include "PitchQuantizer.h"
 
 bool PitchQuantizer::quantize(float value) {
-    int octave = scale->findOctave(value);
-    Note prevNote = scale->getNote(octave, 0);
+    int octave = tuning->findOctave(value);
+    Note prevNote = tuning->getNote(octave, 0);
     Note nextNote;
 
-    for(int i = 1; i <= scale->getNotes(); i++) {
-        nextNote = scale->getNote(octave, i);
-        if(scale->isEnabled(nextNote)) {
+    for(int i = 1; i <= tuning->getNotes(); i++) {
+        nextNote = tuning->getNote(octave, i);
+        if(tuning->isEnabled(nextNote)) {
             if(nextNote.value > value) {
                 return setNote(getClosestNote(value, prevNote, nextNote));
             }
@@ -15,7 +15,7 @@ bool PitchQuantizer::quantize(float value) {
         }
     }
     
-    nextNote = scale->getNote(octave+1, 0);
+    nextNote = tuning->getNote(octave+1, 0);
     return setNote(getClosestNote(value, prevNote, nextNote));
 }
 

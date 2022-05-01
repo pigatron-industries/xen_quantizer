@@ -8,7 +8,7 @@ void QuantizerController::init(float sampleRate) {
 void QuantizerController::init() {
     Serial.println("Quantizer");
 
-    scale.enable({3, 5, 7, 10});
+    tuning.enable({3, 5, 7, 10});
 }
 
 void QuantizerController::update() {

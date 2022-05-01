@@ -2,7 +2,7 @@
 #define QuantizerController_h
 
 #include "Controller.h"
-#include "PitchQuantizer.h"
+#include "lib/quantizer/PitchQuantizer.h"
 
 
 using namespace eurorack;
@@ -25,8 +25,8 @@ class QuantizerController : public Controller {
 
         GateInput<MCP23S17Device> clockInput = GateInput<MCP23S17Device>(*Hardware::hw.clockInputPins[0], false);
 
-        Scale scale = Scale(12);
-        PitchQuantizer pitchQuantizer = PitchQuantizer(scale);
+        Tuning tuning = Tuning(12);
+        PitchQuantizer pitchQuantizer = PitchQuantizer(tuning);
 
 };
 

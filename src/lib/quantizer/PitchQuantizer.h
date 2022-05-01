@@ -1,18 +1,18 @@
 #ifndef PitchQuantizer_h
 #define PitchQuantizer_h
 
-#include "Scale.h"
+#include "Tuning.h"
 
 class PitchQuantizer {
     public:
-        PitchQuantizer(Scale& scale) { this->scale = &scale; }
-        void setScale(Scale& scale) { this->scale = &scale; }
+        PitchQuantizer(Tuning& tuning) { this->tuning = &tuning; }
+        void setScale(Tuning& tuning) { this->tuning = &tuning; }
         bool quantize(float value);
 
         Note& getNote() { return note; }
 
     private:
-        Scale* scale;
+        Tuning* tuning;
         Note note;
         
         bool setNote(Note& note);

@@ -1,12 +1,12 @@
-#include "Scale.h"
+#include "Tuning.h"
 
-void Scale::enable(int note, bool enabled = true) { 
+void Tuning::enable(int note, bool enabled) { 
     if(note > 0) { 
         intervals[note-1].enabled = enabled; 
     }
 }
 
-void Scale::enable(std::initializer_list<int> notes) {
+void Tuning::enable(std::initializer_list<int> notes) {
     for(int i = 0; i < intervals.size(); i++) {
         intervals[i].enabled = false;
     }
