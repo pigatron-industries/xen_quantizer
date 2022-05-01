@@ -17,5 +17,7 @@
   "license": "Unlicense",
   "frameworks": "arduino",
   "platforms": "*",
-  "srcDir": "src/lib"
+  "build": {
+    "srcDir": "src/lib"
+  }
 }
