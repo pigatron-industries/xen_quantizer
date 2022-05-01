@@ -6,18 +6,18 @@
 class Note {
     public:
         Note() {}
-        Note(int octave, int note) { this->octave = octave; this->note = note; }
-        Note(int octave, int note, float value) { this->octave = octave; this->note = note; this->value = value; }
-        int octave = 0;
+        Note(int repeat, int note) { this->repeat = repeat; this->note = note; }
+        Note(int repeat, int note, float voltage) { this->repeat = repeat; this->note = note; this->voltage = voltage; }
+        int repeat = 0;
         int note = 0;
-        float value = 0;
+        float voltage = 0;
 };
 
 class Interval {
     public:
         Interval() {}
-        Interval(float value) { this->value = value; }
-        float value = 0;
+        Interval(float voltage) { this->voltage = voltage; }
+        float voltage = 0;
         bool enabled = false;
 };
 
@@ -42,8 +42,8 @@ class Tuning {
         void enable(int note, bool enabled = true);
         void enable(std::initializer_list<int> notes);
 
-        int findOctave(float value) {
-            return floorf(value * repeatIntervalRecip);
+        int findRepeatNumber(float voltage) {
+            return floorf(voltage * repeatIntervalRecip);
         }
 
     private:
@@ -51,9 +51,9 @@ class Tuning {
         float repeatInterval;
         float repeatIntervalRecip;
 
-        float getNoteValue(int octave, int note) { return getOctaveValue(octave) + getIntervalValue(note); }
-        float getOctaveValue(int octave) { return octave * this->repeatInterval; }
-        float getIntervalValue(int note) { return intervals[note].value; }
+        float getNoteVoltage(int repeat, int note) { return getOctaveValue(repeat) + getIntervalValue(note); }
+        float getRepeatVoltage(int repeat) { return repeat * this->repeatInterval; }
+        float getIntervalVoltaage(int note) { return intervals[note].voltage; }
 };
 
 #endif

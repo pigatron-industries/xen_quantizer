@@ -7,7 +7,7 @@ class PitchQuantizer {
     public:
         PitchQuantizer(Tuning& tuning) { this->tuning = &tuning; }
         void setScale(Tuning& tuning) { this->tuning = &tuning; }
-        bool quantize(float value);
+        bool quantize(float voltage);
 
         Note& getNote() { return note; }
 
