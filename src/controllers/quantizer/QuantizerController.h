@@ -26,6 +26,7 @@ class QuantizerController : public Controller {
         GateInput<MCP23S17Device> clockInput = GateInput<MCP23S17Device>(*Hardware::hw.clockInputPins[0], false);
 
         Tuning tuning = Tuning(12);
+        ScaleDef scale = ScaleDef({0, 2, 4, 5, 7, 9, 10});
         PitchQuantizer pitchQuantizer = PitchQuantizer(tuning);
 
 };

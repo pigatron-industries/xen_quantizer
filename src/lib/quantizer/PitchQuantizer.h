@@ -9,7 +9,7 @@ class PitchQuantizer {
         void setTuning(Tuning& tuning) { this->tuning = &tuning; }
 
         Note quantizeChromatic(float voltage);
-        Note quantizeToScale(float voltage, Scale& scale);
+        Note quantizeToScale(float voltage, ScaleDef& scale);
 
     private:
         Tuning* tuning;

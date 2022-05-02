@@ -1,16 +1,20 @@
 #include "Tuning.h"
 
-void Tuning::enable(int note, bool enabled) { 
-    if(note > 0) { 
-        intervals[note-1].enabled = enabled; 
-    }
+Note Tuning::createNote(int repeat, int note, int offset) { 
+    float voltage = getNoteVoltage(repeat, note, offset);
+    return Note(repeat, note, voltage); 
 }
 
-void Tuning::enable(std::initializer_list<int> notes) {
-    for(int i = 0; i < intervals.size(); i++) {
-        intervals[i].enabled = false;
+Chord Tuning::createChord(Note& root, ChordDef& chordDef) {
+    Chord chord;
+    for(int i = 0; i < chordDef.size(); i++) {
+        Note note = createNote(root.repeat, chordDef[i], root.note);
+        chord.add(note);
     }
-    for(int note : notes) {
-        enable(note);
-    }
+
+    return chord;
+}
+
+float Tuning::getNoteVoltage(int repeat, int note, int offset) { 
+    return getRepeatVoltage(repeat) + getIntervalVoltage(note) + getIntervalVoltage(offset);
 }

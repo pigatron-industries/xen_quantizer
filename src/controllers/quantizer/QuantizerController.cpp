@@ -7,8 +7,6 @@ void QuantizerController::init(float sampleRate) {
 
 void QuantizerController::init() {
     Serial.println("Quantizer");
-
-    tuning.enable({3, 5, 7, 10});
 }
 
 void QuantizerController::update() {
@@ -20,7 +18,8 @@ void QuantizerController::process() {
 
     if(clockInput.update() && clockInput.rose()) {
         float value = Hardware::hw.channel1InputPin.analogRead();
-        Note note = pitchQuantizer.quantizeChromatic(value);
+        //Note note = pitchQuantizer.quantizeChromatic(value);
+        Note note = pitchQuantizer.quantizeToScale(value, scale);
         Hardware::hw.cvOutputPins[0]->analogWrite(note.voltage);
     }
 }

@@ -3,13 +3,17 @@
 
 #include <eurorack.h>
 
+#define TUNING_MAX_NOTES 24
+#define CHORD_MAX_NOTES 4
+
 class Note {
     public:
         Note() {}
-        Note(int repeat, int note) { this->repeat = repeat; this->note = note; }
-        Note(int repeat, int note, float voltage) { this->repeat = repeat; this->note = note; this->voltage = voltage; }
+        Note(int repeat, int note, float voltage, int offset = 0) 
+            { this->repeat = repeat; this->note = note; this->voltage = voltage; this->offset = offset; }
         int repeat = 0;
         int note = 0;
+        int offset = 0;
         float voltage = 0;
 };
 
@@ -18,12 +22,14 @@ class Interval {
         Interval() {}
         Interval(float voltage) { this->voltage = voltage; }
         float voltage = 0;
-        bool enabled = false;
 };
+
+typedef Array<int, TUNING_MAX_NOTES> ScaleDef;
+typedef Array<int, CHORD_MAX_NOTES> ChordDef;
+typedef Array<Note, TUNING_MAX_NOTES> Chord;
 
 class Tuning {
     public:
-        static constexpr int MAX_NOTES = 24;
 
         Tuning() {}
         Tuning(int notes) {
@@ -36,30 +42,21 @@ class Tuning {
         }
 
         int getNotes() { return intervals.size(); }
-        Note getNote(int octave, int note) { return Note(octave, note, getNoteVoltage(octave, note)); }
-
-        bool isEnabled(const Note& note) { return note.note > 0 ? intervals[note.note-1].enabled : true; }
-        void enable(int note, bool enabled = true);
-        void enable(std::initializer_list<int> notes);
+        Note createNote(int repeat, int note, int offset = 0);
+        Chord createChord(Note& root, ChordDef& chordDef);
 
         int findRepeatNumber(float voltage) {
             return floorf(voltage * repeatIntervalRecip);
         }
 
     private:
-        Array<Interval, MAX_NOTES> intervals; 
+        Array<Interval, TUNING_MAX_NOTES> intervals; 
         float repeatInterval;
         float repeatIntervalRecip;
 
-        float getNoteVoltage(int repeat, int note) { return getRepeatVoltage(repeat) + getIntervalVoltage(note); }
+        float getNoteVoltage(int repeat, int note, int offset = 0);
         float getRepeatVoltage(int repeat) { return repeat * this->repeatInterval; }
         float getIntervalVoltage(int note) { return intervals[note].voltage; }
-};
-
-class Scale {
-    public:
-        Scale() {}
-        Array<int, Tuning::MAX_NOTES> notes;
 };
 
 #endif
