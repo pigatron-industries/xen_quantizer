@@ -2,31 +2,10 @@
 #define Tuning_h
 
 #include <eurorack.h>
+#include "Note.h"
+#include "ScaleRepository.h"
 
-#define TUNING_MAX_NOTES 24
-#define CHORD_MAX_NOTES 4
-
-class Note {
-    public:
-        Note() {}
-        Note(int repeat, int note, float voltage, int offset = 0) 
-            { this->repeat = repeat; this->note = note; this->voltage = voltage; this->offset = offset; }
-        int repeat = 0;
-        int note = 0;
-        int offset = 0;
-        float voltage = 0;
-};
-
-class Interval {
-    public:
-        Interval() {}
-        Interval(float voltage) { this->voltage = voltage; }
-        float voltage = 0;
-};
-
-typedef Array<int, TUNING_MAX_NOTES> ScaleDef;
-typedef Array<int, CHORD_MAX_NOTES> ChordDef;
-typedef Array<Note, TUNING_MAX_NOTES> Chord;
+typedef Array<Note, CHORD_MAX_NOTES> Chord;
 
 class Tuning {
     public:
@@ -50,7 +29,7 @@ class Tuning {
         }
 
     private:
-        Array<Interval, TUNING_MAX_NOTES> intervals; 
+        Array<Interval, SCALE_MAX_NOTES> intervals;
         float repeatInterval;
         float repeatIntervalRecip;
 

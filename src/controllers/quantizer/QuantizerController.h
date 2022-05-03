@@ -26,7 +26,19 @@ class QuantizerController : public Controller {
         GateInput<MCP23S17Device> clockInput = GateInput<MCP23S17Device>(*Hardware::hw.clockInputPins[0], false);
 
         Tuning tuning = Tuning(12);
-        ScaleDef scale = ScaleDef({0, 2, 4, 5, 7, 9, 10});
+        ScaleDef scaleDef = ScaleDef({0, 2, 4, 5, 7, 9, 11});
+
+        ChordDef chordDef[8] = {
+            ChordDef({0, 3, 6, 9}),
+            ChordDef({0, 3, 6, 10}),
+            ChordDef({0, 3, 7, 10}),
+            ChordDef({0, 3, 7, 11}),
+            ChordDef({0, 4, 7, 11}),
+            ChordDef({0, 4, 7, 10}),
+            ChordDef({0, 4, 8, 10}),
+            ChordDef({0, 4, 8, 11})
+        };
+        
         PitchQuantizer pitchQuantizer = PitchQuantizer(tuning);
 
 };
