@@ -19,11 +19,23 @@ class ScaleRepository {
         void addScale(ScaleDef& scaleDef);
         void addChord(ChordDef& chordDef);
 
+        int getScaleCount() { return scales.size(); }
+        int getChordCount() { return chords.size(); }
+
+        ScaleDef& getScale(int scaleIndex) { return scales[scaleIndex]; }
+        ScaleDef& getChord(int chordIndex) { return scales[chordIndex]; }
+
+        Array<ScaleDef*, MAX_SCALES>& getScalesForChord(int chordIndex) { return chordScaleLinks[chordIndex]; }
+        Array<ChordDef*, MAX_CHORDS>& getChordsForScale(int scaleIndex) { return scaleChordLinks[scaleIndex]; }
+
     private:
         Array<ScaleDef, MAX_SCALES> scales;
         Array<ChordDef, MAX_CHORDS> chords;
 
-        Array<Array<bool, MAX_SCALES>, MAX_CHORDS> links;
+        Array<Array<ChordDef*, MAX_CHORDS>, MAX_SCALES> scaleChordLinks;
+        Array<Array<ScaleDef*, MAX_SCALES>, MAX_CHORDS> chordScaleLinks;
+
+        bool match(ScaleDef& scale, ChordDef& chord);
 };
 
 #endif

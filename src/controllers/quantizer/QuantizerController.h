@@ -3,6 +3,7 @@
 
 #include "Controller.h"
 #include "lib/quantizer/PitchQuantizer.h"
+#include "lib/quantizer/ScaleRepository.h"
 
 
 using namespace eurorack;
@@ -26,9 +27,13 @@ class QuantizerController : public Controller {
         GateInput<MCP23S17Device> clockInput = GateInput<MCP23S17Device>(*Hardware::hw.clockInputPins[0], false);
 
         Tuning tuning = Tuning(12);
-        ScaleDef scaleDef = ScaleDef({0, 2, 4, 5, 7, 9, 11});
+        ScaleRepository scaleRepository = ScaleRepository();
 
-        ChordDef chordDef[8] = {
+        ScaleDef scaleDefs[1] = {
+            ScaleDef({0, 2, 4, 5, 7, 9, 11})
+        };
+
+        ChordDef chordDefs[8] = {
             ChordDef({0, 3, 6, 9}),
             ChordDef({0, 3, 6, 10}),
             ChordDef({0, 3, 7, 10}),
