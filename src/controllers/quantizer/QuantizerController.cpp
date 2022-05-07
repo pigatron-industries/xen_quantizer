@@ -17,7 +17,9 @@ void QuantizerController::init() {
 }
 
 void QuantizerController::update() {
-
+    if(chordQualityPot.update()) {
+        chordQuality = chordQualityPot.getValue();
+    }
 }
 
 void QuantizerController::process() {
@@ -27,7 +29,7 @@ void QuantizerController::process() {
         float voltage = Hardware::hw.channel1InputPin.analogRead();
 
         Note root = pitchQuantizer.quantizeToScale(voltage, scaleDefs[0]);
-        Chord chord = tuning.createChord(root, chordDefs[0]);
+        Chord chord = tuning.createChord(root, chordDefs[chordQuality]);
 
         Hardware::hw.cvOutputPins[0]->analogWrite(chord[0].voltage);
         Hardware::hw.cvOutputPins[1]->analogWrite(chord[1].voltage);

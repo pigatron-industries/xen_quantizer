@@ -19,12 +19,14 @@ class QuantizerController : public Controller {
 
     private:
 
-        LinearInput<AnalogInputPinT> channel1Pot = LinearInput<AnalogInputPinT>(Hardware::hw.channel1PotPin, -5, 5, -5, 5);
+        IntegerInput<AnalogInputPinT> chordQualityPot = IntegerInput<AnalogInputPinT>(Hardware::hw.channel1PotPin, -5, 5, 0, 7);
         LinearInput<AnalogInputPinT> channel2Pot = LinearInput<AnalogInputPinT>(Hardware::hw.channel2PotPin, -5, 5, -5, 5);
         LinearInput<AnalogInputPinT> channel3Pot = LinearInput<AnalogInputPinT>(Hardware::hw.channel3PotPin, -5, 5, -5, 5);
         LinearInput<AnalogInputPinT> channel4Pot = LinearInput<AnalogInputPinT>(Hardware::hw.channel4PotPin, -5, 5, -5, 5);
 
         GateInput<MCP23S17Device> clockInput = GateInput<MCP23S17Device>(*Hardware::hw.clockInputPins[0], false);
+
+        int chordQuality = 0;
 
         Tuning tuning = Tuning(12);
         ScaleRepository scaleRepository = ScaleRepository();
@@ -43,7 +45,7 @@ class QuantizerController : public Controller {
             ChordDef({0, 4, 8, 10}),
             ChordDef({0, 4, 8, 11})
         };
-        
+
         PitchQuantizer pitchQuantizer = PitchQuantizer(tuning);
 
 };
