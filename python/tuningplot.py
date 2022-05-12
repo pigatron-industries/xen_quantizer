@@ -16,17 +16,21 @@ class TuningPlot():
         self.rangehigh = rangehigh
         self.fig, self.ax = plt.subplots(figsize=(size, size))
 
-    def plotTuning(self, tuning):
+    def plotTuning(self, tuning, notes = None, label = None):
         intervals = tuning.intervals
         intervalNames = tuning.intervalNames
         for i in range(len(intervals)):
-            if (self.direction == 'v'):
-                self.ax.add_line(lines.Line2D([self.pos,self.pos+1], [intervals[i], intervals[i]], lw=2))
-                self.ax.annotate(intervalNames[i], xy=(self.pos, intervals[i]), xycoords='data', xytext=(3, 3), textcoords='offset points')
-            else:
-                self.ax.add_line(lines.Line2D([intervals[i], intervals[i]], [self.pos,self.pos+1], lw=2))
-                self.ax.annotate(intervalNames[i], xy=(intervals[i], self.pos+0.5), xycoords='data', xytext=(3, 3), textcoords='offset points')
-        self.addCol(tuning.name)
+            if (notes is None or i in notes):
+                if (self.direction == 'v'):
+                    self.ax.add_line(lines.Line2D([self.pos,self.pos+1], [intervals[i], intervals[i]], lw=2))
+                    self.ax.annotate(intervalNames[i], xy=(self.pos, intervals[i]), xycoords='data', xytext=(3, 3), textcoords='offset points')
+                else:
+                    self.ax.add_line(lines.Line2D([intervals[i], intervals[i]], [self.pos,self.pos+1], lw=2))
+                    self.ax.annotate(intervalNames[i], xy=(intervals[i], self.pos+0.5), xycoords='data', xytext=(3, 3), textcoords='offset points')
+        if (label is None):
+            self.addCol(tuning.name)
+        else:
+            self.addCol(label)
 
     def plot(self):
         if (self.direction == 'v'):
