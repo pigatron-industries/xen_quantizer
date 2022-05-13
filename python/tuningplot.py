@@ -16,29 +16,32 @@ class TuningPlot():
         self.rangehigh = rangehigh
         self.fig, self.ax = plt.subplots(figsize=(size, size))
 
-    def plotTuning(self, tuning, notes = None, label = None):
-        intervals = tuning.intervals
-        intervalNames = tuning.intervalNames
-        for i in range(len(intervals)):
+    def plotTuning(self, tuning, repeat = 1, notes = None, label = None):
+        for i in range(len(tuning.intervals)*repeat):
             if (notes is None or i in notes):
+                interval = tuning.getInterval(i)
+                intervalName = tuning.getIntervalName(i)
                 if (self.direction == 'v'):
-                    self.ax.add_line(lines.Line2D([self.pos,self.pos+1], [intervals[i], intervals[i]], lw=2))
-                    self.ax.annotate(intervalNames[i], xy=(self.pos, intervals[i]), xycoords='data', xytext=(3, 3), textcoords='offset points')
+                    self.ax.add_line(lines.Line2D([self.pos,self.pos+1], [interval, interval], lw=2))
+                    self.ax.annotate(intervalName, xy=(self.pos, interval), xycoords='data', xytext=(3, 3), textcoords='offset points')
                 else:
-                    self.ax.add_line(lines.Line2D([intervals[i], intervals[i]], [self.pos,self.pos+1], lw=2))
-                    self.ax.annotate(intervalNames[i], xy=(intervals[i], self.pos+0.5), xycoords='data', xytext=(3, 3), textcoords='offset points')
+                    self.ax.add_line(lines.Line2D([interval, interval], [self.pos,self.pos+1], lw=2))
+                    self.ax.annotate(intervalName, xy=(interval, self.pos+0.5), xycoords='data', xytext=(3, 3), textcoords='offset points')
         if (label is None):
             self.addCol(tuning.name)
         else:
             self.addCol(label)
 
-    def plot(self):
+    def plotMode(self, mode, root = 0, repeat = 1, label = None, wrap = False):
+        self.plotTuning(mode.tuning, repeat, mode.getNotes(root, repeat, wrap), label)
+
+    def plot(self, aspect = 0.1):
         if (self.direction == 'v'):
             self.ax.set(xlim=(0, self.pos), ylim=(0, self.rangehigh), aspect=5)
             plt.xticks(self.ticks, self.ticklabels)
             plt.yticks([tuning.ratioToOctaves(n/d) for n, d in self.ratios], ['{}/{}'.format(n, d) for n, d in self.ratios])
         else:
-            self.ax.set(xlim=(0, self.rangehigh), ylim=(0, self.pos), aspect=0.1*self.rangehigh)
+            self.ax.set(xlim=(0, self.rangehigh), ylim=(self.pos, 0), aspect=aspect*self.rangehigh)
             plt.yticks(self.ticks, self.ticklabels)
             plt.xticks([tuning.ratioToOctaves(n/d) for n, d in self.ratios], ['{}/{}'.format(n, d) for n, d in self.ratios])
         self.ax.grid(False)
@@ -52,7 +55,7 @@ class TuningPlot():
         if (self.direction == 'v'):
             self.ax.plot((diss/scale)+self.pos, yvalues)
         else:
-            self.ax.plot(yvalues, (diss/scale)+self.pos) 
+            self.ax.plot(yvalues, ((scale-diss)/scale)+self.pos) 
         self.addCol("Dissonance")
     
     def plotRatios(self, ratios):
