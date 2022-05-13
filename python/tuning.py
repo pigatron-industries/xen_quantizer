@@ -35,27 +35,35 @@ class Mode():
         self.name = name
         self.notes = notes
 
+    def getNote(self, note, root = 0):
+        modeNote = note % len(self.notes)
+        modeRepeat = note // len(self.notes)
+        returnNote = root + self.notes[modeNote] + (modeRepeat*len(self.tuning.intervals))
+        return returnNote
+
     def getNotes(self, root = 0, repeat = 1, wrap = False):
         notes = []
         for i in range(0, repeat):
             for note in self.notes:
                 returnNote = root + note + (i*len(self.tuning.intervals))
                 if (wrap):
-                    returnNote = returnNote % len(self.tuning.intervals)*repeat
+                    returnNote = returnNote % (len(self.tuning.intervals)*repeat)
                 notes.append(returnNote)
         return notes
 
 
-# class ChordFormula():
-#     def __init__(self, mode, modeNotes):
-#         self.mode = mode
-#         self.modeNotes = modeNotes
+class Chord():
+    def __init__(self, mode, notes, name = None):
+        self.mode = mode
+        self.notes = notes
+        self.name = name
 
-#     def getChordNotes(self, modeRoot):
-#         chordNotes = []
-#         for modeNote in self.modeNotes:
-#             chordNotes.append(self.mode.notes[modeNote])
-#         return chordNotes
+    def getNotes(self, root = 0):
+        notes = []
+        for note in self.notes:
+            tuningNote = self.mode.getNote(root + note)
+            notes.append(tuningNote)
+        return notes
 
 
 def ratioToOctaves(ratio):

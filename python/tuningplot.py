@@ -35,6 +35,9 @@ class TuningPlot():
     def plotMode(self, mode, root = 0, repeat = 1, label = None, wrap = False):
         self.plotTuning(mode.tuning, repeat, mode.getNotes(root, repeat, wrap), label)
 
+    def plotChord(self, chord, root = 0, label = None):
+        self.plotTuning(chord.mode.tuning, self.rangehigh, chord.getNotes(root), label)
+
     def plot(self, aspect = 0.1):
         if (self.direction == 'v'):
             self.ax.set(xlim=(0, self.pos), ylim=(0, self.rangehigh), aspect=5)
