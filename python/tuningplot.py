@@ -76,8 +76,9 @@ class TuningPlot():
 
 
 class TuningPolarPlot():
-    def __init__(self, size = 10, width = 1, height = 1,rangehigh = 1):
+    def __init__(self, size = 10, width = 1, height = 1, plots = 1, rangehigh = 1):
         self.pos = 0
+        self.plots = plots
         self.ticks = []
         self.ticklabels = []
         self.ratios = []
@@ -85,7 +86,7 @@ class TuningPolarPlot():
         self.width = width
         self.height = height
         self.plotnum = 0
-        self.fig = plt.figure(figsize=(size*height, size*width))
+        self.fig = plt.figure(figsize=(size*width, size*height))
         self.fig.tight_layout()
         self.newPlot()
         plt.subplots_adjust(wspace=0.3, hspace=0.3)
@@ -94,8 +95,16 @@ class TuningPolarPlot():
         self.plotnum = self.plotnum + 1
         self.ax = self.fig.add_subplot(self.height, self.width, self.plotnum, projection='polar')
 
-    def plotRatios(self, ratios):
+    def plotDissonance(self, harmonics, scale = 4):
+        freq = 500 * array(harmonics)
+        amp = 0.88 ** (array(harmonics)-1)
+        diss = sethares.dissonanceCurve(freq, amp, 2**self.rangehigh)
+        yvalues = list(map(lambda r: tuning.ratioToOctaves(r)*2*math.pi, linspace(1, 2**self.rangehigh, len(diss))))
+        self.ax.plot(yvalues, ((scale-diss)/scale))
+
+    def plotRatios(self, ratios, offset=0):
         self.ratios = ratios
+        self.ratiosOffset = offset
 
     def plotTuning(self, tuning, repeat = 1, notes = None, label = None):
         x_values = []
@@ -106,45 +115,55 @@ class TuningPolarPlot():
                 intervalName = tuning.getIntervalName(i)
                 plt.plot(interval*2*math.pi, 1, marker='o', markersize=10, color="#008583")
                 # self.ax.add_line(lines.Line2D([interval, interval], [self.pos,self.pos+1], lw=2))
-                # self.ax.annotate(intervalName, xy=(interval, self.pos+0.5), xycoords='data', xytext=(3, 3), textcoords='offset points')
+                self.ax.annotate(intervalName, xy=(interval*2*math.pi, 1), xycoords='data', xytext=(interval*2*math.pi, 1.25), 
+                    textcoords='data', va='center', ha='center', color="#008583")
 
-    def plotMode(self, mode, root = 0, repeat = 1, label = None, wrap = False):
+    def plotScale(self, scale, root = 0, repeat = 1, label = None, wrap = False):
         x_values = []
         y_values = []
-        notes = mode.getNotes(root, repeat, wrap)
-        for i in range(len(mode.tuning.intervals)*repeat):
+        notes = scale.getNotes(root, repeat, wrap)
+        for i in range(len(scale.tuning.intervals)*repeat):
             if (notes is None or i in notes):
-                interval = mode.tuning.getInterval(i)
-                intervalName = mode.tuning.getIntervalName(i)
+                interval = scale.tuning.getInterval(i)
+                intervalName = scale.tuning.getIntervalName(i)
                 x_values.append(interval*2*math.pi)
                 y_values.append(1)
+                self.ax.annotate(intervalName, xy=(interval*2*math.pi, 1), xycoords='data', xytext=(interval*2*math.pi, 1.25), 
+                    textcoords='data', va='center', ha='center', color="#a75d9b")
         plt.plot(x_values, y_values, marker='o', markersize=10, color="#a75d9b", linestyle="-")
+        self.ax.annotate(label, xy=(0, 0), xycoords='data', ha='center', color="#a75d9b", fontsize=16)
+        # self.ax.title.set_text(label)
 
-    def plotChord(self, chord, root = 0, label = None):
+    def plotChord(self, chord, root = 0, label = None, color = "#ffa17a"):
         x_values = []
         y_values = []
         notes = chord.getNotes(root)
-        notes = list(map(lambda n: n%len(chord.mode.tuning.intervals), notes))
-        for i in range(len(chord.mode.tuning.intervals)):
+        notes = list(map(lambda n: n%len(chord.scale.tuning.intervals), notes))
+        for i in range(len(chord.scale.tuning.intervals)):
             if (notes is None or i in notes):
-                interval = chord.mode.tuning.getInterval(i)
-                intervalName = chord.mode.tuning.getIntervalName(i)
+                interval = chord.scale.tuning.getInterval(i)
+                intervalName = chord.scale.tuning.getIntervalName(i)
                 x_values.append(interval*2*math.pi)
                 y_values.append(1)
         x_values.append(x_values[0])
         y_values.append(y_values[0])
-        plt.plot(x_values, y_values, marker='o', markersize=6, color="#ffa17a", linestyle="--")
+        plt.plot(x_values, y_values, marker='o', markersize=6, color=color, linestyle="--")
+        self.ax.annotate(label, xy=(0, 0), xycoords='data', ha='center', color=color, fontsize=16)
 
     def plot(self):
         plt.yticks([1], [""])
-        plt.xticks([tuning.ratioToOctaves(n/d)*2*math.pi for n, d in self.ratios], ['{}/{}'.format(n, d) for n, d in self.ratios])
+        plt.xticks([(tuning.ratioToOctaves(n/d)+self.ratiosOffset)%1*2*math.pi for n, d in self.ratios], ['' for n, d in self.ratios])
+        for i in range(len(self.ratios)):
+            ratioLabel = '{}/{}'.format(self.ratios[i][0], self.ratios[i][1])
+            x = (tuning.ratioToOctaves(self.ratios[i][0]/self.ratios[i][1])+self.ratiosOffset)%1*2*math.pi
+            self.ax.annotate(ratioLabel, xy=(x, 0.7), xycoords='data', ha='center', color="black")
         self.ax.set_theta_direction(-1)
         self.ax.set_theta_offset(math.pi / 2.0)
         self.ax.set(ylim=(0, 1.1))
         self.ax.set_frame_on(False)
         plt.grid(axis='y', color='#008583', linestyle='-', linewidth=2)
         plt.grid(axis='x', color='silver', linestyle='-', linewidth=1)
-        if(self.plotnum < self.width*self.height):
+        if(self.plotnum < self.plots):
             self.newPlot()
 
     def show(self):

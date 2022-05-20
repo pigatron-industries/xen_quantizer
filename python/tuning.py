@@ -29,7 +29,7 @@ class Tuning():
         return self.intervalNames[noteMod]
 
 
-class Mode():
+class Scale():
     def __init__(self, name, tuning, notes):
         self.tuning = tuning
         self.name = name
@@ -53,15 +53,15 @@ class Mode():
 
 
 class Chord():
-    def __init__(self, mode, notes, name = None):
-        self.mode = mode
+    def __init__(self, scale, notes, name = None):
+        self.scale = scale
         self.notes = notes
         self.name = name
 
     def getNotes(self, root = 0):
         notes = []
         for note in self.notes:
-            tuningNote = self.mode.getNote(root + note)
+            tuningNote = self.scale.getNote(root + note)
             notes.append(tuningNote)
         return notes
 
