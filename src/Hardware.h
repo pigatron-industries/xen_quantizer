@@ -15,8 +15,8 @@ class Hardware {
         void init();
 
         // Memory pool
-        static float memPoolBuffer[MEMPOOL_SIZE];
-        MemPool<float> memPool = MemPool<float>(Hardware::memPoolBuffer, MEMPOOL_SIZE);
+        static char memPoolBuffer[MEMPOOL_SIZE];
+        MemPool<char> memPool = MemPool<char>(Hardware::memPoolBuffer, MEMPOOL_SIZE);
 
         // Direct connections
         RotaryEncoderButton encoder = RotaryEncoderButton(ENCODER_PIN1, ENCODER_PIN2, ENCODER_BTN_PIN);

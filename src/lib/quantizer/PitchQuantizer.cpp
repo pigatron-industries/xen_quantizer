@@ -17,14 +17,14 @@ Note PitchQuantizer::quantizeChromatic(float voltage) {
     return getClosestNote(voltage, prevNote, nextNote);
 }
 
-Note PitchQuantizer::quantizeToScale(float voltage, ScaleDef& scale) {
+Note PitchQuantizer::quantizeToScale(float voltage) {
     int repeat = tuning->findRepeatNumber(voltage);
     Note prevNote = tuning->createNote(repeat, 0);
     Note nextNote;
 
     for(int i = 1; i <= tuning->getNotes(); i++) {
         nextNote = tuning->createNote(repeat, i);
-        if(scale.contains(nextNote.note)) {
+        if(scaleDef->contains(nextNote.note)) {
             if(nextNote.voltage > voltage) {
                 return getClosestNote(voltage, prevNote, nextNote);
             }
@@ -42,4 +42,27 @@ Note& PitchQuantizer::getClosestNote(float voltage, Note& prevNote, Note& nextNo
     } else {
         return prevNote;
     }
+}
+
+Chord& PitchQuantizer::createChord(ChordDef& chordDef, Note& root) {
+    chord.clear();
+    int scaleIndexRoot = getScaleIndex(root);
+    for(int i = 0; i < chordDef.size(); i++) {
+        int chordDefNote = chordDef[i];
+        int scaleIndex = scaleIndexRoot + chordDefNote;
+        int repeat = (scaleIndex / scaleDef->size()) + root.repeat;
+        int note = scaleDef->getNote(scaleIndex % scaleDef->size());
+        chord.add(tuning->createNote(repeat, note));
+    }
+
+    return chord;
+}
+
+int PitchQuantizer::getScaleIndex(Note& note) {
+    for(int i = 0; i < scaleDef->size(); i++) {
+        if(scaleDef->getNote(i) == note.note) {
+            return i;
+        }
+    }
+    return -1;
 }

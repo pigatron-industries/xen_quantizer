@@ -145,6 +145,8 @@ class TuningPolarPlot():
                 intervalName = chord.scale.tuning.getIntervalName(i)
                 x_values.append(interval*2*math.pi)
                 y_values.append(1)
+                self.ax.annotate(intervalName, xy=(interval*2*math.pi, 1), xycoords='data', xytext=(interval*2*math.pi, 1.25), 
+                    textcoords='data', va='center', ha='center', color=color)
         x_values.append(x_values[0])
         y_values.append(y_values[0])
         plt.plot(x_values, y_values, marker='o', markersize=6, color=color, linestyle="--")
