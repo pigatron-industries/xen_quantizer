@@ -19,6 +19,8 @@ void test_quantizeToScale(float input, int expectedRepeat, int expectedNote, flo
 }
 
 void test_quantizeToScale() {
+    pitchQuantizer.setScaleOffset(0);
+
     // 1st octave positive voltages
     test_quantizeToScale(0,     0, 0,  0);
     test_quantizeToScale(0.083, 0, 0,  0);
@@ -45,6 +47,24 @@ void test_quantizeToScale() {
     test_quantizeToScale(-1,     -1,  0, -1);
     test_quantizeToScale(-2,     -2,  0, -2);
     test_quantizeToScale(-5,     -5,  0, -5);
+}
+
+void test_quantizeToScaleWithOffset() {
+    pitchQuantizer.setScaleOffset(1);
+
+    // 1st octave positive voltages
+    test_quantizeToScale(0,     0, 0,  0);
+    test_quantizeToScale(0.042, 0, 1,  0.08333334);
+    test_quantizeToScale(0.083, 0, 1,  0.08333334);
+    test_quantizeToScale(0.167, 0, 3,  0.25);
+    test_quantizeToScale(0.333, 0, 3,  0.25);
+    test_quantizeToScale(0.334, 0, 5,  0.4166667);
+    test_quantizeToScale(0.458, 0, 5,  0.4166667);
+    test_quantizeToScale(0.459, 0, 6,  0.5);
+    test_quantizeToScale(0.459, 0, 6,  0.5);
+    test_quantizeToScale(0.751, 0, 10, 0.8333334);
+    test_quantizeToScale(0.916, 0, 10, 0.8333334);
+    test_quantizeToScale(0.917, 1, 0,  1);
 }
 
 void test_createChord(Note rootNote, Note expectedNote1, Note expectedNote2, Note expectedNote3) {
@@ -89,6 +109,7 @@ void test_createChord() {
 int main() {
     UNITY_BEGIN();
     RUN_TEST(test_quantizeToScale);
+    RUN_TEST(test_quantizeToScaleWithOffset);
     RUN_TEST(test_createChord);
     return UNITY_END();
 }

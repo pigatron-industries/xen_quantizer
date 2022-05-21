@@ -13,7 +13,7 @@ class Tuning {
         Tuning() {}
         Tuning(int notes) {
             float interval = 1.0 / notes;
-            for(int i = 0; i <= notes; i++) {
+            for(int i = 0; i < notes; i++) {
                 intervals.add(Interval(interval*i));
             }
             repeatInterval = 1.0;

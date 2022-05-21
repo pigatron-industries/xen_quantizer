@@ -17,14 +17,16 @@ Note PitchQuantizer::quantizeChromatic(float voltage) {
     return getClosestNote(voltage, prevNote, nextNote);
 }
 
+#include <iostream>
+
 Note PitchQuantizer::quantizeToScale(float voltage) {
     int repeat = tuning->findRepeatNumber(voltage);
     Note prevNote = tuning->createNote(repeat, 0);
     Note nextNote;
 
-    for(int i = 1; i <= tuning->getNotes(); i++) {
+    for(int i = 1; i < tuning->getNotes(); i++) {
         nextNote = tuning->createNote(repeat, i);
-        if(scaleDef->contains(nextNote.note)) {
+        if(scaleContainsNote(nextNote)) {
             if(nextNote.voltage > voltage) {
                 return getClosestNote(voltage, prevNote, nextNote);
             }
@@ -65,4 +67,13 @@ int PitchQuantizer::getScaleIndex(Note& note) {
         }
     }
     return -1;
+}
+
+bool PitchQuantizer::scaleContainsNote(Note& note) {
+    if(scaleOffset > 0) {
+        int offsetNote = (note.note-scaleOffset)%tuning->getNotes();
+        return scaleDef->contains(offsetNote);
+    } else {
+        return scaleDef->contains(note.note);
+    }
 }

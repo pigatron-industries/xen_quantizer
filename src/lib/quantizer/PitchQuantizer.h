@@ -9,6 +9,7 @@ class PitchQuantizer {
         PitchQuantizer(Tuning& tuning, ScaleDef& scaleDef) { this->tuning = &tuning; this->scaleDef = &scaleDef; }
         void setTuning(Tuning& tuning) { this->tuning = &tuning; }
         void setScale(ScaleDef& scaleDef) { this->scaleDef = &scaleDef; }
+        void setScaleOffset(int scaleOffset) { this->scaleOffset = scaleOffset; }
         
         Note quantizeChromatic(float voltage);
         Note quantizeToScale(float voltage);
@@ -20,10 +21,12 @@ class PitchQuantizer {
         Tuning* tuning;
         ScaleDef* scaleDef;
 
+        int scaleOffset;
         Chord chord;
         
         Note& getClosestNote(float value, Note& prevNote, Note& nextNote);
         int getScaleIndex(Note& note);
+        bool scaleContainsNote(Note& note);
 };
 
 #endif

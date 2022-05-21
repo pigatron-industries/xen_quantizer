@@ -14,8 +14,8 @@ void QuantizerController::init() {
 }
 
 void QuantizerController::update() {
-    if(scaleModePot.update()) {
-        scaleMode = scaleModePot.getValue();
+    if(scaleOffsetPot.update()) {
+        pitchQuantizer.setScaleOffset(scaleOffsetPot.getValue());
     }
 }
 
