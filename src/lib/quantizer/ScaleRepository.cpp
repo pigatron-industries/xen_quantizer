@@ -4,7 +4,7 @@ void ScaleRepository::clear() {
     scales.clear();
 }
 
-int ScaleRepository::addScale(ScaleDef& scale) {
+int ScaleRepository::addScale(Scale& scale) {
     int scaleIndex = scales.add(scale);
     return scaleIndex;
 }

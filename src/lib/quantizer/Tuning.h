@@ -3,9 +3,10 @@
 
 #include <eurorack.h>
 #include "Note.h"
-#include "ScaleRepository.h"
 
-typedef Array<Note, CHORD_MAX_NOTES> Chord;
+#define TUNING_MAX_NOTES 24
+
+// typedef Array<Note, CHORD_MAX_NOTES> Chord;
 
 class Tuning {
     public:
@@ -16,25 +17,25 @@ class Tuning {
             for(int i = 0; i < notes; i++) {
                 intervals.add(Interval(interval*i));
             }
-            repeatInterval = 1.0;
-            repeatIntervalRecip = 1.0/repeatInterval;
+            cycleInterval = 1.0;
+            cycleIntervalRecip = 1.0/cycleInterval;
         }
 
-        int getNotes() { return intervals.size(); }
-        Note createNote(int repeat, int note, int offset = 0);
-        Chord createChord(Note& root, ChordDef& chordDef);
+        int size() { return intervals.size(); }
+        Note createNote(int cycle, int note, int offset = 0);
+        // Chord createChord(Note& root, ChordDef& chordDef);
 
-        int findRepeatNumber(float voltage) {
-            return floorf(voltage * repeatIntervalRecip);
+        int findCycle(float voltage) {
+            return floorf(voltage * cycleIntervalRecip);
         }
 
     private:
-        Array<Interval, SCALE_MAX_NOTES> intervals;
-        float repeatInterval;
-        float repeatIntervalRecip;
+        Array<Interval, TUNING_MAX_NOTES> intervals;
+        float cycleInterval;
+        float cycleIntervalRecip;
 
-        float getNoteVoltage(int repeat, int note, int offset = 0);
-        float getRepeatVoltage(int repeat) { return repeat * this->repeatInterval; }
+        float getNoteVoltage(int cycle, int note, int offset = 0);
+        float getCycleVoltage(int cycle) { return cycle * this->cycleInterval; }
         float getIntervalVoltage(int note) { return intervals[note].voltage; }
 };
 

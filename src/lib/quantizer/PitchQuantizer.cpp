@@ -1,32 +1,31 @@
 #include "PitchQuantizer.h"
 
 Note PitchQuantizer::quantizeChromatic(float voltage) {
-    int repeat = tuning->findRepeatNumber(voltage);
-    Note prevNote = tuning->createNote(repeat, 0);
+    int cycle = tuning->findCycle(voltage);
+    Note prevNote = scale->getFirstNote(cycle);
     Note nextNote;
 
-    for(int i = 1; i <= tuning->getNotes(); i++) {
-        nextNote = tuning->createNote(repeat, i);
+    for(int i = 1; i <= tuning->size(); i++) {
+        nextNote = tuning->createNote(cycle, i);
         if(nextNote.voltage > voltage) {
             return getClosestNote(voltage, prevNote, nextNote);
         }
         prevNote = nextNote;
     }
     
-    nextNote = tuning->createNote(repeat+1, 0);
+    nextNote = tuning->createNote(cycle+1, 0);
     return getClosestNote(voltage, prevNote, nextNote);
 }
 
-#include <iostream>
-
 Note PitchQuantizer::quantizeToScale(float voltage) {
-    int repeat = tuning->findRepeatNumber(voltage);
-    Note prevNote = tuning->createNote(repeat, 0);
+    //TODO get note before first note in scale (last note of previous repeat)
+    int cycle = tuning->findCycle(voltage);
+    Note prevNote = scale->getLastNote(cycle-1);
     Note nextNote;
 
-    for(int i = 1; i < tuning->getNotes(); i++) {
-        nextNote = tuning->createNote(repeat, i);
-        if(scaleContainsNote(nextNote)) {
+    for(int i = 0; i < tuning->size(); i++) {
+        nextNote = tuning->createNote(cycle, i);
+        if(scale->containsNote(nextNote.note)) {
             if(nextNote.voltage > voltage) {
                 return getClosestNote(voltage, prevNote, nextNote);
             }
@@ -34,7 +33,7 @@ Note PitchQuantizer::quantizeToScale(float voltage) {
         }
     }
     
-    nextNote = tuning->createNote(repeat+1, 0);
+    nextNote = scale->getFirstNote(cycle+1);
     return getClosestNote(voltage, prevNote, nextNote);
 }
 
@@ -52,8 +51,8 @@ Chord& PitchQuantizer::createChord(ChordDef& chordDef, Note& root) {
     for(int i = 0; i < chordDef.size(); i++) {
         int chordDefNote = chordDef[i];
         int scaleIndex = scaleIndexRoot + chordDefNote;
-        int repeat = (scaleIndex / scaleDef->size()) + root.repeat;
-        int note = scaleDef->getNote(scaleIndex % scaleDef->size());
+        int repeat = (scaleIndex / scale->size()) + root.cycle;
+        int note = scale->getNote(scaleIndex % scale->size());
         chord.add(tuning->createNote(repeat, note));
     }
 
@@ -61,19 +60,10 @@ Chord& PitchQuantizer::createChord(ChordDef& chordDef, Note& root) {
 }
 
 int PitchQuantizer::getScaleIndex(Note& note) {
-    for(int i = 0; i < scaleDef->size(); i++) {
-        if(scaleDef->getNote(i) == note.note) {
+    for(int i = 0; i < scale->size(); i++) {
+        if(scale->getNote(i) == note.note) {
             return i;
         }
     }
     return -1;
-}
-
-bool PitchQuantizer::scaleContainsNote(Note& note) {
-    if(scaleOffset > 0) {
-        int offsetNote = (note.note-scaleOffset)%tuning->getNotes();
-        return scaleDef->contains(offsetNote);
-    } else {
-        return scaleDef->contains(note.note);
-    }
 }

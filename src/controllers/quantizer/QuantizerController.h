@@ -35,11 +35,11 @@ class QuantizerController : public Controller {
             ChordDef({0, 2, 4, 6})
         };
 
-        ScaleDef scaleDefs[1] = {
-            ScaleDef({0, 2, 4, 5, 7, 9, 11}, chordDefs[0])
+        Scale scales[1] = {
+            Scale(tuning, {0, 2, 4, 5, 7, 9, 11}, chordDefs[0])
         };
 
-        PitchQuantizer pitchQuantizer = PitchQuantizer(tuning, scaleDefs[0]);
+        PitchQuantizer pitchQuantizer = PitchQuantizer(tuning, scales[0]);
 
 };
 
