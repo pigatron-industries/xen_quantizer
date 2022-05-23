@@ -32,7 +32,7 @@ class Scale {
         void addChordDef(std::initializer_list<int> chordDef) { chordDefs.add({chordDef}); }
 
         int size() { return notes.size(); }
-        int getNote(int index) { return notes[index%notes.size()]; }
+        int getNote(int index);
 
         Note getFirstNote(int cycle);
         Note getLastNote(int cycle);

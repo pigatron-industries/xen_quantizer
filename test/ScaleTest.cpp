@@ -77,7 +77,33 @@ void test_containsNote() {
     ScaleTest::test_containsNote(2, 11, true);
 }
 
+void ScaleTest::test_getNoteByIndex(int index, int expectedNote) {
+    int note = scale.getNote(index);
+    TEST_ASSERT_EQUAL_INT(expectedNote, note);
+}
+
+void test_getNoteByIndex() {
+    ScaleTest::scale.setOffset(0);
+    ScaleTest::test_getNoteByIndex(0, 0);
+    ScaleTest::test_getNoteByIndex(1, 2);
+    ScaleTest::test_getNoteByIndex(2, 4);
+    ScaleTest::test_getNoteByIndex(3, 5);
+    ScaleTest::test_getNoteByIndex(4, 7);
+    ScaleTest::test_getNoteByIndex(5, 9);
+    ScaleTest::test_getNoteByIndex(6, 11);
+
+    ScaleTest::scale.setOffset(1);
+    ScaleTest::test_getNoteByIndex(0, 0);
+    ScaleTest::test_getNoteByIndex(1, 1);
+    ScaleTest::test_getNoteByIndex(2, 3);
+    ScaleTest::test_getNoteByIndex(3, 5);
+    ScaleTest::test_getNoteByIndex(4, 6);
+    ScaleTest::test_getNoteByIndex(5, 8);
+    ScaleTest::test_getNoteByIndex(6, 10);
+}
+
 void test_Scale() {
     RUN_TEST(test_firstLastNote);
     RUN_TEST(test_containsNote);
+    RUN_TEST(test_getNoteByIndex);
 }

@@ -115,7 +115,12 @@ void test_createChord() {
     // offset 1
     PitchQuantizerTest::scale.setOffset(1);
     PitchQuantizerTest::test_createChord(Note(0, 0),  Note(0, 0),  Note(0, 3),  Note(0, 6));
-    // PitchQuantizerTest::test_createChord(Note(0, 1),  Note(0, 1),  Note(0, 5),  Note(0, 8));
+    PitchQuantizerTest::test_createChord(Note(0, 1),  Note(0, 1),  Note(0, 5),  Note(0, 8));
+    PitchQuantizerTest::test_createChord(Note(0, 3),  Note(0, 3),  Note(0, 6),  Note(0, 10));
+    PitchQuantizerTest::test_createChord(Note(0, 5),  Note(0, 5),  Note(0, 8),  Note(1, 0));
+    PitchQuantizerTest::test_createChord(Note(0, 6),  Note(0, 6),  Note(0, 10), Note(1, 1));
+    PitchQuantizerTest::test_createChord(Note(0, 8),  Note(0, 8),  Note(1, 0),  Note(1, 3));
+    PitchQuantizerTest::test_createChord(Note(0, 10), Note(0, 10), Note(1, 1),  Note(1, 5));
 }
 
 void test_PitchQuantizer() {

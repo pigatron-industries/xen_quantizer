@@ -21,10 +21,12 @@ Note Scale::getLastNote(int cycle) {
     return tuning->createNote(cycle, getOffsetNote(notes[firstNoteIndex-1]));
 }
 
+int Scale::getNote(int index) { 
+    return getOffsetNote(notes[firstNoteIndex+index]);
+}
+
 int Scale::getOffsetNote(int note) {
     if(offset > 0) {
-        // DEBUGLN("getOffsetNote");
-        // DEBUGLN(tuning->size());
         return (note + offset) % tuning->size();
     } else {
         return note;
@@ -35,9 +37,7 @@ void Scale::calcNoteOffsets() {
     CycleEnum<int> prevNoteIndex = CycleEnum<int>(0, notes.size()-1);
     for(int i = 0; i < notes.size(); i++) {
         prevNoteIndex = i-1;
-        // DEBUGLN(notes[prevNoteIndex.value]);
         int prevNote = getOffsetNote(notes[prevNoteIndex.value]);
-        // DEBUGLN("a");
         int nextNote = getOffsetNote(notes[i]);
         if(prevNote > nextNote) {
             firstNoteIndex = i;
