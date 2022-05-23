@@ -30,15 +30,16 @@ void QuantizerController::process() {
         float voltage = Hardware::hw.channel1InputPin.analogRead();
 
         Note root = pitchQuantizer.quantizeToScale(voltage);
-        //Chord chord = tuning.createChord(root, chordDefs[0]);
+        Chord& chord = pitchQuantizer.createChord(chordDefs[0], root);
+
+        // Serial.println("note");
+        // Serial.println(root.voltage);
+        // Serial.println(chord[0].voltage);
         
-        //Serial.println(root.voltage);
-
-        Hardware::hw.cvOutputPins[0]->analogWrite(root.voltage);
-
-        //Hardware::hw.cvOutputPins[0]->analogWrite(chord[0].voltage);
-        // Hardware::hw.cvOutputPins[1]->analogWrite(chord[1].voltage);
-        // Hardware::hw.cvOutputPins[2]->analogWrite(chord[2].voltage);
-        // Hardware::hw.cvOutputPins[3]->analogWrite(chord[3].voltage);
+        //Hardware::hw.cvOutputPins[0]->analogWrite(root.voltage);
+        Hardware::hw.cvOutputPins[0]->analogWrite(chord[0].voltage);
+        Hardware::hw.cvOutputPins[1]->analogWrite(chord[1].voltage);
+        Hardware::hw.cvOutputPins[2]->analogWrite(chord[2].voltage);
+        Hardware::hw.cvOutputPins[3]->analogWrite(chord[3].voltage);
     }
 }

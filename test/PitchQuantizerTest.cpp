@@ -72,46 +72,54 @@ void test_quantizeToScaleWithOffset() {
     PitchQuantizerTest::test_quantizeToScale(0.999,   0, 11, 0.9166667);
 }
 
-// void test_createChord(Note rootNote, Note expectedNote1, Note expectedNote2, Note expectedNote3) {
-//     Chord chord = pitchQuantizer.createChord(chordDef, rootNote);
-//     TEST_ASSERT_EQUAL_INT(chord.size(), 4);
-//     TEST_ASSERT_EQUAL_INT(expectedNote1.cycle, chord[0].cycle);
-//     TEST_ASSERT_EQUAL_INT(expectedNote1.note,   chord[0].note);
-//     TEST_ASSERT_EQUAL_INT(expectedNote2.cycle, chord[1].cycle);
-//     TEST_ASSERT_EQUAL_INT(expectedNote2.note,   chord[1].note);
-//     TEST_ASSERT_EQUAL_INT(expectedNote3.cycle, chord[2].cycle);
-//     TEST_ASSERT_EQUAL_INT(expectedNote3.note,   chord[2].note);
-// }
+void PitchQuantizerTest::test_createChord(Note rootNote, Note expectedNote1, Note expectedNote2, Note expectedNote3) {
+    Chord chord = pitchQuantizer.createChord(chordDef, rootNote);
+    TEST_ASSERT_EQUAL_INT(chord.size(), 4);
+    TEST_ASSERT_EQUAL_INT(expectedNote1.cycle, chord[0].cycle);
+    TEST_ASSERT_EQUAL_INT(expectedNote1.note,   chord[0].note);
+    TEST_ASSERT_EQUAL_INT(expectedNote2.cycle, chord[1].cycle);
+    TEST_ASSERT_EQUAL_INT(expectedNote2.note,   chord[1].note);
+    TEST_ASSERT_EQUAL_INT(expectedNote3.cycle, chord[2].cycle);
+    TEST_ASSERT_EQUAL_INT(expectedNote3.note,   chord[2].note);
+}
 
-// void test_createChord() {
-//     test_createChord(Note(0, 0),  Note(0, 0),  Note(0, 4),  Note(0, 7)); // C Major
-//     test_createChord(Note(0, 2),  Note(0, 2),  Note(0, 5),  Note(0, 9)); // D Minor
-//     test_createChord(Note(0, 4),  Note(0, 4),  Note(0, 7),  Note(0, 11));// E Minor
-//     test_createChord(Note(0, 5),  Note(0, 5),  Note(0, 9),  Note(1, 0)); // F Major
-//     test_createChord(Note(0, 7),  Note(0, 7),  Note(0, 11), Note(1, 2)); // G Major
-//     test_createChord(Note(0, 9),  Note(0, 9),  Note(1, 0),  Note(1, 4)); // A Minor
-//     test_createChord(Note(0, 11), Note(0, 11), Note(1, 2),  Note(1, 5)); // B Diminished
+void test_createChord() {
+    PitchQuantizerTest::scale.setOffset(0);
+
+    PitchQuantizerTest::test_createChord(Note(0, 0),  Note(0, 0),  Note(0, 4),  Note(0, 7)); // C Major
+    PitchQuantizerTest::test_createChord(Note(0, 2),  Note(0, 2),  Note(0, 5),  Note(0, 9)); // D Minor
+    PitchQuantizerTest::test_createChord(Note(0, 4),  Note(0, 4),  Note(0, 7),  Note(0, 11));// E Minor
+    PitchQuantizerTest::test_createChord(Note(0, 5),  Note(0, 5),  Note(0, 9),  Note(1, 0)); // F Major
+    PitchQuantizerTest::test_createChord(Note(0, 7),  Note(0, 7),  Note(0, 11), Note(1, 2)); // G Major
+    PitchQuantizerTest::test_createChord(Note(0, 9),  Note(0, 9),  Note(1, 0),  Note(1, 4)); // A Minor
+    PitchQuantizerTest::test_createChord(Note(0, 11), Note(0, 11), Note(1, 2),  Note(1, 5)); // B Diminished
  
-//     // +1 octave
-//     test_createChord(Note(1, 0),  Note(1, 0),  Note(1, 4),  Note(1, 7)); // C Major
-//     test_createChord(Note(1, 2),  Note(1, 2),  Note(1, 5),  Note(1, 9)); // D Minor
-//     test_createChord(Note(1, 4),  Note(1, 4),  Note(1, 7),  Note(1, 11));// E Minor
-//     test_createChord(Note(1, 5),  Note(1, 5),  Note(1, 9),  Note(2, 0)); // F Major
-//     test_createChord(Note(1, 7),  Note(1, 7),  Note(1, 11), Note(2, 2)); // G Major
-//     test_createChord(Note(1, 9),  Note(1, 9),  Note(2, 0),  Note(2, 4)); // A Minor
-//     test_createChord(Note(1, 11), Note(1, 11), Note(2, 2),  Note(2, 5)); // B Diminished
+    // +1 octave
+    PitchQuantizerTest::test_createChord(Note(1, 0),  Note(1, 0),  Note(1, 4),  Note(1, 7)); // C Major
+    PitchQuantizerTest::test_createChord(Note(1, 2),  Note(1, 2),  Note(1, 5),  Note(1, 9)); // D Minor
+    PitchQuantizerTest::test_createChord(Note(1, 4),  Note(1, 4),  Note(1, 7),  Note(1, 11));// E Minor
+    PitchQuantizerTest::test_createChord(Note(1, 5),  Note(1, 5),  Note(1, 9),  Note(2, 0)); // F Major
+    PitchQuantizerTest::test_createChord(Note(1, 7),  Note(1, 7),  Note(1, 11), Note(2, 2)); // G Major
+    PitchQuantizerTest::test_createChord(Note(1, 9),  Note(1, 9),  Note(2, 0),  Note(2, 4)); // A Minor
+    PitchQuantizerTest::test_createChord(Note(1, 11), Note(1, 11), Note(2, 2),  Note(2, 5)); // B Diminished
 
-//     // -1 octave
-//     test_createChord(Note(-1, 0),  Note(-1, 0),  Note(-1, 4),  Note(-1, 7)); // C Major
-//     test_createChord(Note(-1, 2),  Note(-1, 2),  Note(-1, 5),  Note(-1, 9)); // D Minor
-//     test_createChord(Note(-1, 4),  Note(-1, 4),  Note(-1, 7),  Note(-1, 11));// E Minor
-//     test_createChord(Note(-1, 5),  Note(-1, 5),  Note(-1, 9),  Note(0, 0)); // F Major
-//     test_createChord(Note(-1, 7),  Note(-1, 7),  Note(-1, 11), Note(0, 2)); // G Major
-//     test_createChord(Note(-1, 9),  Note(-1, 9),  Note(0, 0),  Note(0, 4)); // A Minor
-//     test_createChord(Note(-1, 11), Note(-1, 11), Note(0, 2),  Note(0, 5)); // B Diminished
-// }
+    // -1 octave
+    PitchQuantizerTest::test_createChord(Note(-1, 0),  Note(-1, 0),  Note(-1, 4),  Note(-1, 7)); // C Major
+    PitchQuantizerTest::test_createChord(Note(-1, 2),  Note(-1, 2),  Note(-1, 5),  Note(-1, 9)); // D Minor
+    PitchQuantizerTest::test_createChord(Note(-1, 4),  Note(-1, 4),  Note(-1, 7),  Note(-1, 11));// E Minor
+    PitchQuantizerTest::test_createChord(Note(-1, 5),  Note(-1, 5),  Note(-1, 9),  Note(0, 0)); // F Major
+    PitchQuantizerTest::test_createChord(Note(-1, 7),  Note(-1, 7),  Note(-1, 11), Note(0, 2)); // G Major
+    PitchQuantizerTest::test_createChord(Note(-1, 9),  Note(-1, 9),  Note(0, 0),  Note(0, 4)); // A Minor
+    PitchQuantizerTest::test_createChord(Note(-1, 11), Note(-1, 11), Note(0, 2),  Note(0, 5)); // B Diminished
+
+    // offset 1
+    PitchQuantizerTest::scale.setOffset(1);
+    PitchQuantizerTest::test_createChord(Note(0, 0),  Note(0, 0),  Note(0, 3),  Note(0, 6));
+    // PitchQuantizerTest::test_createChord(Note(0, 1),  Note(0, 1),  Note(0, 5),  Note(0, 8));
+}
 
 void test_PitchQuantizer() {
     RUN_TEST(test_quantizeToScale);
     RUN_TEST(test_quantizeToScaleWithOffset);
+    RUN_TEST(test_createChord);
 }
