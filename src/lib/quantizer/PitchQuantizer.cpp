@@ -19,12 +19,12 @@ Note PitchQuantizer::quantizeChromatic(float voltage) {
 
 Note PitchQuantizer::quantizeToScale(float voltage) {
     //TODO get note before first note in scale (last note of previous repeat)
-    int cycle = tuning->findCycle(voltage);
+    int cycle = tuning->findCycle(voltage, scale->getOffset());
     Note prevNote = scale->getLastNote(cycle-1);
     Note nextNote;
 
     for(int i = 0; i < tuning->size(); i++) {
-        nextNote = tuning->createNote(cycle, i);
+        nextNote = tuning->createNote(cycle, i, scale->getOffset());
         if(scale->containsNote(nextNote.note)) {
             if(nextNote.voltage > voltage) {
                 return getClosestNote(voltage, prevNote, nextNote);
@@ -53,7 +53,7 @@ Chord& PitchQuantizer::createChord(ChordDef& chordDef, Note& root) {
         int scaleIndex = scaleIndexRoot + chordDefNote;
         int repeat = (scaleIndex / scale->size()) + root.cycle;
         int note = scale->getNote(scaleIndex % scale->size());
-        chord.add(tuning->createNote(repeat, note));
+        chord.add(tuning->createNote(repeat, note, scale->getOffset()));
     }
 
     return chord;

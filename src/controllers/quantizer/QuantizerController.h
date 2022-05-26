@@ -40,7 +40,8 @@ class QuantizerController : public Controller {
         };
 
         PitchQuantizer pitchQuantizer = PitchQuantizer(tuning, scales[0]);
-
+        
+        void clock();
 };
 
 #endif

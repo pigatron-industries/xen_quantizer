@@ -17,29 +17,34 @@ void QuantizerController::init() {
 }
 
 void QuantizerController::update() {
-    if(scaleOffsetPot.update()) {
-        Serial.println(scaleOffsetPot.getIntValue());
-        pitchQuantizer.setScaleOffset(scaleOffsetPot.getIntValue());
-    }
+    // if(scaleOffsetPot.update()) {
+    //     Serial.println(scaleOffsetPot.getIntValue());
+    //     pitchQuantizer.setScaleOffset(scaleOffsetPot.getIntValue());
+    // }
 }
 
 void QuantizerController::process() {
     Hardware::hw.mcp23s17Device.receive();
 
     if(clockInput.update() && clockInput.rose()) {
-        float voltage = Hardware::hw.channel1InputPin.analogRead();
-
-        Note root = pitchQuantizer.quantizeToScale(voltage);
-        Chord& chord = pitchQuantizer.createChord(chordDefs[0], root);
-
-        // Serial.println("note");
-        // Serial.println(root.voltage);
-        // Serial.println(chord[0].voltage);
-        
-        //Hardware::hw.cvOutputPins[0]->analogWrite(root.voltage);
-        Hardware::hw.cvOutputPins[0]->analogWrite(chord[0].voltage);
-        Hardware::hw.cvOutputPins[1]->analogWrite(chord[1].voltage);
-        Hardware::hw.cvOutputPins[2]->analogWrite(chord[2].voltage);
-        Hardware::hw.cvOutputPins[3]->analogWrite(chord[3].voltage);
+        clock();
     }
+}
+
+void QuantizerController::clock() {
+    if(scaleOffsetPot.update()) {
+        Note scaleRoot = tuning.createNote(0, scaleOffsetPot.getIntValue());
+        pitchQuantizer.setScaleOffset(scaleRoot.voltage);
+    }
+
+    float voltage = Hardware::hw.channel1InputPin.analogRead();
+
+    Note root = pitchQuantizer.quantizeToScale(voltage);
+    Chord& chord = pitchQuantizer.createChord(chordDefs[0], root);
+
+    // Hardware::hw.cvOutputPins[0]->analogWrite(root.voltage);
+    Hardware::hw.cvOutputPins[0]->analogWrite(chord[0].voltage);
+    Hardware::hw.cvOutputPins[1]->analogWrite(chord[1].voltage);
+    Hardware::hw.cvOutputPins[2]->analogWrite(chord[2].voltage);
+    Hardware::hw.cvOutputPins[3]->analogWrite(chord[3].voltage);
 }

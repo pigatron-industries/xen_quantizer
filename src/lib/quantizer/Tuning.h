@@ -22,19 +22,16 @@ class Tuning {
         }
 
         int size() { return intervals.size(); }
-        Note createNote(int cycle, int note, int offset = 0);
-        // Chord createChord(Note& root, ChordDef& chordDef);
+        Note createNote(int cycle, int note, float offset = 0);
 
-        int findCycle(float voltage) {
-            return floorf(voltage * cycleIntervalRecip);
-        }
+        int findCycle(float voltage, float offset = 0);
 
     private:
         Array<Interval, TUNING_MAX_NOTES> intervals;
         float cycleInterval;
         float cycleIntervalRecip;
 
-        float getNoteVoltage(int cycle, int note, int offset = 0);
+        float getNoteVoltage(int cycle, int note, float offset = 0);
         float getCycleVoltage(int cycle) { return cycle * this->cycleInterval; }
         float getIntervalVoltage(int note) { return intervals[note].voltage; }
 };

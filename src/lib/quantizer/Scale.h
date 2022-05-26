@@ -27,7 +27,8 @@ class Scale {
             chordDefs({chordDef}),
             firstNoteIndex(0, notes.size()-1) { this->tuning = &tuning; }
 
-        void setOffset(int offset) { this->offset = offset; calcNoteOffsets(); }
+        void setOffset(float offset) { this->offset = offset; }
+        float getOffset() { return offset; }
 
         void addChordDef(std::initializer_list<int> chordDef) { chordDefs.add({chordDef}); }
 
@@ -44,12 +45,9 @@ class Scale {
 
         Array<int, TUNING_MAX_NOTES> notes;
         Array<ChordDef, MAX_CHORD_DEFS> chordDefs;
-        int offset = 0;
+        float offset = 0;
 
         CycleEnum<int> firstNoteIndex;
-
-        int getOffsetNote(int note);
-        void calcNoteOffsets();
 };
 
 

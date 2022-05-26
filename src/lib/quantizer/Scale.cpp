@@ -5,8 +5,7 @@
 bool Scale::containsNote(int note) {
     //TODO more efficient to negatively offset note paramter instead of offset each note?
     for(int i = 0; i < notes.size(); i++) {
-        int offsetNote = getOffsetNote(notes[i]);
-        if(offsetNote == note) {
+        if(notes[i] == note) {
             return true;
         }
     }
@@ -14,34 +13,13 @@ bool Scale::containsNote(int note) {
 }
 
 Note Scale::getFirstNote(int cycle) {
-    return tuning->createNote(cycle, getOffsetNote(notes[firstNoteIndex.value]));
+    return tuning->createNote(cycle, notes[0], offset);
 }
 
 Note Scale::getLastNote(int cycle) {
-    return tuning->createNote(cycle, getOffsetNote(notes[firstNoteIndex-1]));
+    return tuning->createNote(cycle, notes[notes.size()-1], offset);
 }
 
 int Scale::getNote(int index) { 
-    return getOffsetNote(notes[firstNoteIndex+index]);
-}
-
-int Scale::getOffsetNote(int note) {
-    if(offset > 0) {
-        return (note + offset) % tuning->size();
-    } else {
-        return note;
-    }
-}
-
-void Scale::calcNoteOffsets() {
-    CycleEnum<int> prevNoteIndex = CycleEnum<int>(0, notes.size()-1);
-    for(int i = 0; i < notes.size(); i++) {
-        prevNoteIndex = i-1;
-        int prevNote = getOffsetNote(notes[prevNoteIndex.value]);
-        int nextNote = getOffsetNote(notes[i]);
-        if(prevNote > nextNote) {
-            firstNoteIndex = i;
-            return;
-        }
-    }
+    return notes[index];
 }

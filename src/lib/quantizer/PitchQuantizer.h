@@ -9,7 +9,7 @@ class PitchQuantizer {
         PitchQuantizer(Tuning& tuning, Scale& scale) { this->tuning = &tuning; this->scale = &scale; }
         void setTuning(Tuning& tuning) { this->tuning = &tuning; }
         void setScale(Scale& scale) { this->scale = &scale; }
-        void setScaleOffset(int scaleOffset) { this->scale->setOffset(scaleOffset); }
+        void setScaleOffset(float scaleOffset) { this->scale->setOffset(scaleOffset); }
         
         Note quantizeChromatic(float voltage);
         Note quantizeToScale(float voltage);

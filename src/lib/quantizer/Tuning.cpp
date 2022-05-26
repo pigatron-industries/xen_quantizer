@@ -1,20 +1,14 @@
 #include "Tuning.h"
 
-Note Tuning::createNote(int cycle, int note, int offset) { 
-    float voltage = getNoteVoltage(cycle, note, offset);
-    return Note(cycle, note, voltage); 
+int Tuning::findCycle(float voltage, float offset) {
+    return floorf((voltage-offset) * cycleIntervalRecip);
 }
 
-// Chord Tuning::createChord(Note& root, ChordDef& chordDef) {
-//     Chord chord;
-//     for(int i = 0; i < chordDef.size(); i++) {
-//         Note note = createNote(root.repeat, chordDef[i], root.note);
-//         chord.add(note);
-//     }
+Note Tuning::createNote(int cycle, int note, float offset) { 
+    float voltage = getNoteVoltage(cycle, note, offset);
+    return Note(cycle, note, voltage, offset);
+}
 
-//     return chord;
-// }
-
-float Tuning::getNoteVoltage(int cycle, int note, int offset) { 
-    return getCycleVoltage(cycle) + getIntervalVoltage(note) + getIntervalVoltage(offset);
+float Tuning::getNoteVoltage(int cycle, int note, float offset) { 
+    return getCycleVoltage(cycle) + getIntervalVoltage(note) + offset;
 }

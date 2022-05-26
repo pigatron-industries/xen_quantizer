@@ -32,6 +32,32 @@ void test_createNote() {
     TuningTest::test_createNote(-1, 11, -0.08333334);
 }
 
+void TuningTest::test_findCycle(float voltage, float offset, int expectedCycle) {
+    int cycle = tuning.findCycle(voltage, offset);
+    TEST_ASSERT_EQUAL_INT(expectedCycle, cycle);
+}
+
+void test_findCycle() {
+    TuningTest::test_findCycle(0,     0, 0);
+    TuningTest::test_findCycle(0.5,   0, 0);
+    TuningTest::test_findCycle(0.99,  0, 0);
+    TuningTest::test_findCycle(1,     0, 1);
+    TuningTest::test_findCycle(2,     0, 2);
+    TuningTest::test_findCycle(-0.01, 0, -1);
+    TuningTest::test_findCycle(-1,    0, -1);
+    TuningTest::test_findCycle(-2,    0, -2);
+
+    TuningTest::test_findCycle(0,     0.1, -1);
+    TuningTest::test_findCycle(0.1,   0.1, 0);
+    TuningTest::test_findCycle(1,     0.1, 0);
+    TuningTest::test_findCycle(1.1,   0.1, 1);
+    TuningTest::test_findCycle(-0.1,  0.1, -1);
+    TuningTest::test_findCycle(-0.9,  0.1, -1);
+    TuningTest::test_findCycle(-0.91, 0.1, -2);
+    TuningTest::test_findCycle(-1,    0.1, -2);
+}
+
 void test_Tuning() {
     RUN_TEST(test_createNote);
+    RUN_TEST(test_findCycle);
 }

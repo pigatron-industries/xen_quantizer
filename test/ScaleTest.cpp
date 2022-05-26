@@ -16,18 +16,7 @@ void ScaleTest::test_firstLastNote(int offset, int cycle, int expectedFirstNote,
 }
 
 void test_firstLastNote() {
-    ScaleTest::test_firstLastNote(0, 0, 0, 11); //Ionian
-    ScaleTest::test_firstLastNote(1, 0, 0, 10); //Locrian
-    ScaleTest::test_firstLastNote(2, 0, 1, 11);  
-    ScaleTest::test_firstLastNote(3, 0, 0, 10); //Aeolian
-    ScaleTest::test_firstLastNote(4, 0, 1, 11); 
-    ScaleTest::test_firstLastNote(5, 0, 0, 10); //Mixolydian
-    ScaleTest::test_firstLastNote(6, 0, 1, 11);
-    ScaleTest::test_firstLastNote(7, 0, 0, 11); //Lydian
-    ScaleTest::test_firstLastNote(8, 0, 0, 10); //Phrygian
-    ScaleTest::test_firstLastNote(9, 0, 1, 11); 
-    ScaleTest::test_firstLastNote(10, 0, 0, 10); //Dorian
-    ScaleTest::test_firstLastNote(11, 0, 1, 11); 
+    ScaleTest::test_firstLastNote(0, 0, 0, 11);
 }
 
 void ScaleTest::test_containsNote(int offset, int note, bool expectedContains) {
@@ -49,32 +38,6 @@ void test_containsNote() {
     ScaleTest::test_containsNote(0, 9, true);
     ScaleTest::test_containsNote(0, 10, false);
     ScaleTest::test_containsNote(0, 11, true);
-
-    ScaleTest::test_containsNote(1, 0, true);
-    ScaleTest::test_containsNote(1, 1, true);
-    ScaleTest::test_containsNote(1, 2, false);
-    ScaleTest::test_containsNote(1, 3, true);
-    ScaleTest::test_containsNote(1, 4, false);
-    ScaleTest::test_containsNote(1, 5, true);
-    ScaleTest::test_containsNote(1, 6, true);
-    ScaleTest::test_containsNote(1, 7, false);
-    ScaleTest::test_containsNote(1, 8, true);
-    ScaleTest::test_containsNote(1, 9, false);
-    ScaleTest::test_containsNote(1, 10, true);
-    ScaleTest::test_containsNote(1, 11, false);
-
-    ScaleTest::test_containsNote(2, 0, false);
-    ScaleTest::test_containsNote(2, 1, true);
-    ScaleTest::test_containsNote(2, 2, true);
-    ScaleTest::test_containsNote(2, 3, false);
-    ScaleTest::test_containsNote(2, 4, true);
-    ScaleTest::test_containsNote(2, 5, false);
-    ScaleTest::test_containsNote(2, 6, true);
-    ScaleTest::test_containsNote(2, 7, true);
-    ScaleTest::test_containsNote(2, 8, false);
-    ScaleTest::test_containsNote(2, 9, true);
-    ScaleTest::test_containsNote(2, 10, false);
-    ScaleTest::test_containsNote(2, 11, true);
 }
 
 void ScaleTest::test_getNoteByIndex(int index, int expectedNote) {
@@ -91,15 +54,6 @@ void test_getNoteByIndex() {
     ScaleTest::test_getNoteByIndex(4, 7);
     ScaleTest::test_getNoteByIndex(5, 9);
     ScaleTest::test_getNoteByIndex(6, 11);
-
-    ScaleTest::scale.setOffset(1);
-    ScaleTest::test_getNoteByIndex(0, 0);
-    ScaleTest::test_getNoteByIndex(1, 1);
-    ScaleTest::test_getNoteByIndex(2, 3);
-    ScaleTest::test_getNoteByIndex(3, 5);
-    ScaleTest::test_getNoteByIndex(4, 6);
-    ScaleTest::test_getNoteByIndex(5, 8);
-    ScaleTest::test_getNoteByIndex(6, 10);
 }
 
 void test_Scale() {
