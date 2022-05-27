@@ -2,8 +2,8 @@ import matplotlib.pyplot as plt
 import matplotlib.lines as lines
 import math
 from numpy import array, linspace
-import sethares as sethares
-import tuning as tuning
+import lib.sethares as sethares
+import lib.tuning as tuning
 
 
 class TuningPlot():
@@ -22,10 +22,10 @@ class TuningPlot():
                 interval = tuning.getInterval(i)
                 intervalName = tuning.getIntervalName(i)
                 if (self.direction == 'v'):
-                    self.ax.add_line(lines.Line2D([self.pos,self.pos+1], [interval, interval], lw=2))
+                    self.ax.add_line(lines.Line2D([self.pos,self.pos+1], [interval, interval], lw=2, color="#a75d9b"))
                     self.ax.annotate(intervalName, xy=(self.pos, interval), xycoords='data', xytext=(3, 3), textcoords='offset points')
                 else:
-                    self.ax.add_line(lines.Line2D([interval, interval], [self.pos,self.pos+1], lw=2))
+                    self.ax.add_line(lines.Line2D([interval, interval], [self.pos,self.pos+1], lw=2, color="#a75d9b"))
                     self.ax.annotate(intervalName, xy=(interval, self.pos+0.5), xycoords='data', xytext=(3, 3), textcoords='offset points')
         if (label is None):
             self.addCol(tuning.name)
