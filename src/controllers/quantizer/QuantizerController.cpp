@@ -8,8 +8,8 @@ void QuantizerController::init(float sampleRate) {
 void QuantizerController::init() {
     Serial.println("Quantizer");
 
-    pitchQuantizer.setScale(scales[0]);
-    pitchQuantizer.setScaleOffset(0);
+    scaleQuantizer.setScale(scales[0]);
+    scaleQuantizer.setScaleOffset(0);
 
     for(Scale& scale : scales) {
         scaleRepository.addScale(scale);
@@ -34,13 +34,13 @@ void QuantizerController::process() {
 void QuantizerController::clock() {
     if(scaleOffsetPot.update()) {
         Note scaleRoot = tuning.createNote(0, scaleOffsetPot.getIntValue());
-        pitchQuantizer.setScaleOffset(scaleRoot.voltage);
+        scaleQuantizer.setScaleOffset(scaleRoot.voltage);
     }
 
     float voltage = Hardware::hw.channel1InputPin.analogRead();
 
-    Note root = pitchQuantizer.quantizeToScale(voltage);
-    Chord& chord = pitchQuantizer.createChord(chordDefs[0], root);
+    Note root = scaleQuantizer.quantizeToScale(voltage);
+    Chord& chord = scaleQuantizer.createChord(chordDefs[0], root);
 
     // Hardware::hw.cvOutputPins[0]->analogWrite(root.voltage);
     Hardware::hw.cvOutputPins[0]->analogWrite(chord[0].voltage);

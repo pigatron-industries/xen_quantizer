@@ -2,7 +2,7 @@
 #define QuantizerController_h
 
 #include "Controller.h"
-#include "lib/quantizer/PitchQuantizer.h"
+#include "lib/quantizer/ScaleQuantizer.h"
 #include "lib/quantizer/ScaleRepository.h"
 
 
@@ -39,7 +39,7 @@ class QuantizerController : public Controller {
             Scale(tuning, {0, 2, 4, 5, 7, 9, 11}, chordDefs[0])
         };
 
-        PitchQuantizer pitchQuantizer = PitchQuantizer(tuning, scales[0]);
+        ScaleQuantizer scaleQuantizer = ScaleQuantizer(tuning, scales[0]);
         
         void clock();
 };

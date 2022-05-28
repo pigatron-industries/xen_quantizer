@@ -1,18 +1,19 @@
-#ifndef PitchQuantizer_h
-#define PitchQuantizer_h
+#ifndef ScaleQuantizer_h
+#define ScaleQuantizer_h
 
 #include "Scale.h"
 
-class PitchQuantizer {
+class ScaleQuantizer {
     public:
-        PitchQuantizer(Tuning& tuning) { this->tuning = &tuning; }
-        PitchQuantizer(Tuning& tuning, Scale& scale) { this->tuning = &tuning; this->scale = &scale; }
+        ScaleQuantizer(Tuning& tuning) { this->tuning = &tuning; }
+        ScaleQuantizer(Tuning& tuning, Scale& scale) { this->tuning = &tuning; this->scale = &scale; }
         void setTuning(Tuning& tuning) { this->tuning = &tuning; }
         void setScale(Scale& scale) { this->scale = &scale; }
         void setScaleOffset(float scaleOffset) { this->scale->setOffset(scaleOffset); }
         
         Note quantizeChromatic(float voltage);
         Note quantizeToScale(float voltage);
+        Note quantizeToChord(float voltage);
         
         Chord& createChord(ChordDef& chordDef, Note& rootNote);
 
