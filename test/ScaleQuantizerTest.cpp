@@ -104,7 +104,65 @@ void test_createChord() {
     ScaleQuantizerTest::test_createChord(Note(-1, 11), Note(-1, 11), Note(0, 2),  Note(0, 5)); // B Diminished
 }
 
+void ScaleQuantizerTest::test_quantizeToChord(float voltage, Note expectedNote) {
+    Note note = scaleQuantizer.quantizeToChord(voltage);
+    TEST_ASSERT_EQUAL_INT(expectedNote.cycle, note.cycle);
+    TEST_ASSERT_EQUAL_INT(expectedNote.note, note.note);
+}
+
+void test_quantizeToChord() {
+    ScaleQuantizerTest::scaleQuantizer.setScaleOffset(0);
+
+    //C Major
+    Note root = Note(0, 0);
+    ScaleQuantizerTest::scaleQuantizer.createChord(ScaleQuantizerTest::chordDef, root);
+
+    ScaleQuantizerTest::test_quantizeToChord(0,    Note(0, 0));
+    ScaleQuantizerTest::test_quantizeToChord(0.33, Note(0, 4));
+    ScaleQuantizerTest::test_quantizeToChord(0.58, Note(0, 7));
+    ScaleQuantizerTest::test_quantizeToChord(0.91, Note(0, 11));
+
+    ScaleQuantizerTest::test_quantizeToChord(1,    Note(1, 0));
+    ScaleQuantizerTest::test_quantizeToChord(1.33, Note(1, 4));
+    ScaleQuantizerTest::test_quantizeToChord(1.58, Note(1, 7));
+    ScaleQuantizerTest::test_quantizeToChord(1.91, Note(1, 11));
+
+    ScaleQuantizerTest::test_quantizeToChord(-1,    Note(-1, 0));
+    ScaleQuantizerTest::test_quantizeToChord(-0.67, Note(-1, 4));
+    ScaleQuantizerTest::test_quantizeToChord(-0.42, Note(-1, 7));
+    ScaleQuantizerTest::test_quantizeToChord(-0.09, Note(-1, 11));
+
+    // D Minor
+    root = Note(0, 2);
+    ScaleQuantizerTest::scaleQuantizer.createChord(ScaleQuantizerTest::chordDef, root);
+
+    ScaleQuantizerTest::test_quantizeToChord(0,    Note(0, 0));
+    ScaleQuantizerTest::test_quantizeToChord(0.16, Note(0, 2));
+    ScaleQuantizerTest::test_quantizeToChord(0.41, Note(0, 5));
+    ScaleQuantizerTest::test_quantizeToChord(0.75, Note(0, 9));
+
+    ScaleQuantizerTest::test_quantizeToChord(1,    Note(1, 0));
+    ScaleQuantizerTest::test_quantizeToChord(1.16, Note(1, 2));
+    ScaleQuantizerTest::test_quantizeToChord(1.41, Note(1, 5));
+    ScaleQuantizerTest::test_quantizeToChord(1.75, Note(1, 9));
+
+    // E Minor
+    root = Note(0, 4);
+    ScaleQuantizerTest::scaleQuantizer.createChord(ScaleQuantizerTest::chordDef, root);
+
+    ScaleQuantizerTest::test_quantizeToChord(0.16, Note(0, 2));
+    ScaleQuantizerTest::test_quantizeToChord(0.33, Note(0, 4));
+    ScaleQuantizerTest::test_quantizeToChord(0.58, Note(0, 7));
+    ScaleQuantizerTest::test_quantizeToChord(0.91, Note(0, 11));
+
+    ScaleQuantizerTest::test_quantizeToChord(1.16, Note(1, 2));
+    ScaleQuantizerTest::test_quantizeToChord(1.33, Note(1, 4));
+    ScaleQuantizerTest::test_quantizeToChord(1.58, Note(1, 7));
+    ScaleQuantizerTest::test_quantizeToChord(1.91, Note(1, 11));
+}
+
 void test_ScaleQuantizer() {
     RUN_TEST(test_quantizeToScale);
     RUN_TEST(test_createChord);
+    RUN_TEST(test_quantizeToChord);
 }

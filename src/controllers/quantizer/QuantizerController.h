@@ -24,7 +24,12 @@ class QuantizerController : public Controller {
         LinearInput<AnalogInputPinT> channel3Pot = LinearInput<AnalogInputPinT>(Hardware::hw.channel3PotPin, -5, 5, -5, 5);
         LinearInput<AnalogInputPinT> channel4Pot = LinearInput<AnalogInputPinT>(Hardware::hw.channel4PotPin, -5, 5, -5, 5);
 
-        GateInput<MCP23S17Device> clockInput = GateInput<MCP23S17Device>(*Hardware::hw.clockInputPins[0], false);
+        GateInput<MCP23S17Device> clockInputs[4] = {
+            GateInput<MCP23S17Device>(*Hardware::hw.clockInputPins[0], false),
+            GateInput<MCP23S17Device>(*Hardware::hw.clockInputPins[1], false),
+            GateInput<MCP23S17Device>(*Hardware::hw.clockInputPins[2], false),
+            GateInput<MCP23S17Device>(*Hardware::hw.clockInputPins[3], false),
+        };
 
         int scaleMode = 0;
 
@@ -41,7 +46,8 @@ class QuantizerController : public Controller {
 
         ScaleQuantizer scaleQuantizer = ScaleQuantizer(tuning, scales[0]);
         
-        void clock();
+        void chordClock();
+        void noteClock();
 };
 
 #endif

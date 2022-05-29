@@ -26,25 +26,34 @@ void QuantizerController::update() {
 void QuantizerController::process() {
     Hardware::hw.mcp23s17Device.receive();
 
-    if(clockInput.update() && clockInput.rose()) {
-        clock();
+    if(clockInputs[0].update() && clockInputs[0].rose()) {
+        chordClock();
+    }
+
+    if(clockInputs[1].update() && clockInputs[1].rose()) {
+        noteClock();
     }
 }
 
-void QuantizerController::clock() {
+void QuantizerController::chordClock() {
     if(scaleOffsetPot.update()) {
         Note scaleRoot = tuning.createNote(0, scaleOffsetPot.getIntValue());
         scaleQuantizer.setScaleOffset(scaleRoot.voltage);
     }
 
-    float voltage = Hardware::hw.channel1InputPin.analogRead();
+    float chordVoltage = Hardware::hw.channel1InputPin.analogRead();
 
-    Note root = scaleQuantizer.quantizeToScale(voltage);
+    Note root = scaleQuantizer.quantizeToScale(chordVoltage);
     Chord& chord = scaleQuantizer.createChord(chordDefs[0], root);
 
-    // Hardware::hw.cvOutputPins[0]->analogWrite(root.voltage);
     Hardware::hw.cvOutputPins[0]->analogWrite(chord[0].voltage);
     Hardware::hw.cvOutputPins[1]->analogWrite(chord[1].voltage);
     Hardware::hw.cvOutputPins[2]->analogWrite(chord[2].voltage);
-    Hardware::hw.cvOutputPins[3]->analogWrite(chord[3].voltage);
+    // Hardware::hw.cvOutputPins[3]->analogWrite(chord[3].voltage);
+}
+
+void QuantizerController::noteClock() {
+    float noteVoltage = Hardware::hw.channel2InputPin.analogRead();
+    Note note =  scaleQuantizer.quantizeToChord(noteVoltage);
+    Hardware::hw.cvOutputPins[3]->analogWrite(note.voltage);
 }

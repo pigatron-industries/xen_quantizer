@@ -12,6 +12,7 @@ class ScaleQuantizerTest {
 
         static void test_quantizeToScale(float input, int expectedRepeat, int expectedNote, float expectedOutput);
         static void test_createChord(Note rootNote, Note expectedNote1, Note expectedNote2, Note expectedNote3);
+        static void test_quantizeToChord(float voltage, Note expectedNote);
 };
 
 void test_ScaleQuantizer();

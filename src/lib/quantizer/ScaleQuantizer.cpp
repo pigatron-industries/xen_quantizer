@@ -38,6 +38,31 @@ Note ScaleQuantizer::quantizeToScale(float voltage) {
 
 Note ScaleQuantizer::quantizeToChord(float voltage) {
     int cycle = tuning->findCycle(voltage, scale->getOffset());
+
+    int chordCycleStart = 0;
+    int prevChordCycle = chord[0].cycle;
+    for(int i = 1; i < chord.size(); i++) {
+        if(prevChordCycle != chord[i].cycle) {
+            chordCycleStart = i;
+            break;
+        }
+        int prevChordCycle = chord[i].cycle;
+    }
+    int chordCycleEnd = chordCycleStart == 0 ? chord.size()-1 : chordCycleStart-1;
+
+    Note prevNote = tuning->createNote(cycle-1, chord[chordCycleEnd].note);
+    Note nextNote;
+
+    for(int i = 0; i < chord.size(); i++) {
+        nextNote = tuning->createNote(cycle, chord[(chordCycleStart+i)%chord.size()].note);
+        if(nextNote.voltage > voltage) {
+            return getClosestNote(voltage, prevNote, nextNote);
+        }
+        prevNote = nextNote;
+    }
+    
+    nextNote = tuning->createNote(cycle+1, chord[chordCycleStart].note);
+    return getClosestNote(voltage, prevNote, nextNote);
 }
 
 Note& ScaleQuantizer::getClosestNote(float voltage, Note& prevNote, Note& nextNote) {
