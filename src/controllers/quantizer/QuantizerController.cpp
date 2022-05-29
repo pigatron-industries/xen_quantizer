@@ -14,6 +14,8 @@ void QuantizerController::init() {
     for(Scale& scale : scales) {
         scaleRepository.addScale(scale);
     }
+
+    chordClock();
 }
 
 void QuantizerController::update() {
@@ -54,6 +56,6 @@ void QuantizerController::chordClock() {
 
 void QuantizerController::noteClock() {
     float noteVoltage = Hardware::hw.channel2InputPin.analogRead();
-    Note note =  scaleQuantizer.quantizeToChord(noteVoltage);
+    Note note = scaleQuantizer.quantizeToChord(noteVoltage);
     Hardware::hw.cvOutputPins[3]->analogWrite(note.voltage);
 }
