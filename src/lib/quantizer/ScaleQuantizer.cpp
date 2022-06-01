@@ -46,23 +46,28 @@ Note ScaleQuantizer::quantizeToChord(float voltage) {
             chordCycleStart = i;
             break;
         }
-        int prevChordCycle = chord[i].cycle;
+        prevChordCycle = chord[i].cycle;
     }
     int chordCycleEnd = chordCycleStart == 0 ? chord.size()-1 : chordCycleStart-1;
 
-    Note prevNote = tuning->createNote(cycle-1, chord[chordCycleEnd].note);
+    Note prevNote = tuning->createNote(cycle-1, chord[chordCycleEnd].note, scale->getOffset());
     Note nextNote;
 
     for(int i = 0; i < chord.size(); i++) {
-        nextNote = tuning->createNote(cycle, chord[(chordCycleStart+i)%chord.size()].note);
+        nextNote = tuning->createNote(cycle, chord[(chordCycleStart+i)%chord.size()].note, scale->getOffset());
         if(nextNote.voltage > voltage) {
             return getClosestNote(voltage, prevNote, nextNote);
         }
         prevNote = nextNote;
     }
     
-    nextNote = tuning->createNote(cycle+1, chord[chordCycleStart].note);
+    nextNote = tuning->createNote(cycle+1, chord[chordCycleStart].note, scale->getOffset());
     return getClosestNote(voltage, prevNote, nextNote);
+}
+
+Note ScaleQuantizer::quantizeHarmonic(Note rootNote, float voltage, int dissonance) {
+    //TODO
+    return Note();
 }
 
 Note& ScaleQuantizer::getClosestNote(float voltage, Note& prevNote, Note& nextNote) {

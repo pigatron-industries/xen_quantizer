@@ -16,7 +16,9 @@ class Interval {
     public:
         Interval() {}
         Interval(float voltage) { this->voltage = voltage; }
+        Interval(float voltage, int dissonance) { this->voltage = voltage; this->dissonance = dissonance; }
         float voltage = 0;
+        int dissonance = 0;
 };
 
 #endif

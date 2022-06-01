@@ -33,7 +33,23 @@ class QuantizerController : public Controller {
 
         int scaleMode = 0;
 
-        Tuning tuning = Tuning(12);
+        // Tuning tuning = Tuning(12);
+
+        Tuning tuning = Tuning({
+            Interval(0, 0), 
+            Interval(100/1200.0),
+            Interval(200/1200.0),
+            Interval(300/1200.0),
+            Interval(400/1200.0),
+            Interval(500/1200.0),
+            Interval(600/1200.0),
+            Interval(700/1200.0),
+            Interval(800/1200.0),
+            Interval(900/1200.0),
+            Interval(1000/1200.0),
+            Interval(1100/1200.0)}, 
+            1.0);
+
         ScaleRepository scaleRepository = ScaleRepository();
 
         ChordDef chordDefs[1] = {

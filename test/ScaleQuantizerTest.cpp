@@ -102,6 +102,9 @@ void test_createChord() {
     ScaleQuantizerTest::test_createChord(Note(-1, 7),  Note(-1, 7),  Note(-1, 11), Note(0, 2)); // G Major
     ScaleQuantizerTest::test_createChord(Note(-1, 9),  Note(-1, 9),  Note(0, 0),  Note(0, 4)); // A Minor
     ScaleQuantizerTest::test_createChord(Note(-1, 11), Note(-1, 11), Note(0, 2),  Note(0, 5)); // B Diminished
+
+    ScaleQuantizerTest::scale.setOffset(0.5);
+    ScaleQuantizerTest::test_createChord(Note(0, 0),  Note(0, 0),  Note(0, 4),  Note(0, 7)); // C Major
 }
 
 void ScaleQuantizerTest::test_quantizeToChord(float voltage, Note expectedNote) {

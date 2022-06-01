@@ -14,6 +14,7 @@ class ScaleQuantizer {
         Note quantizeChromatic(float voltage);
         Note quantizeToScale(float voltage);
         Note quantizeToChord(float voltage);
+        Note quantizeHarmonic(Note rootNote, float voltage, int dissonance);
         
         Chord& createChord(ChordDef& chordDef, Note& rootNote);
 

@@ -12,13 +12,17 @@ class Tuning {
     public:
 
         Tuning() {}
+        Tuning(std::initializer_list<Interval> notes, float cycleInterval) : 
+            intervals(notes) { 
+            setCycleInterval(cycleInterval); 
+        }
+
         Tuning(int notes) {
             float interval = 1.0 / notes;
             for(int i = 0; i < notes; i++) {
                 intervals.add(Interval(interval*i));
             }
-            cycleInterval = 1.0;
-            cycleIntervalRecip = 1.0/cycleInterval;
+            setCycleInterval(1);
         }
 
         int size() { return intervals.size(); }
@@ -31,6 +35,7 @@ class Tuning {
         float cycleInterval;
         float cycleIntervalRecip;
 
+        void setCycleInterval(float cycleInterval) { this->cycleInterval = cycleInterval; cycleIntervalRecip = 1.0/cycleInterval; }
         float getNoteVoltage(int cycle, int note, float offset = 0);
         float getCycleVoltage(int cycle) { return cycle * this->cycleInterval; }
         float getIntervalVoltage(int note) { return intervals[note].voltage; }
