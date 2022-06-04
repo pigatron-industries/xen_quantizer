@@ -9,20 +9,15 @@ void QuantizerController::init() {
     Serial.println("Quantizer");
 
     scaleQuantizer.setScale(scales[0]);
-    scaleQuantizer.setScaleOffset(0);
-
-    for(Scale& scale : scales) {
-        scaleRepository.addScale(scale);
-    }
+    scaleQuantizer.getScale()->setOffset(0);
 
     chordClock();
 }
 
 void QuantizerController::update() {
-    // if(scaleOffsetPot.update()) {
-    //     Serial.println(scaleOffsetPot.getIntValue());
-    //     pitchQuantizer.setScaleOffset(scaleOffsetPot.getIntValue());
-    // }
+    if(linearScaleOffsetPot.update()) {
+        scaleQuantizer.getScale()->setOffset(linearScaleOffsetPot.getValue());
+    }
 }
 
 void QuantizerController::process() {
@@ -38,15 +33,15 @@ void QuantizerController::process() {
 }
 
 void QuantizerController::chordClock() {
-    if(scaleOffsetPot.update()) {
-        Note scaleRoot = tuning.createNote(0, scaleOffsetPot.getIntValue());
-        scaleQuantizer.setScaleOffset(scaleRoot.voltage);
-    }
+    // if(quantizedScaleOffsetPot.update()) {
+    //     Note scaleRoot = tuning.createNote(0, quantizedScaleOffsetPot.getIntValue());
+    //     scaleQuantizer.setScaleOffset(scaleRoot.voltage);
+    // }
 
     float chordVoltage = Hardware::hw.channel1InputPin.analogRead();
 
-    Note root = scaleQuantizer.quantizeToScale(chordVoltage);
-    Chord& chord = scaleQuantizer.createChord(chordDefs[0], root);
+    Note root = scaleQuantizer.quantize(chordVoltage);
+    chord = ScaleFactory::createChord(*scaleQuantizer.getScale(), chordDefs[0], root);
 
     Hardware::hw.cvOutputPins[0]->analogWrite(chord[0].voltage);
     Hardware::hw.cvOutputPins[1]->analogWrite(chord[1].voltage);
@@ -56,6 +51,6 @@ void QuantizerController::chordClock() {
 
 void QuantizerController::noteClock() {
     float noteVoltage = Hardware::hw.channel2InputPin.analogRead();
-    Note note = scaleQuantizer.quantizeToChord(noteVoltage);
+    Note note = chordQuantizer.quantize(noteVoltage);
     Hardware::hw.cvOutputPins[3]->analogWrite(note.voltage);
 }

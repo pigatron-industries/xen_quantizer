@@ -26,7 +26,11 @@ class Tuning {
         }
 
         int size() { return intervals.size(); }
+        Interval& getInterval(int i) { return intervals[i]; }
+
         Note createNote(int cycle, int note, float offset = 0);
+        Note getFirstNote(int cycle, float offset = 0);
+        Note getLastNote(int cycle, float offset = 0);
 
         int findCycle(float voltage, float offset = 0);
 

@@ -2,17 +2,23 @@
 
 #include "TuningTest.h"
 #include "ScaleTest.h"
-#include "ScaleQuantizerTest.h"
+#include "QuantizerChromaticTest.h"
+#include "QuantizerScaleTest.h"
+#include "ScaleFactoryTest.h"
 
-#include "../src/lib/quantizer/ScaleQuantizer.cpp"
 #include "../src/lib/quantizer/Scale.cpp"
 #include "../src/lib/quantizer/Tuning.cpp"
+#include "../src/lib/quantizer/QuantizerChromatic.cpp"
+#include "../src/lib/quantizer/QuantizerScale.cpp"
+#include "../src/lib/quantizer/ScaleFactory.cpp"
 
 
 int main() {
     UNITY_BEGIN();
     test_Tuning();
     test_Scale();
-    test_ScaleQuantizer();
+    test_ScaleFactory();
+    test_QuantizerChromatic();
+    test_QuantizerScale();
     return UNITY_END();
 }

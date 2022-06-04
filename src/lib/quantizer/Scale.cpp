@@ -23,3 +23,12 @@ Note Scale::getLastNote(int cycle) {
 int Scale::getNote(int index) { 
     return notes[index];
 }
+
+int Scale::getIndex(Note& note) {
+    for(int i = 0; i < notes.size(); i++) {
+        if(notes[i] == note.note) {
+            return i;
+        }
+    }
+    return -1;
+}

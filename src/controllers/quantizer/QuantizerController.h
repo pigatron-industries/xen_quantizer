@@ -2,8 +2,10 @@
 #define QuantizerController_h
 
 #include "Controller.h"
-#include "lib/quantizer/ScaleQuantizer.h"
+#include "lib/quantizer/ScaleFactory.h"
 #include "lib/quantizer/ScaleRepository.h"
+#include "lib/quantizer/QuantizerScale.h"
+#include "lib/quantizer/QuantizerChord.h"
 
 
 using namespace eurorack;
@@ -19,7 +21,8 @@ class QuantizerController : public Controller {
 
     private:
 
-        IntegerInput<AnalogInputPinT> scaleOffsetPot = IntegerInput<AnalogInputPinT>(Hardware::hw.channel1PotPin, -5, 5, 0, 11);
+        IntegerInput<AnalogInputPinT> quantizedScaleOffsetPot = IntegerInput<AnalogInputPinT>(Hardware::hw.channel1PotPin, -5, 5, 0, 11);
+        LinearInput<AnalogInputPinT> linearScaleOffsetPot = LinearInput<AnalogInputPinT>(Hardware::hw.channel1PotPin, -5, 5, 0, 1);
         LinearInput<AnalogInputPinT> channel2Pot = LinearInput<AnalogInputPinT>(Hardware::hw.channel2PotPin, -5, 5, -5, 5);
         LinearInput<AnalogInputPinT> channel3Pot = LinearInput<AnalogInputPinT>(Hardware::hw.channel3PotPin, -5, 5, -5, 5);
         LinearInput<AnalogInputPinT> channel4Pot = LinearInput<AnalogInputPinT>(Hardware::hw.channel4PotPin, -5, 5, -5, 5);
@@ -37,30 +40,43 @@ class QuantizerController : public Controller {
 
         Tuning tuning = Tuning({
             Interval(0, 0), 
-            Interval(100/1200.0),
-            Interval(200/1200.0),
-            Interval(300/1200.0),
-            Interval(400/1200.0),
-            Interval(500/1200.0),
-            Interval(600/1200.0),
-            Interval(700/1200.0),
-            Interval(800/1200.0),
-            Interval(900/1200.0),
-            Interval(1000/1200.0),
-            Interval(1100/1200.0)}, 
+            Interval(1/12.0, 7),
+            Interval(2/12.0, 6),
+            Interval(3/12.0, 5),
+            Interval(4/12.0, 3),
+            Interval(5/12.0, 2),
+            Interval(6/12.0, 5),
+            Interval(7/12.0, 1),
+            Interval(8/12.0, 5),
+            Interval(9/12.0, 4),
+            Interval(10/12.0, 5),
+            Interval(11/12.0, 7)}, 
             1.0);
-
-        ScaleRepository scaleRepository = ScaleRepository();
 
         ChordDef chordDefs[1] = {
             ChordDef({0, 2, 4, 6})
         };
 
-        Scale scales[1] = {
-            Scale(tuning, {0, 2, 4, 5, 7, 9, 11}, chordDefs[0])
+        Scale harmonicScales[8] = {
+            ScaleFactory::createHarmonicScale(tuning, 0),
+            ScaleFactory::createHarmonicScale(tuning, 1),
+            ScaleFactory::createHarmonicScale(tuning, 2),
+            ScaleFactory::createHarmonicScale(tuning, 3),
+            ScaleFactory::createHarmonicScale(tuning, 4),
+            ScaleFactory::createHarmonicScale(tuning, 5),
+            ScaleFactory::createHarmonicScale(tuning, 6),
+            ScaleFactory::createHarmonicScale(tuning, 7)
         };
 
-        ScaleQuantizer scaleQuantizer = ScaleQuantizer(tuning, scales[0]);
+        Scale scales[2] = {
+            Scale(tuning, {0, 2, 4, 5, 7, 9, 11}, chordDefs[0]), // Major
+            Scale(tuning, {0, 1, 4, 5, 7, 8, 11}, chordDefs[0])  // Double harmonic
+        };
+
+        Chord chord;
+
+        QuantizerScale scaleQuantizer = QuantizerScale(scales[0]);
+        QuantizerChord chordQuantizer = QuantizerChord(scales[0], chord);
         
         void chordClock();
         void noteClock();
