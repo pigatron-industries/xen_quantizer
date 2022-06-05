@@ -11,6 +11,18 @@ Scale ScaleFactory::createHarmonicScale(Tuning& tuning, int dissonance) {
     return scale;
 }
 
+Scale ScaleFactory::createHarmonicScale(Scale& scale, int dissonance) {
+    Scale subScale = Scale(*scale.getTuning());
+    for(int i = 0; i < scale.size(); i++) {
+        int note = scale.getNote(i);
+        int intervalDissonance = scale.getTuning()->getInterval(note).dissonance;
+        if(intervalDissonance <= dissonance) {
+            subScale.addNote(note);
+        }
+    }
+    return subScale;
+}
+
 Chord ScaleFactory::createChord(Scale& scale, ChordDef& chordDef, Note& rootNote) {
     Chord chord;
     int scaleIndexRoot = scale.getIndex(rootNote);

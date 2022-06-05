@@ -1,14 +1,14 @@
-#ifndef QuantizerChromatic_h
-#define QuantizerChromatic_h
+#ifndef QuantizerDifferential_h
+#define QuantizerDifferential_h
 
 #include "model/Tuning.h"
 
-class QuantizerChromatic {
+class QuantizerDifferential {
     public:
-        QuantizerChromatic(Tuning& tuning) { this->tuning = &tuning; }
+        QuantizerDifferential(Tuning& tuning) { this->tuning = &tuning; }
         void setTuning(Tuning& tuning) { this->tuning = &tuning; }
         
-        Note quantize(float voltage);
+        float quantize(float root, float voltage, int interval);
 
     protected:
         Tuning* tuning;

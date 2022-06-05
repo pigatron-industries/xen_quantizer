@@ -2,7 +2,7 @@
 #define QuantizerChord_h
 
 #include "QuantizerScale.h"
-#include "Scale.h"
+#include "model/Scale.h"
 
 class QuantizerChord : public QuantizerScale {
     public:
@@ -12,7 +12,6 @@ class QuantizerChord : public QuantizerScale {
         Note quantize(float voltage);
 
     private:
-        Scale* scale;
         Chord* chord;
 };
 

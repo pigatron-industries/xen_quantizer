@@ -2,7 +2,7 @@
 #define QuantizerScale_h
 
 #include "QuantizerChromatic.h"
-#include "Scale.h"
+#include "model/Scale.h"
 
 class QuantizerScale : public QuantizerChromatic {
     public:
@@ -12,7 +12,7 @@ class QuantizerScale : public QuantizerChromatic {
         
         Note quantize(float voltage);
 
-    private:
+    protected:
         Scale* scale;
 };
 

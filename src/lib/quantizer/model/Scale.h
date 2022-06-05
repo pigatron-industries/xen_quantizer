@@ -13,15 +13,16 @@ typedef Array<Note, CHORD_MAX_NOTES> Chord;
 
 class Scale {
     public:
-        Scale(Tuning& tuning) { this->tuning = &tuning; }
-        Scale(Tuning& tuning, std::initializer_list<int> notes) : 
-            notes(notes) { this->tuning = &tuning; }
-        Scale(Tuning& tuning, std::initializer_list<int> notes, std::initializer_list<int> chordDef) : 
+        Scale() {}
+        Scale(Tuning& tuning, const char* name = "") { this->tuning = &tuning; this->name = name; }
+        Scale(Tuning& tuning, std::initializer_list<int> notes, const char* name = "") : 
+            notes(notes) { this->tuning = &tuning; this->name = name; }
+        Scale(Tuning& tuning, std::initializer_list<int> notes, std::initializer_list<int> chordDef, const char* name = "") : 
             notes(notes),
-            chordDefs({chordDef}) { this->tuning = &tuning; }
-        Scale(Tuning& tuning, std::initializer_list<int> notes, ChordDef& chordDef) : 
+            chordDefs({chordDef}) { this->tuning = &tuning; this->name = name; }
+        Scale(Tuning& tuning, std::initializer_list<int> notes, ChordDef& chordDef, const char* name = "") : 
             notes(notes),
-            chordDefs({chordDef}) { this->tuning = &tuning; }
+            chordDefs({chordDef}) { this->tuning = &tuning; this->name = name; }
 
         void setOffset(float offset) { this->offset = offset; }
         float getOffset() { return offset; }
@@ -40,6 +41,7 @@ class Scale {
         bool containsNote(int note);
 
     protected:
+        const char* name;
         Tuning* tuning;
 
         Array<int, TUNING_MAX_NOTES> notes;

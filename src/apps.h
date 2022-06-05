@@ -1,6 +1,8 @@
-#include "controllers/quantizer/QuantizerController.h"
+#include "controllers/quantizer/ScaleChordController.h"
+#include "controllers/quantizer/HarmonicWalkController.h"
 #include "controllers/tuning/TuningController.h"
 
 #define CONTROLLERS \
-QuantizerController, \
+ScaleChordController, \
+HarmonicWalkController, \
 TuningController
