@@ -37,12 +37,14 @@ class ScaleChordController : public Controller {
 
         TuningData* tuningData = &Tuning12EDO::data;
         Scale* scale = &tuningData->scales[0];
-        ChordDef* chordDef = &tuningData->chordDefs[0];
+        ChordDef* chordDef = &scale->getChordDefs()[0];
 
         Chord chord;
 
         QuantizerScale scaleQuantizer = QuantizerScale(*scale);
         QuantizerChord chordQuantizer = QuantizerChord(*scale, chord);
+
+        float transpose;
         
         void chordClock();
         void noteClock();

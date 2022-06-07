@@ -26,8 +26,8 @@ Scale ScaleFactory::createHarmonicScale(Scale& scale, int dissonance) {
 Chord ScaleFactory::createChord(Scale& scale, ChordDef& chordDef, Note& rootNote) {
     Chord chord;
     int scaleIndexRoot = scale.getIndex(rootNote);
-    for(int i = 0; i < chordDef.size(); i++) {
-        int chordDefNote = chordDef[i];
+    for(int i = 0; i < chordDef.scaleNotes.size(); i++) {
+        int chordDefNote = chordDef.scaleNotes[i];
         int scaleIndex = scaleIndexRoot + chordDefNote;
         int repeat = (scaleIndex / scale.size()) + rootNote.cycle;
         int note = scale.getNote(scaleIndex % scale.size());

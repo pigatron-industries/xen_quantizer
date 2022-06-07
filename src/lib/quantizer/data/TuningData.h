@@ -9,15 +9,13 @@
 
 class TuningData {
     public:
-        TuningData(Tuning& tuning, ArrayPtr<Scale> scales, ArrayPtr<ChordDef> chordDefs) : 
+        TuningData(Tuning& tuning, ArrayPtr<Scale> scales) : 
             tuning(&tuning), 
-            scales(scales), 
-            chordDefs(chordDefs) {}
+            scales(scales) {}
 
     public:
         Tuning* tuning;
         ArrayPtr<Scale> scales;
-        ArrayPtr<ChordDef> chordDefs;
 
 };
 

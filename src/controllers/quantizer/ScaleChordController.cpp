@@ -26,6 +26,8 @@ void ScaleChordController::update() {
 void ScaleChordController::process() {
     Hardware::hw.mcp23s17Device.receive();
 
+    transpose = Hardware::hw.channel3InputPin.analogRead();
+
     if(clockInputs[0].update() && clockInputs[0].rose()) {
         chordClock();
     }
@@ -49,9 +51,9 @@ void ScaleChordController::chordClock() {
 
     chord = ScaleFactory::createChord(*scale, *chordDef, root);
 
-    Hardware::hw.cvOutputPins[0]->analogWrite(chord[0].voltage);
-    Hardware::hw.cvOutputPins[1]->analogWrite(chord[1].voltage);
-    Hardware::hw.cvOutputPins[2]->analogWrite(chord[2].voltage);
+    Hardware::hw.cvOutputPins[0]->analogWrite(chord[0].voltage + transpose);
+    Hardware::hw.cvOutputPins[1]->analogWrite(chord[1].voltage + transpose);
+    Hardware::hw.cvOutputPins[2]->analogWrite(chord[2].voltage + transpose);
     // Hardware::hw.cvOutputPins[3]->analogWrite(chord[3].voltage);
 }
 
@@ -61,5 +63,5 @@ void ScaleChordController::noteClock() {
     Note note = chordQuantizer.quantize(noteVoltage);
     //Note note = scaleQuantizer.quantize(noteVoltage);
 
-    Hardware::hw.cvOutputPins[3]->analogWrite(note.voltage);
+    Hardware::hw.cvOutputPins[3]->analogWrite(note.voltage + transpose);
 }

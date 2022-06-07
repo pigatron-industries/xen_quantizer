@@ -11,8 +11,10 @@ class Tuning12EDO : public TuningData {
     public:
         static TuningData data;
         static Tuning tuning;
-        static Array<Scale, 4> scales;
-        static Array<ChordDef, 1> chordDefs;
+        static Array<Scale, 5> scales;
+
+    private:
+        static ChordDef Tuning12EDO::chord_triad;
 };
 
 #endif

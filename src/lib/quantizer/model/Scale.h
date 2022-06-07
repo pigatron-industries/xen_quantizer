@@ -8,8 +8,16 @@
 #define CHORD_MAX_NOTES 5
 #define MAX_CHORD_DEFS 5
 
-typedef Array<int, CHORD_MAX_NOTES> ChordDef;
 typedef Array<Note, CHORD_MAX_NOTES> Chord;
+
+class ChordDef {
+    public:
+        ChordDef() {}
+        ChordDef(std::initializer_list<int> scaleNotes) : scaleNotes(scaleNotes) {}
+
+    public:
+        Array<int, CHORD_MAX_NOTES> scaleNotes;
+};
 
 class Scale {
     public:
@@ -17,7 +25,7 @@ class Scale {
         Scale(Tuning& tuning, const char* name = "") { this->tuning = &tuning; this->name = name; }
         Scale(Tuning& tuning, std::initializer_list<int> notes, const char* name = "") : 
             notes(notes) { this->tuning = &tuning; this->name = name; }
-        Scale(Tuning& tuning, std::initializer_list<int> notes, std::initializer_list<int> chordDef, const char* name = "") : 
+        Scale(Tuning& tuning, std::initializer_list<int> notes, std::initializer_list<ChordDef> chordDef, const char* name = "") : 
             notes(notes),
             chordDefs({chordDef}) { this->tuning = &tuning; this->name = name; }
         Scale(Tuning& tuning, std::initializer_list<int> notes, ChordDef& chordDef, const char* name = "") : 
@@ -27,6 +35,7 @@ class Scale {
         void setOffset(float offset) { this->offset = offset; }
         float getOffset() { return offset; }
         Tuning* getTuning() { return tuning; }
+        Array<ChordDef, MAX_CHORD_DEFS>& getChordDefs() { return chordDefs; };
 
         void addNote(int note) { notes.add(note); }
         void addChordDef(std::initializer_list<int> chordDef) { chordDefs.add({chordDef}); }

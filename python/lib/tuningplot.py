@@ -134,7 +134,7 @@ class TuningPolarPlot():
         self.ax.annotate(label, xy=(0, 0), xycoords='data', ha='center', color="#a75d9b", fontsize=16)
         # self.ax.title.set_text(label)
 
-    def plotChord(self, chord, root = 0, label = None, color = "#ffa17a"):
+    def plotChord(self, chord, root = 0, label = None, color = "#e14200"):
         x_values = []
         y_values = []
         notes = chord.getNotes(root)
