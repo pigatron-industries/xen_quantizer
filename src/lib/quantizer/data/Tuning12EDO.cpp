@@ -1,7 +1,7 @@
 #include "Tuning12EDO.h"
 
 
-TuningData Tuning12EDO::data = TuningData(tuning, ArrayPtr<Scale>(&scales[0], 4));
+TuningData Tuning12EDO::data = TuningData(tuning, scales.ptr());
 
 Tuning Tuning12EDO::tuning = Tuning({
     Interval(0, 0), 
@@ -18,13 +18,19 @@ Tuning Tuning12EDO::tuning = Tuning({
     Interval(11/12.0, 7)}, 
     1.0);
 
-ChordDef Tuning12EDO::chord_triad = ChordDef({0, 2, 4});
+ChordDef Tuning12EDO::chord_heptatonic_triad = ChordDef({0, 2, 4});
+ChordDef Tuning12EDO::chord_chromatic_major = ChordDef({0, 4, 7});
+ChordDef Tuning12EDO::chord_chromatic_minor = ChordDef({0, 3, 7});
+ChordDef Tuning12EDO::chord_chromatic_diminished = ChordDef({0, 3, 6});
+ChordDef Tuning12EDO::chord_chromatic_augmented = ChordDef({0, 4, 8});
 
 Array<Scale, 5> Tuning12EDO::scales = Array<Scale, 5>({
-    Scale(tuning, {0, 2, 4, 5, 7, 9, 11}, {chord_triad}, "Major"),
-    Scale(tuning, {0, 2, 4, 6, 7, 9, 10}, {chord_triad}, "Melodic Minor"),
-    Scale(tuning, {0, 2, 3, 5, 7, 8, 11}, {chord_triad}, "Harmonic Minor"),
-    Scale(tuning, {0, 1, 4, 5, 7, 8, 11}, {chord_triad}, "Double Harmonic"),
-    Scale(tuning, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}, "Chromatic")
+    Scale(tuning, {0, 2, 4, 5, 7, 9, 11}, {chord_heptatonic_triad}, "Major"),
+    Scale(tuning, {0, 2, 4, 6, 7, 9, 10}, {chord_heptatonic_triad}, "Melodic Minor"),
+    Scale(tuning, {0, 2, 3, 5, 7, 8, 11}, {chord_heptatonic_triad}, "Harmonic Minor"),
+    Scale(tuning, {0, 1, 4, 5, 7, 8, 11}, {chord_heptatonic_triad}, "Double Harmonic"),
+    Scale(tuning, {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}, 
+        {chord_chromatic_major, chord_chromatic_minor, chord_chromatic_diminished, chord_chromatic_augmented}, 
+        "Chromatic")
 });
 

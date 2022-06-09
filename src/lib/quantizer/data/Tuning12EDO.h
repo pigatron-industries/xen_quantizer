@@ -14,7 +14,11 @@ class Tuning12EDO : public TuningData {
         static Array<Scale, 5> scales;
 
     private:
-        static ChordDef Tuning12EDO::chord_triad;
+        static ChordDef chord_heptatonic_triad;
+        static ChordDef chord_chromatic_major;
+        static ChordDef chord_chromatic_minor;
+        static ChordDef chord_chromatic_diminished;
+        static ChordDef chord_chromatic_augmented;
 };
 
 #endif
