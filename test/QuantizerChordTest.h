@@ -1,7 +1,7 @@
 #include <initializer_list>
 #include "../src/lib/quantizer/QuantizerChord.h"
-#include "../src/lib/quantizer/Scale.h"
-#include "../src/lib/quantizer/Tuning.h"
+#include "../src/lib/quantizer/model/Scale.h"
+#include "../src/lib/quantizer/model/Tuning.h"
 
 class QuantizerChordTest {
     public:

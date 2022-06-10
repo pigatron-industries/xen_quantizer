@@ -7,8 +7,8 @@
 #include "QuantizerChordTest.h"
 #include "ScaleFactoryTest.h"
 
-#include "../src/lib/quantizer/Scale.cpp"
-#include "../src/lib/quantizer/Tuning.cpp"
+#include "../src/lib/quantizer/model/Scale.cpp"
+#include "../src/lib/quantizer/model/Tuning.cpp"
 #include "../src/lib/quantizer/QuantizerChromatic.cpp"
 #include "../src/lib/quantizer/QuantizerScale.cpp"
 #include "../src/lib/quantizer/QuantizerChord.cpp"
