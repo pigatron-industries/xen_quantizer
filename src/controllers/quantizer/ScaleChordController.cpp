@@ -8,7 +8,7 @@ void ScaleChordController::init(float sampleRate) {
 void ScaleChordController::init() {
     Serial.println("Quantizer");
 
-    scaleQuantizer.setScale(*scale);
+    setScale(0);
 
     chordClock();
 }
@@ -18,9 +18,24 @@ void ScaleChordController::update() {
     //     scaleQuantizer.getScale()->setOffset(linearScaleOffsetPot.getValue());
     // }
 
-    // if(dissonance.update()) {
-    //     scaleQuantizer.setScale(harmonicScales[dissonance.getIntValue()]);
+    // if(chordQuality.update()) {
+    //     Serial.println("chordQuality");
+    //     Serial.println(chordQuality.getStableVoltage());
+    //     Serial.println(chordQuality.getValue());
+    //     Serial.println(chordQuality.getIntValue());
+    //     chordDef = &scale->getChordDefs()[chordQuality.getIntValue()];
     // }
+}
+
+void ScaleChordController::setScale(int index) {
+    scale = &tuningData->scales[index];
+    scaleQuantizer.setScale(*scale);
+
+    chordQuality.setRange(0, scale->getChordDefs().size()-1);
+    chordQuality.update();
+    chordDef = &scale->getChordDefs()[chordQuality.getIntValue()];
+
+    chordInversion.setRange(0, scale->getChordDefs().size()-1);
 }
 
 void ScaleChordController::process() {
@@ -45,11 +60,21 @@ void ScaleChordController::chordClock() {
         scale->setOffset(scaleRoot.voltage);
     }
 
+    if(chordQuality.update()) {
+        Serial.println("chordQuality");
+        Serial.println(chordQuality.getStableVoltage());
+        Serial.println(chordQuality.getValue());
+        Serial.println(chordQuality.getIntValue());
+        chordDef = &scale->getChordDefs()[chordQuality.getIntValue()];
+    }
+
+    chordInversion.update();
+
     float chordVoltage = Hardware::hw.channel1InputPin.analogRead();
 
     Note root = scaleQuantizer.quantize(chordVoltage);
 
-    chord = ScaleFactory::createChord(*scale, *chordDef, root);
+    chord = ScaleFactory::createChord(*scale, *chordDef, root, chordInversion.getIntValue(), 0);
 
     Hardware::hw.cvOutputPins[0]->analogWrite(chord[0].voltage + transpose);
     Hardware::hw.cvOutputPins[1]->analogWrite(chord[1].voltage + transpose);

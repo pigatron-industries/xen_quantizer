@@ -10,7 +10,7 @@ class ScaleFactory {
         static Scale createHarmonicScale(Tuning& tuning, int dissonance);
         static Scale createHarmonicScale(Scale& scale, int dissonance);
 
-        static Chord createChord(Scale& scale, ChordDef& chordDef, Note& rootNote);
+        static Chord createChord(Scale& scale, ChordDef& chordDef, Note& rootNote, int inversion = 0, int drop = 0);
 };
 
 

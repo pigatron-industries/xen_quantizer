@@ -23,15 +23,21 @@ Scale ScaleFactory::createHarmonicScale(Scale& scale, int dissonance) {
     return subScale;
 }
 
-Chord ScaleFactory::createChord(Scale& scale, ChordDef& chordDef, Note& rootNote) {
+Chord ScaleFactory::createChord(Scale& scale, ChordDef& chordDef, Note& rootNote, int inversion, int drop) {
     Chord chord;
     int scaleIndexRoot = scale.getIndex(rootNote);
     for(int i = 0; i < chordDef.scaleNotes.size(); i++) {
         int chordDefNote = chordDef.scaleNotes[i];
         int scaleIndex = scaleIndexRoot + chordDefNote;
-        int repeat = (scaleIndex / scale.size()) + rootNote.cycle;
+        int cycle = (scaleIndex / scale.size()) + rootNote.cycle;
         int note = scale.getNote(scaleIndex % scale.size());
-        chord.add(scale.getTuning()->createNote(repeat, note, scale.getOffset()));
+        if(i < inversion) {
+            cycle++;
+        }
+        if(drop > 0 && i == drop) {
+            cycle--;
+        }
+        chord.add(scale.getTuning()->createNote(cycle, note, scale.getOffset()));
     }
 
     return chord;

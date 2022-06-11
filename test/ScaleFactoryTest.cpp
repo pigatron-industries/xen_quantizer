@@ -22,9 +22,12 @@ Tuning ScaleFactoryTest::tuning = Tuning({
 ChordDef ScaleFactoryTest::chordDef = ChordDef({0, 2, 4, 6});
 Scale ScaleFactoryTest::scale = Scale(ScaleFactoryTest::tuning, {0, 2, 4, 5, 7, 9, 11}, ScaleFactoryTest::chordDef);
 
-
 void ScaleFactoryTest::test_createChord(Note rootNote, Note expectedNote1, Note expectedNote2, Note expectedNote3) {
-    Chord chord = ScaleFactory::createChord(scale, chordDef, rootNote);
+    test_createChord(rootNote, 0, 0, expectedNote1, expectedNote2, expectedNote3);
+}
+
+void ScaleFactoryTest::test_createChord(Note rootNote, int inversion, int drop, Note expectedNote1, Note expectedNote2, Note expectedNote3) {
+    Chord chord = ScaleFactory::createChord(scale, chordDef, rootNote, inversion, drop);
     TEST_ASSERT_EQUAL_INT(chord.size(), 4);
     TEST_ASSERT_EQUAL_INT(expectedNote1.cycle, chord[0].cycle);
     TEST_ASSERT_EQUAL_INT(expectedNote1.note,  chord[0].note);
@@ -68,6 +71,19 @@ void test_createChord() {
     ScaleFactoryTest::test_createChord(Note(0, 0, 1/12.0),  Note(0, 0, 1/12.0),  Note(0, 4),  Note(0, 7)); // C Major
 }
 
+void test_createChordInversion() {
+    ScaleFactoryTest::scale.setOffset(0);
+
+    ScaleFactoryTest::test_createChord(Note(0, 0),  1, 0, Note(1, 0, 1),  Note(0, 4),  Note(0, 7)); // C Major
+    ScaleFactoryTest::test_createChord(Note(0, 0),  2, 0, Note(1, 0, 1),  Note(1, 4, 1+4/12),  Note(0, 7)); // C Major
+    ScaleFactoryTest::test_createChord(Note(0, 0),  3, 0, Note(1, 0, 1),  Note(1, 4, 1+4/12),  Note(1, 7, 1+7/12)); // C Major
+
+    ScaleFactoryTest::test_createChord(Note(0, 0),  0, 1, Note(0, 0),  Note(-1, 4),  Note(0, 7)); // C Major
+
+    ScaleFactoryTest::test_createChord(Note(0, 0),  1, 1, Note(1, 0, 1),  Note(-1, 4),  Note(0, 7)); // C Major
+}
+
 void test_ScaleFactory() {
     RUN_TEST(test_createChord);
+    RUN_TEST(test_createChordInversion);
 }

@@ -8,6 +8,7 @@ class ScaleFactoryTest {
         static Scale scale;
 
         static void test_createChord(Note rootNote, Note expectedNote1, Note expectedNote2, Note expectedNote3);
+        static void test_createChord(Note rootNote, int inversion, int drop, Note expectedNote1, Note expectedNote2, Note expectedNote3);
 };
 
 void test_ScaleFactory();
