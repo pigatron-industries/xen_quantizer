@@ -4,7 +4,7 @@
 #include "Controller.h"
 #include "lib/quantizer/data/Tuning12EDO.h"
 #include "lib/quantizer/ScaleFactory.h"
-#include "lib/quantizer/TuningRepository.h"
+#include "lib/quantizer/filesystem/TuningsManager.h"
 #include "lib/quantizer/QuantizerScale.h"
 #include "lib/quantizer/QuantizerChord.h"
 
@@ -17,6 +17,7 @@ class ScaleChordController : public Controller {
         ScaleChordController() : Controller() {}
         virtual void init(float sampleRate);
         virtual void init();
+        //virtual int cycleMode(int amount);
         virtual void update();
         virtual void process();
 
@@ -35,8 +36,11 @@ class ScaleChordController : public Controller {
             GateInput<MCP23S17Device>(*Hardware::hw.clockInputPins[3], false),
         };
 
-        TuningData* tuningData = &Tuning12EDO::data;
-        Scale* scale = &tuningData->scales[0];
+        StaticTuningData* defaultTuningData = &Tuning12EDO::data;
+        TuningData* tuningData = nullptr;
+
+        Tuning* tuning = defaultTuningData->tuning;
+        Scale* scale = &defaultTuningData->scales[0];
         ChordDef* chordDef = &scale->getChordDefs()[0];
 
         Chord chord;

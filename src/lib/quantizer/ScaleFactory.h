@@ -7,6 +7,8 @@ class ScaleFactory {
     public:
         ScaleFactory() {}
 
+        static Tuning createEqualDivisionTuning(int divisions, float cycle = 1.0);
+
         static Scale createHarmonicScale(Tuning& tuning, int dissonance);
         static Scale createHarmonicScale(Scale& scale, int dissonance);
 

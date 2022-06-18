@@ -3,9 +3,11 @@
 
 #include <Arduino.h>
 #include <eurorack.h>
+#include <eurorack_sd.h>
 #include <eurorack_dac8164.h>
 #include <eurorack_mcp23s17.h>
 #include "hwconfig.h"
+#include "lib/quantizer/filesystem/TuningsManager.h"
 
 #define MEMPOOL_SIZE 48*1024
 
@@ -17,6 +19,10 @@ class Hardware {
         // Memory pool
         static char memPoolBuffer[MEMPOOL_SIZE];
         MemPool<char> memPool = MemPool<char>(Hardware::memPoolBuffer, MEMPOOL_SIZE);
+
+        // SD Card
+        FileSystem fs = FileSystem("/quantizer");
+        TuningsManager tuningsManager = TuningsManager(fs, memPool);
 
         // Direct connections
         RotaryEncoderButton encoder = RotaryEncoderButton(ENCODER_PIN1, ENCODER_PIN2, ENCODER_BTN_PIN);

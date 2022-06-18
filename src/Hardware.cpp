@@ -10,6 +10,8 @@ void Hardware::init() {
     dac8164Device.init();
     dac8164Device.setDeferredOutput(true);
     mcp23s17Device.init();
+    fs.init();
+    tuningsManager.init();
 
     for(int i = 0; i < CHANNEL_COUNT; i++) {
         cvOutputPins[i]->setPinType(PinType::ANALOG_OUTPUT);

@@ -2,33 +2,37 @@
 
 void ScaleChordController::init(float sampleRate) {
     Controller::init(sampleRate);
+    mode.last = Hardware::hw.tuningsManager.getTuningCount()-1;
     init();
 }
 
 void ScaleChordController::init() {
     Serial.println("Quantizer");
 
-    setScale(0);
+    tuningData = &Hardware::hw.tuningsManager.loadTuningData(mode.value);
+    tuning = tuningData->tuning;
 
+    setScale(0);
     chordClock();
 }
+
+// int ScaleChordController::cycleMode(int amount) {
+
+// }
 
 void ScaleChordController::update() {
     // if(linearScaleOffsetPot.update()) {
     //     scaleQuantizer.getScale()->setOffset(linearScaleOffsetPot.getValue());
     // }
-
-    // if(chordQuality.update()) {
-    //     Serial.println("chordQuality");
-    //     Serial.println(chordQuality.getStableVoltage());
-    //     Serial.println(chordQuality.getValue());
-    //     Serial.println(chordQuality.getIntValue());
-    //     chordDef = &scale->getChordDefs()[chordQuality.getIntValue()];
-    // }
 }
 
 void ScaleChordController::setScale(int index) {
-    scale = &tuningData->scales[index];
+    if(tuningData == nullptr) {
+        scale = &defaultTuningData->scales[index];
+    } else {
+        scale = tuningData->scales[index];
+    }
+
     scaleQuantizer.setScale(*scale);
 
     chordQuality.setRange(0, scale->getChordDefs().size()-1);
@@ -36,6 +40,11 @@ void ScaleChordController::setScale(int index) {
     chordDef = &scale->getChordDefs()[chordQuality.getIntValue()];
 
     chordInversion.setRange(0, scale->getChordDefs().size()-1);
+
+    Serial.print("Scale: ");
+    Serial.println(scale->getName());
+    Serial.print("Chord: ");
+    Serial.println(chordDef->name);
 }
 
 void ScaleChordController::process() {
@@ -56,16 +65,15 @@ void ScaleChordController::chordClock() {
     delay(1);
 
     if(quantizedScaleOffsetPot.update()) {
-        Note scaleRoot = tuningData->tuning->createNote(0, quantizedScaleOffsetPot.getIntValue());
+        Note scaleRoot = tuning->createNote(0, quantizedScaleOffsetPot.getIntValue());
         scale->setOffset(scaleRoot.voltage);
     }
 
     if(chordQuality.update()) {
-        Serial.println("chordQuality");
-        Serial.println(chordQuality.getStableVoltage());
-        Serial.println(chordQuality.getValue());
-        Serial.println(chordQuality.getIntValue());
         chordDef = &scale->getChordDefs()[chordQuality.getIntValue()];
+
+        Serial.print("Chord: ");
+        Serial.println(chordDef->name);
     }
 
     chordInversion.update();

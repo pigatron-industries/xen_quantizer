@@ -1,0 +1,20 @@
+tuning: 
+  eq: [24, 1]
+groups:
+  - group: Heptatonic
+    scales:
+      - name: Bayati
+        notes: [0, 3, 6, 10, 14, 16, 20] # 3-3-4-4-2-4-4
+      - name: Rast
+        notes: [0, 4, 7, 10, 14, 18, 21] # 4-3-3-4-4-3-3      
+      - name: Sabba
+        notes: [0, 3, 6, 8, 14, 16, 20]  # 3-3-2-6-2-4-4
+      - name: Siga
+        notes: [0, 3, 7, 11, 14, 17, 21] # 3-4-4-3-3-4-3
+    chords:
+      - name: Tertian
+        notes: [0, 2, 4, 6]
+      - name: Quartal
+        notes: [0, 3, 6, 9]
+      - name: Quintal
+        notes: [0, 3, 6, 9]

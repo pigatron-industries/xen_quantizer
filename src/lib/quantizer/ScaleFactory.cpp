@@ -1,5 +1,9 @@
 #include "ScaleFactory.h"
 
+Tuning ScaleFactory::createEqualDivisionTuning(int divisions, float cycle) {
+    return Tuning(divisions, cycle);
+}
+
 Scale ScaleFactory::createHarmonicScale(Tuning& tuning, int dissonance) {
     Scale scale = Scale(tuning);
     for(int i = 0; i < tuning.size(); i++) {

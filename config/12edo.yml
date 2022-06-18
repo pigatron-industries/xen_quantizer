@@ -1,18 +1,7 @@
-tuning: 
-  - interval: [100/1200, 7]
-  - interval: [200/1200, 6]
-  - interval: [300/1200, 5]
-  - interval: [400/1200, 3]
-  - interval: [500/1200, 2]
-  - interval: [600/1200, 5]
-  - interval: [700/1200, 1]
-  - interval: [800/1200, 5]
-  - interval: [900/1200, 4]
-  - interval: [1000/1200, 5]
-  - interval: [1100/1200, 7]
-  - interval: [1200/1200, 0]
-scales:
-  - name: Chromatic
+tuning:
+  eq: [12, 1]
+groups:
+  - group: Chromatic
     scales:
       - name: Chromatic
         notes: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
@@ -25,18 +14,24 @@ scales:
         notes: [0, 3, 6]
       - name: Augmented
         notes: [0, 4, 8]
-  - name: Heptatonic
+  - group: Heptatonic
     scales:
-      - name: Heptatonic First
+      - name: Primary # Major / Natural Minor
         notes: [0, 2, 4, 5, 7, 9, 11]  # 2-2-1-2-2-2-1
-      - name: Heptatonic Second
+      - name: Secondary
         notes: [0, 2, 3, 5, 7, 9, 11]  # 2-1-2-2-2-2-1
+      - name: Tertiary
+        notes: [0, 1, 2, 4, 6, 8, 10]  # 1-1-2-2-2-2-2
       - name: Harmonic Minor
         notes: [0, 2, 4, 5, 7, 8, 11]  # 2-2-1-2-1-3-1
       - name: Harmonic Major
         notes: [0, 2, 3, 5, 7, 8, 11]  # 2-1-2-2-1-3-1
+      - name: Double harmonic
+        notes: [0, 1, 4, 5, 7, 8, 11]
     chords:
-      - name: Triad
-        notes: [0, 2, 4]
-      - name: Seventh
+      - name: Tertian
         notes: [0, 2, 4, 6]
+      - name: Quartal
+        notes: [0, 3, 6, 9]
+      - name: Quintal
+        notes: [0, 3, 6, 9]

@@ -4,7 +4,7 @@
 #include "Controller.h"
 #include "lib/quantizer/data/Tuning12EDO.h"
 #include "lib/quantizer/ScaleFactory.h"
-#include "lib/quantizer/TuningRepository.h"
+#include "lib/quantizer/filesystem/TuningsManager.h"
 #include "lib/quantizer/QuantizerDifferential.h"
 
 
@@ -34,7 +34,7 @@ class HarmonicWalkController : public Controller {
             GateInput<MCP23S17Device>(*Hardware::hw.clockInputPins[3], false)
         };
 
-        TuningData* tuningData = &Tuning12EDO::getData();
+        StaticTuningData* tuningData = &Tuning12EDO::getData();
 
         Scale* scale = &tuningData->scales[0];
 

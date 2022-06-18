@@ -4,9 +4,7 @@
 #include <eurorack.h>
 #include "Note.h"
 
-#define TUNING_MAX_NOTES 24
-
-// typedef Array<Note, CHORD_MAX_NOTES> Chord;
+#define TUNING_MAX_NOTES 100
 
 class Tuning {
     public:
@@ -17,12 +15,11 @@ class Tuning {
             setCycleInterval(cycleInterval); 
         }
 
-        Tuning(int notes) {
-            float interval = 1.0 / notes;
+        Tuning(int notes, float cycle) {
             for(int i = 0; i < notes; i++) {
-                intervals.add(Interval(interval*i));
+                intervals.add(Interval(cycle*i/notes));
             }
-            setCycleInterval(1);
+            setCycleInterval(cycle);
         }
 
         int size() { return intervals.size(); }

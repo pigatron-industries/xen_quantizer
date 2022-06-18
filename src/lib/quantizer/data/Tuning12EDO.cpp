@@ -1,7 +1,7 @@
 #include "Tuning12EDO.h"
 
 
-TuningData Tuning12EDO::data = TuningData(tuning, scales.ptr());
+StaticTuningData Tuning12EDO::data = StaticTuningData(tuning, scales.ptr());
 
 Tuning Tuning12EDO::tuning = Tuning({
     Interval(0, 0), 

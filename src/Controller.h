@@ -11,7 +11,7 @@ class Controller {
         virtual void init() {};
         virtual void update() = 0;
         virtual void process() = 0;
-        int cycleMode(int amount) { mode.cycle(amount); return mode.value; }
+        virtual int cycleMode(int amount) { mode.cycle(amount); return mode.value; }
         void setMode(int value) { mode.setValue(value); }
         float getSampleRate() { return sampleRate; }
     

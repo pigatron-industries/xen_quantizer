@@ -9,13 +9,11 @@
 
 class TuningData {
     public:
-        TuningData(Tuning& tuning, ArrayPtr<Scale> scales) : 
-            tuning(&tuning), 
-            scales(scales) {}
+        void addScale(Scale* scale) { scales.add(scale); }
 
     public:
         Tuning* tuning;
-        ArrayPtr<Scale> scales;
+        Array<Scale*, 20> scales;
 
 };
 

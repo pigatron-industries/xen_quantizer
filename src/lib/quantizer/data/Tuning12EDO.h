@@ -2,14 +2,14 @@
 #define Tuning12EDO_h
 
 #include <eurorack.h>
-#include "TuningData.h"
+#include "StaticTuningData.h"
 
-class Tuning12EDO : public TuningData {
+class Tuning12EDO : public StaticTuningData {
     public:
-        static TuningData& getData() { return data; }
+        static StaticTuningData& getData() { return data; }
 
     public:
-        static TuningData data;
+        static StaticTuningData data;
         static Tuning tuning;
         static Array<Scale, 5> scales;
 
