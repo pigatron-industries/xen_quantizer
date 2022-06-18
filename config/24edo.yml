@@ -1,4 +1,5 @@
 tuning: 
+  name: 24EDO
   eq: [24, 1]
 groups:
   - group: Heptatonic

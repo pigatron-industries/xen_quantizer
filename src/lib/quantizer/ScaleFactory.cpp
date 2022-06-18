@@ -1,7 +1,7 @@
 #include "ScaleFactory.h"
 
-Tuning ScaleFactory::createEqualDivisionTuning(int divisions, float cycle) {
-    return Tuning(divisions, cycle);
+Tuning ScaleFactory::createEqualDivisionTuning(int divisions, float cycle, const char* name) {
+    return Tuning(divisions, cycle, name);
 }
 
 Scale ScaleFactory::createHarmonicScale(Tuning& tuning, int dissonance) {

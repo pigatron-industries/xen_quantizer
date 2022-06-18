@@ -25,13 +25,15 @@ bool TuningDataFileReader::read(FsFile& file) {
 
 void TuningDataFileReader::readTuning(FsFile& file) {
     Serial.println("readTuning");
+    char nameBuffer[16] = {};
 
     do {
         readLine(file);
-        // Serial.println(buffer);
-        if(isObject("eq:", 1)) {
+        if(isObject("name:", 1)) {
+            strncpy(nameBuffer, getValue(), 16);
+        } else if(isObject("eq:", 1)) {
             Serial.println("  Create equal division tuning");
-            Tuning tuning = ScaleFactory::createEqualDivisionTuning(arrayItemInt(0), arrayItemFloat(1));
+            Tuning tuning = ScaleFactory::createEqualDivisionTuning(arrayItemInt(0), arrayItemFloat(1), nameBuffer);
             this->tuning = tuningsManager.addTuning(tuning);
         }
     } while(line.level >= 1);
@@ -42,7 +44,6 @@ void TuningDataFileReader::readTuning(FsFile& file) {
 void TuningDataFileReader::readGroups(FsFile& file) {
     do {
         readLine(file);
-        // Serial.println(buffer);
         if(isObject("- group:", 1)) {
             readGroup(file);
         }

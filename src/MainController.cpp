@@ -13,6 +13,10 @@ MainController* MainController::mainController = nullptr;
 MainController::MainController(float sampleRate) : AbstractMainController(Hardware::hw.encoder) {
     MainController::mainController = this;
     this->sampleRate = sampleRate;
+    this->shortPress = &MainController::incrementMode;
+    this->clockWise = &MainController::incrementValue;
+    this->antiClockWise = &MainController::decrementValue;
+    initOnModeSelect = false;
 }
 
 void MainController::init() {

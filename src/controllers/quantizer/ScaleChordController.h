@@ -11,15 +11,20 @@
 
 using namespace eurorack;
 
-class ScaleChordController : public Controller {
+class ScaleChordController : public ParameterizedController<2> {
     public:
 
-        ScaleChordController() : Controller() {}
+        enum Parameter {
+            TUNING,
+            SCALE
+        };
+
+        ScaleChordController() : ParameterizedController() {}
         virtual void init(float sampleRate);
         virtual void init();
-        //virtual int cycleMode(int amount);
         virtual void update();
         virtual void process();
+        virtual void cycleValue(int amount);
 
     private:
 
@@ -50,6 +55,7 @@ class ScaleChordController : public Controller {
 
         float transpose;
         
+        void setTuning(int index);
         void setScale(int index);
         void chordClock();
         void noteClock();

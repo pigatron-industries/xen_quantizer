@@ -22,7 +22,7 @@ class TuningsManager {
         Tuning* addTuning(Tuning& tuning);
         Scale* addScale(Scale& scale);
 
-        Tuning* getTuning() { tuningsManager.getObjects().get(0); }
+        Tuning* getTuning() { return &tuningsManager.getObjects().get(0); }
 
     private:
         FileSystem& fs;

@@ -2,28 +2,44 @@
 
 void ScaleChordController::init(float sampleRate) {
     Controller::init(sampleRate);
-    mode.last = Hardware::hw.tuningsManager.getTuningCount()-1;
+    parameters[Parameter::TUNING].last = Hardware::hw.tuningsManager.getTuningCount()-1;
+    setTuning(parameters[Parameter::TUNING].value);
     init();
 }
 
 void ScaleChordController::init() {
     Serial.println("Quantizer");
-
-    tuningData = &Hardware::hw.tuningsManager.loadTuningData(mode.value);
-    tuning = tuningData->tuning;
-
-    setScale(0);
     chordClock();
 }
 
-// int ScaleChordController::cycleMode(int amount) {
-
-// }
+void ScaleChordController::cycleValue(int amount) {
+    parameters.getSelected().cycle(amount);
+    switch(parameters.getSelectedIndex()) {
+        case Parameter::TUNING:
+            setTuning(parameters[Parameter::TUNING].value);
+            break;
+        case Parameter::SCALE:
+            setScale(parameters[Parameter::SCALE].value);
+            break;
+    }
+}
 
 void ScaleChordController::update() {
     // if(linearScaleOffsetPot.update()) {
     //     scaleQuantizer.getScale()->setOffset(linearScaleOffsetPot.getValue());
     // }
+}
+
+void ScaleChordController::setTuning(int index) {
+    tuningData = &Hardware::hw.tuningsManager.loadTuningData(index);
+    tuning = tuningData->tuning;
+
+    Serial.print("Tuning: ");
+    Serial.println(tuning->getName());
+
+    parameters[Parameter::SCALE].value = 0;
+    parameters[Parameter::SCALE].last = tuningData->scales.size() - 1;
+    setScale(0);
 }
 
 void ScaleChordController::setScale(int index) {
@@ -67,11 +83,12 @@ void ScaleChordController::chordClock() {
     if(quantizedScaleOffsetPot.update()) {
         Note scaleRoot = tuning->createNote(0, quantizedScaleOffsetPot.getIntValue());
         scale->setOffset(scaleRoot.voltage);
+        Serial.print("Offset: ");
+        Serial.println(quantizedScaleOffsetPot.getIntValue());
     }
 
     if(chordQuality.update()) {
         chordDef = &scale->getChordDefs()[chordQuality.getIntValue()];
-
         Serial.print("Chord: ");
         Serial.println(chordDef->name);
     }

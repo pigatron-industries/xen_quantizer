@@ -1,4 +1,5 @@
 tuning:
+  name: 12EDO
   eq: [12, 1]
 groups:
   - group: Chromatic

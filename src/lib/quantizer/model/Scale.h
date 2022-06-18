@@ -16,6 +16,8 @@ class ChordDef {
         ChordDef(std::initializer_list<int> scaleNotes, const char* name = "") : 
             scaleNotes(scaleNotes) { strncpy(this->name, name, 16); }
 
+        char* getName() { return name; }
+
         void addNote(int note) { scaleNotes.add(note); }
 
     public:
