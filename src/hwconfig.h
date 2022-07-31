@@ -1,8 +1,11 @@
 
 // Teensy Pins
-#define ENCODER_BTN_PIN 2
-#define ENCODER_PIN1 3
-#define ENCODER_PIN2 4
+#define ENCODER1_BTN_PIN 7
+#define ENCODER1_PIN1 22
+#define ENCODER1_PIN2 23
+#define ENCODER2_BTN_PIN 2
+#define ENCODER2_PIN1 3
+#define ENCODER2_PIN2 4
 #define DAC_SYNC_PIN 8
 
 //GPIO expander

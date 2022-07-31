@@ -25,7 +25,7 @@ class Hardware {
         TuningsManager tuningsManager = TuningsManager(fs, memPool);
 
         // Direct connections
-        RotaryEncoderButton encoder = RotaryEncoderButton(ENCODER_PIN1, ENCODER_PIN2, ENCODER_BTN_PIN);
+        RotaryEncoderButton encoder = RotaryEncoderButton(ENCODER1_PIN1, ENCODER1_PIN2, ENCODER1_BTN_PIN);
 
         #define AnalogInputPinT AnalogInputPin<NativeDevice>
         #define AnalogInputSumPinT AnalogInputSumPin<NativeDevice>
@@ -47,6 +47,18 @@ class Hardware {
         AnalogInput(channel3CvPin, A2)
         AnalogInput(channel4CvPin, A3)
 
+        DigitalInput(trigger1InputPin, 36)
+        DigitalInput(trigger2InputPin, 35)
+        DigitalInput(trigger3InputPin, 34)
+        DigitalInput(trigger4InputPin, 33)
+
+        DigitalInputPin<>* triggerInputPins[CHANNEL_COUNT] = {
+            &trigger1InputPin,
+            &trigger2InputPin,
+            &trigger3InputPin,
+            &trigger4InputPin
+        }; 
+
         DAC8164Device dac8164Device = DAC8164Device(-1, DAC_SYNC_PIN);
         AnalogOutputPin<DAC8164Device>* cvOutputPins[CHANNEL_COUNT] = {
             &dac8164Device.pins[1],
@@ -54,14 +66,6 @@ class Hardware {
             &dac8164Device.pins[3],
             &dac8164Device.pins[0],
         };
-
-        MCP23S17Device mcp23s17Device = MCP23S17Device(GPIO_CS_PIN, GPIO_ADDRESS);
-        DigitalInputPin<MCP23S17Device>* clockInputPins[CHANNEL_COUNT] = {
-            &mcp23s17Device.pins[7],
-            &mcp23s17Device.pins[6],
-            &mcp23s17Device.pins[5],
-            &mcp23s17Device.pins[4]
-        }; 
 
 };
 

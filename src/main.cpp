@@ -11,7 +11,7 @@ void setup() {
     Serial.begin(SERIAL_BAUD);
     Serial.println();
     Serial.println("=========================================");
-    Serial.println("*     Pigatron Industries OctaSource    *");
+    Serial.println("*     Pigatron Industries Quantizer     *");
     Serial.println("=========================================");
     Serial.println();
 

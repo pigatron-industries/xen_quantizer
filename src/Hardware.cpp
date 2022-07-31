@@ -9,7 +9,6 @@ void Hardware::init() {
 
     dac8164Device.init();
     dac8164Device.setDeferredOutput(true);
-    mcp23s17Device.init();
     fs.init();
     tuningsManager.init();
 

@@ -27,11 +27,11 @@ class HarmonicWalkController : public Controller {
         LinearInput<AnalogInputPinT> channel3Pot = LinearInput<AnalogInputPinT>(Hardware::hw.channel3PotPin, -5, 5, -5, 5);
         LinearInput<AnalogInputPinT> channel4Pot = LinearInput<AnalogInputPinT>(Hardware::hw.channel4PotPin, -5, 5, -5, 5);
 
-        GateInput<MCP23S17Device> clockInputs[4] = {
-            GateInput<MCP23S17Device>(*Hardware::hw.clockInputPins[0], false),
-            GateInput<MCP23S17Device>(*Hardware::hw.clockInputPins[1], false),
-            GateInput<MCP23S17Device>(*Hardware::hw.clockInputPins[2], false),
-            GateInput<MCP23S17Device>(*Hardware::hw.clockInputPins[3], false)
+        GateInput<> triggerInputs[4] = {
+            GateInput<>(*Hardware::hw.triggerInputPins[0], false),
+            GateInput<>(*Hardware::hw.triggerInputPins[1], false),
+            GateInput<>(*Hardware::hw.triggerInputPins[2], false),
+            GateInput<>(*Hardware::hw.triggerInputPins[3], false)
         };
 
         StaticTuningData* tuningData = &Tuning12EDO::getData();

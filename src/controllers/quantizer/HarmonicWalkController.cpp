@@ -14,9 +14,7 @@ void HarmonicWalkController::update() {
 }
 
 void HarmonicWalkController::process() {
-    Hardware::hw.mcp23s17Device.receive();
-
-    if(clockInputs[0].update() && clockInputs[0].rose()) {
+    if(triggerInputs[0].update() && triggerInputs[0].rose()) {
         clock();
     }
 

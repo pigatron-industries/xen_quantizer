@@ -34,11 +34,11 @@ class ScaleChordController : public ParameterizedController<2> {
         IntegerInput<AnalogInputPinT> chordInversion = IntegerInput<AnalogInputPinT>(Hardware::hw.channel3PotPin, -5, 5, 0, 1);
         // IntegerInput<AnalogInputPinT> chordVoicing = IntegerInput<AnalogInputPinT>(Hardware::hw.channel4PotPin, -5, 5, 0, 3);
 
-        GateInput<MCP23S17Device> clockInputs[4] = {
-            GateInput<MCP23S17Device>(*Hardware::hw.clockInputPins[0], false),
-            GateInput<MCP23S17Device>(*Hardware::hw.clockInputPins[1], false),
-            GateInput<MCP23S17Device>(*Hardware::hw.clockInputPins[2], false),
-            GateInput<MCP23S17Device>(*Hardware::hw.clockInputPins[3], false),
+        GateInput<> triggerInputs[4] = {
+            GateInput<>(*Hardware::hw.triggerInputPins[0]),
+            GateInput<>(*Hardware::hw.triggerInputPins[1]),
+            GateInput<>(*Hardware::hw.triggerInputPins[2]),
+            GateInput<>(*Hardware::hw.triggerInputPins[3])
         };
 
         StaticTuningData* defaultTuningData = &Tuning12EDO::data;

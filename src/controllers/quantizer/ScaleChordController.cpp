@@ -64,16 +64,18 @@ void ScaleChordController::setScale(int index) {
 }
 
 void ScaleChordController::process() {
-    Hardware::hw.mcp23s17Device.receive();
-
     transpose = Hardware::hw.channel3InputPin.analogRead();
 
-    if(clockInputs[0].update() && clockInputs[0].rose()) {
-        chordClock();
+
+
+    if(triggerInputs[0].update() && triggerInputs[0].rose()) {
+        
+        //chordClock();
     }
 
-    if(clockInputs[1].update() && clockInputs[1].rose()) {
-        noteClock();
+    if(triggerInputs[1].update() && triggerInputs[1].rose()) {
+
+        //noteClock();
     }
 }
 
