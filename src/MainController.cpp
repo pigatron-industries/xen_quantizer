@@ -56,6 +56,7 @@ void MainController::update() {
 void MainController::process() {
     PROFILE_START
     controllers.getSelected()->process();
-    Hardware::hw.dac8164Device.send();
+    Hardware::hw.dac8164Device1.send();
+    Hardware::hw.dac8164Device2.send();
     PROFILE_END
 }

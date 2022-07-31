@@ -6,7 +6,8 @@
 #define ENCODER2_BTN_PIN 2
 #define ENCODER2_PIN1 3
 #define ENCODER2_PIN2 4
-#define DAC_SYNC_PIN 8
+#define DAC1_CS_PIN 9
+#define DAC2_CS_PIN 8
 
 //GPIO expander
 #define GPIO_CS_PIN 10

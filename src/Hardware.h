@@ -32,26 +32,25 @@ class Hardware {
         #define AnalogOutputDeviceT DAC8164Device
         #define DigitalOutputDeviceT NativeDevice
 
-        AnalogInput(channel1PotPin, A13)
-        AnalogInput(channel2PotPin, A12)
-        AnalogInput(channel3PotPin, A11)
-        AnalogInput(channel4PotPin, A10)
+        AnalogInput(channel1PotPin, A7)
+        AnalogInput(channel2PotPin, A2)
+        AnalogInput(channel3PotPin, A3)
+        AnalogInput(channel4PotPin, A6)
 
-        AnalogInput(channel1InputPin, A7)
-        AnalogInput(channel2InputPin, A6)
-        AnalogInput(channel3InputPin, A8)
-        AnalogInput(channel4InputPin, A9)
+        AnalogInput(channel1CvPin, A11)  //CV5
+        AnalogInput(channel2CvPin, A10)  //CV6
+        AnalogInput(channel3CvPin, A1)   //CV7
+        AnalogInput(channel4CvPin, A0)   //CV8
 
-        AnalogInput(channel1CvPin, A1)
-        AnalogInput(channel2CvPin, A0)
-        AnalogInput(channel3CvPin, A2)
-        AnalogInput(channel4CvPin, A3)
+        AnalogInput(channel1InputPin, A16) //CV1
+        AnalogInput(channel2InputPin, A17) //CV2
+        AnalogInput(channel3InputPin, A12) //CV3
+        AnalogInput(channel4InputPin, A13) //CV4
 
         DigitalInput(trigger1InputPin, 36)
         DigitalInput(trigger2InputPin, 35)
         DigitalInput(trigger3InputPin, 34)
         DigitalInput(trigger4InputPin, 33)
-
         DigitalInputPin<>* triggerInputPins[CHANNEL_COUNT] = {
             &trigger1InputPin,
             &trigger2InputPin,
@@ -59,12 +58,33 @@ class Hardware {
             &trigger4InputPin
         }; 
 
-        DAC8164Device dac8164Device = DAC8164Device(-1, DAC_SYNC_PIN);
-        AnalogOutputPin<DAC8164Device>* cvOutputPins[CHANNEL_COUNT] = {
-            &dac8164Device.pins[1],
-            &dac8164Device.pins[2],
-            &dac8164Device.pins[3],
-            &dac8164Device.pins[0],
+        DigitalInput(button1InputPin, 28)
+        DigitalInput(button2InputPin, 38)
+        DigitalInput(button3InputPin, 39)
+        DigitalInput(button4InputPin, 29)
+        PushButton<> pushButtons[CHANNEL_COUNT] = {
+            PushButton<>(button1InputPin),
+            PushButton<>(button2InputPin),
+            PushButton<>(button3InputPin),
+            PushButton<>(button4InputPin),
+        }; 
+
+        DigitalOutput(led1OutputPin, 30)
+        DigitalOutput(led2OutputPin, 31)
+        DigitalOutput(led3OutputPin, 32)
+        DigitalOutput(led4OutputPin, 37)
+
+        DAC8164Device dac8164Device1 = DAC8164Device(-1, DAC1_CS_PIN);
+        DAC8164Device dac8164Device2 = DAC8164Device(-1, DAC2_CS_PIN);
+        AnalogOutputPin<DAC8164Device>* cvOutputPins[8] = {
+            &dac8164Device2.pins[1],
+            &dac8164Device2.pins[2],
+            &dac8164Device2.pins[3],
+            &dac8164Device2.pins[0],
+            &dac8164Device1.pins[3],
+            &dac8164Device1.pins[0],
+            &dac8164Device1.pins[1],
+            &dac8164Device1.pins[2],
         };
 
 };
