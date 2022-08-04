@@ -30,6 +30,7 @@ void ScaleChordController::update() {
         if(Hardware::hw.pushButtons[0].pressed()) {
             Serial.println("button 1 press");
             Hardware::hw.led1OutputPin.digitalWrite(!Hardware::hw.led1OutputPin.getDigitalValue());
+            Hardware::hw.display.init();
         } else if(Hardware::hw.pushButtons[0].released()) {
 
         }
