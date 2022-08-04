@@ -7,7 +7,7 @@
 #include <eurorack_dac8164.h>
 #include <eurorack_mcp23s17.h>
 #include "hwconfig.h"
-#include "display/Display.h"
+#include "interface/TFTDisplay.h"
 #include "lib/quantizer/filesystem/TuningsManager.h"
 
 #define MEMPOOL_SIZE 48*1024
@@ -88,7 +88,7 @@ class Hardware {
             &dac8164Device1.pins[2],
         };
 
-        Display display;
+        TFTDisplay display;
 
 };
 

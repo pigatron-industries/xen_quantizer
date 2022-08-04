@@ -1,6 +1,7 @@
 #ifndef Display_h
 #define Display_h
 
+#include "lib/graphics/GraphicsContext.h"
 #include <TFT_eSPI.h>
 
 // #include <SPI.h>
@@ -12,14 +13,14 @@
 // #define DISPLAY_FONT_HEIGHT 7
 // #define DISPLAY_FONT_WIDTH 5
 
-class Display {
+class TFTDisplay : public GraphicsContext {
     public:
-        Display() {}
+        TFTDisplay() {}
         void init();
 
         void clear();
         void update();
-        // void text(const char* text, uint8_t x = TEXTLINE_1, uint8_t y = 0, uint8_t w = DISPLAY_WIDTH);
+        void text(const char* text, uint8_t x = 0, uint8_t y = 0);
         // void text(int num, uint8_t x = TEXTLINE_1, uint8_t y = 0, uint8_t w = DISPLAY_WIDTH);
         // void drawWaveShape(WaveShape* waveShape, uint8_t x, uint8_t y, uint8_t width, uint8_t height, uint8_t n = 1, bool bipolar = true);
     
