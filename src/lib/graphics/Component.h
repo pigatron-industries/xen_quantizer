@@ -9,7 +9,8 @@ class Component {
 
 public:
     Component() {}
-    virtual void render(G& graphicsContext);
+    virtual void layout() {};
+    virtual void render(G& graphicsContext) = 0;
 
     int16_t getTop() { return top; }
     int16_t getLeft() { return left; }

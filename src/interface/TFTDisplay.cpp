@@ -15,6 +15,10 @@ void TFTDisplay::update() {
     
 }
 
+void TFTDisplay::setFont(uint8_t font) {
+    tft.setTextFont(font);
+}
+
 void TFTDisplay::text(const char* text, uint8_t x, uint8_t y) {
     tft.setTextColor(TFT_WHITE);
     tft.drawString(text, x, y);
