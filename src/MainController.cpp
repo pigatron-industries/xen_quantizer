@@ -3,8 +3,8 @@
 #include "Hardware.h"
 
 #include <Arduino.h>
+#include <SPI.h>
 #include <math.h>
-
 
 #define TRANSMIT_TIME 10000
 
@@ -36,6 +36,7 @@ void MainController::controllerInit() {
 
     int intervalMicros = 1000000/sampleRate;
     interruptTimer.begin(MainController::interruptHandler, intervalMicros);
+    SPI.usingInterrupt(interruptTimer);
 }
 
 void MainController::interruptHandler() {

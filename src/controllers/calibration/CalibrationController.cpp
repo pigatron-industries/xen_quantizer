@@ -61,8 +61,8 @@ void CalibrationController::updateOutput() {
     uint16_t binaryValue = calibration.convertReverse(currentVoltage);
     Hardware::hw.cvOutputPins[output]->analogWrite(currentVoltage);
 
-    // voltageField.setValue(currentVoltage);
-    // offsetField.setValue(binaryValue);
+    voltageField.setValue(currentVoltage);
+    offsetField.setValue(binaryValue);
 }
 
 void CalibrationController::process() {
