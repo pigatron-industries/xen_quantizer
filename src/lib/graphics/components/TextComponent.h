@@ -12,9 +12,8 @@ public:
     static const int MAX_LENGTH = 32;
     static const int DEFAULT_HEIGHT = 10;
 
-    TextComponent() {}
-    TextComponent(const char* text);
-    virtual void render(G& graphicsContext);
+    TextComponent(uint16_t width, const char* text = "");
+    virtual void render();
 
     void setText(const char* text);
 
@@ -25,20 +24,15 @@ protected:
 
 
 template<class G>
-TextComponent<G>::TextComponent() { 
+TextComponent<G>::TextComponent(uint16_t width, const char* text) {
     this->setHeight(DEFAULT_HEIGHT);
-    setText("");
+    this->setWidth(width);
+    this->setText(text);
 }
 
 template<class G>
-TextComponent<G>::TextComponent(const char* text) {
-    this->setHeight(DEFAULT_HEIGHT);
-    setText(text);
-}
-
-template<class G>
-void TextComponent<G>::render(G& graphicsContext) {
-    graphicsContext.text(&text[0], this->left, this->top);
+void TextComponent<G>::render() {
+    this->graphicsContext->text(&text[0], this->left, this->top);
 }
 
 template<class G>

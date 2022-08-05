@@ -17,5 +17,6 @@ void Hardware::init() {
 
     for(int i = 0; i < CHANNEL_COUNT; i++) {
         cvOutputPins[i]->setPinType(PinType::ANALOG_OUTPUT);
+        cvOutputPins[i]->loadCalibration();
     }
 }

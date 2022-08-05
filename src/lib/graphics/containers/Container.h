@@ -8,7 +8,9 @@ class Container : public Component<G> {
 
 public:
     Container() {}
-    virtual void render(G& graphicsContext);
+    virtual void setContext(G* graphicsContext);
+    
+    virtual void render();
     void addComponent(Component<G>* component);
 
 protected:
@@ -18,9 +20,18 @@ protected:
 
 
 template<class G, int N>
-void Container<G, N>::render(G& graphicsContext) {
+void Container<G, N>::setContext(G* graphicsContext) {
+    this->graphicsContext = graphicsContext;
     for(Component<G>* component : components) {
-        component->render(graphicsContext);
+        component->setContext(graphicsContext);
+    }
+}
+
+
+template<class G, int N>
+void Container<G, N>::render() {
+    for(Component<G>* component : components) {
+        component->render();
     }
 }
 

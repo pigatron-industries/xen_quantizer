@@ -3,7 +3,7 @@
 
 #include "Controller.h"
 #include "lib/graphics/containers/VerticalContainer.h"
-#include "lib/graphics/components/TextComponent.h"
+#include "lib/graphics/components/FieldComponent.h"
 
 class CalibrationController : public ParameterizedController<8> {
     public:
@@ -22,11 +22,11 @@ class CalibrationController : public ParameterizedController<8> {
         int currentVoltage = 0;
         AnalogPinCalibration calibration;
 
-        VerticalContainer<TFTDisplay, 2> displayPage;
-        TextComponent<TFTDisplay> text1;
-        TextComponent<TFTDisplay> text2;
-        TextComponent<TFTDisplay> text3;
-        TextComponent<TFTDisplay> text4;
+        VerticalContainer<TFTDisplay, 4> displayPage;
+        TextComponent<TFTDisplay> title = TextComponent<TFTDisplay>(TFTDisplay::WIDTH, "CALIBRRATION");
+        FieldComponent<TFTDisplay> outputField = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 80, "OUTPUT:");
+        FieldComponent<TFTDisplay> voltageField = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 80, "VOLTAGE:");
+        FieldComponent<TFTDisplay> offsetField = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 80, "OFFSET:");
 
         void startCalibrate();
         void saveCalibration();

@@ -1,17 +1,11 @@
 #include "CalibrationController.h"
 
 void CalibrationController::init(float sampleRate) {
-    Serial.println("init(float sampleRate)");
-
-    displayPage.addComponent(&text1);
-    displayPage.addComponent(&text2);
-    displayPage.addComponent(&text3);
-    displayPage.addComponent(&text4);
-    text1.setText("CALIBRRATION");
-    text2.setText("OUTPUT:");
-    text3.setText("VOLTAGE:");
-    text4.setText("OFFSET:");
-
+    displayPage.addComponent(&title);
+    displayPage.addComponent(&outputField);
+    displayPage.addComponent(&voltageField);
+    displayPage.addComponent(&offsetField);
+    displayPage.setContext(&Hardware::hw.display);
     displayPage.layout();
 
     ParameterizedController<8>::init(sampleRate);
@@ -20,11 +14,12 @@ void CalibrationController::init(float sampleRate) {
 
 void CalibrationController::init() {
     Serial.println("Calibration");
-    displayPage.render(Hardware::hw.display);
+    displayPage.render();
     startCalibrate();
 }
 
 int CalibrationController::cycleMode(int amount) {
+    Serial.println("cycleMode");
     saveCalibration();
     parameters.cycle(amount);
     startCalibrate();
@@ -32,6 +27,7 @@ int CalibrationController::cycleMode(int amount) {
 }
 
 void CalibrationController::cycleValue(int amount) {
+    Serial.println("cycleValue");
     if(currentVoltage == 0) {
         calibration.offset(-amount);
     } else {
@@ -52,7 +48,7 @@ void CalibrationController::startCalibrate() {
 
     updateOutput();
 
-    //displayPage.setValue(1, output);
+    outputField.setValue(output);
 }
 
 void CalibrationController::saveCalibration() {
@@ -65,8 +61,8 @@ void CalibrationController::updateOutput() {
     uint16_t binaryValue = calibration.convertReverse(currentVoltage);
     Hardware::hw.cvOutputPins[output]->analogWrite(currentVoltage);
 
-    //displayPage.setValue(2, currentVoltage);
-    //displayPage.setValue(3, binaryValue);
+    // voltageField.setValue(currentVoltage);
+    // offsetField.setValue(binaryValue);
 }
 
 void CalibrationController::process() {
