@@ -11,13 +11,16 @@ class ScaleChordInterface {
         void init();
         void render();
 
+        void setTuning(const char* tuningName);
+        void setScale(const char* scaleName);
+        void setChord(const char* chordName);
 
     private:
         VerticalContainer<TFTDisplay, 4> page;
         TextComponent<TFTDisplay> title = TextComponent<TFTDisplay>(TFTDisplay::WIDTH, "CHORD QUANTIZER", 2, TFT_ORANGE);
-        // FieldComponent<TFTDisplay> outputField = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 80, "OUTPUT:");
-        // FieldComponent<TFTDisplay> voltageField = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 80, "VOLTAGE:");
-        // FieldComponent<TFTDisplay> offsetField = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 80, "OFFSET:");
+        FieldComponent<TFTDisplay> tuningField = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 40, "TUNING:");
+        FieldComponent<TFTDisplay> scaleField = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 40, "SCALE:");
+        FieldComponent<TFTDisplay> chordField = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 40, "CHORD:");
 };
 
 #endif

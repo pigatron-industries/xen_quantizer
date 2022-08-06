@@ -28,7 +28,7 @@ public:
     void setFocusable(bool focusable) { this->focusable = focusable; }
 
 protected:
-    G* graphicsContext;
+    G* graphicsContext = nullptr;
 
     uint16_t top = 0;
     uint16_t left = 0;

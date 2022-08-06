@@ -3,8 +3,8 @@
 void ScaleChordController::init(float sampleRate) {
     Controller::init(sampleRate);
     parameters[Parameter::TUNING].last = Hardware::hw.tuningsManager.getTuningCount()-1;
-    setTuning(parameters[Parameter::TUNING].value);
     interface.init();
+    setTuning(parameters[Parameter::TUNING].value);
     init();
 }
 
@@ -64,6 +64,7 @@ void ScaleChordController::setTuning(int index) {
 
     Serial.print("Tuning: ");
     Serial.println(tuning->getName());
+    interface.setTuning(tuning->getName());
 
     parameters[Parameter::SCALE].value = 0;
     parameters[Parameter::SCALE].last = tuningData->scales.size() - 1;
@@ -87,8 +88,11 @@ void ScaleChordController::setScale(int index) {
 
     Serial.print("Scale: ");
     Serial.println(scale->getName());
+    interface.setScale(scale->getName());
+
     Serial.print("Chord: ");
     Serial.println(chordDef->name);
+    interface.setChord(chordDef->name);
 }
 
 void ScaleChordController::process() {
