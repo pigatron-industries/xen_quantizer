@@ -24,7 +24,13 @@ class TFTDisplay : public GraphicsContext {
         void clear();
         void update();
 
+        // fonts
         void setFont(uint8_t font);
+        uint16_t getFontHeight(uint8_t font);
+
+        // colours
+        void setTextColour(uint16_t colour);
+
         void text(const char* text, uint8_t x = 0, uint8_t y = 0);
 
         void fillRectangle(int x, int y, int w, int h, int color);

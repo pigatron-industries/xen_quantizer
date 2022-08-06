@@ -9,7 +9,6 @@ class Container : public Component<G> {
 public:
     Container() {}
     virtual void setContext(G* graphicsContext);
-    
     virtual void render();
     void addComponent(Component<G>* component);
 

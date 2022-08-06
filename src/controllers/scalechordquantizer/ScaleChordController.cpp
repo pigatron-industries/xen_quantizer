@@ -4,11 +4,13 @@ void ScaleChordController::init(float sampleRate) {
     Controller::init(sampleRate);
     parameters[Parameter::TUNING].last = Hardware::hw.tuningsManager.getTuningCount()-1;
     setTuning(parameters[Parameter::TUNING].value);
+    interface.init();
     init();
 }
 
 void ScaleChordController::init() {
     Serial.println("Quantizer");
+    interface.render();
     chordClock();
 }
 

@@ -1,9 +1,8 @@
-#ifndef TuningController_h
-#define TuningController_h
+#ifndef CalibrationController_h
+#define CalibrationController_h
 
 #include "Controller.h"
-#include "lib/graphics/containers/VerticalContainer.h"
-#include "lib/graphics/components/FieldComponent.h"
+#include "CalibrationInterface.h"
 
 class CalibrationController : public ParameterizedController<8> {
     public:
@@ -18,15 +17,9 @@ class CalibrationController : public ParameterizedController<8> {
     private:
         IntegerInput<AnalogInputPinT> octaveInput = IntegerInput<AnalogInputPinT>(Hardware::hw.channel1PotPin, -5, 5, -4, 4);
 
-        int octave = 0;
         int currentVoltage = 0;
         AnalogPinCalibration calibration;
-
-        VerticalContainer<TFTDisplay, 4> displayPage;
-        TextComponent<TFTDisplay> title = TextComponent<TFTDisplay>(TFTDisplay::WIDTH, "CALIBRRATION");
-        FieldComponent<TFTDisplay> outputField = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 80, "OUTPUT:");
-        FieldComponent<TFTDisplay> voltageField = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 80, "VOLTAGE:");
-        FieldComponent<TFTDisplay> offsetField = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 80, "OFFSET:");
+        CalibrationInterface interface;
 
         void startCalibrate();
         void saveCalibration();

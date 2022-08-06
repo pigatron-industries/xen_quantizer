@@ -1,20 +1,14 @@
 #include "CalibrationController.h"
 
 void CalibrationController::init(float sampleRate) {
-    displayPage.addComponent(&title);
-    displayPage.addComponent(&outputField);
-    displayPage.addComponent(&voltageField);
-    displayPage.addComponent(&offsetField);
-    displayPage.setContext(&Hardware::hw.display);
-    displayPage.layout();
-
     ParameterizedController<8>::init(sampleRate);
+    interface.init();
     init();
 }
 
 void CalibrationController::init() {
     Serial.println("Calibration");
-    displayPage.render();
+    interface.render();
     startCalibrate();
 }
 
@@ -38,7 +32,8 @@ void CalibrationController::cycleValue(int amount) {
 
 void CalibrationController::update() {
     if(octaveInput.update()) {
-        octave = octaveInput.getIntValue();
+        currentVoltage = octaveInput.getIntValue();
+        updateOutput();
     }
 }
 
@@ -48,7 +43,7 @@ void CalibrationController::startCalibrate() {
 
     updateOutput();
 
-    outputField.setValue(output);
+    interface.setOutput(output);
 }
 
 void CalibrationController::saveCalibration() {
@@ -61,8 +56,8 @@ void CalibrationController::updateOutput() {
     uint16_t binaryValue = calibration.convertReverse(currentVoltage);
     Hardware::hw.cvOutputPins[output]->analogWrite(currentVoltage);
 
-    voltageField.setValue(currentVoltage);
-    offsetField.setValue(binaryValue);
+    interface.setVoltage(currentVoltage);
+    interface.setOffset(binaryValue);
 }
 
 void CalibrationController::process() {

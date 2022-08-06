@@ -7,6 +7,7 @@
 #include "lib/quantizer/filesystem/TuningsManager.h"
 #include "lib/quantizer/QuantizerScale.h"
 #include "lib/quantizer/QuantizerChord.h"
+#include "ScaleChordInterface.h"
 
 
 using namespace eurorack;
@@ -40,6 +41,8 @@ class ScaleChordController : public ParameterizedController<2> {
             GateInput<>(*Hardware::hw.triggerInputPins[2]),
             GateInput<>(*Hardware::hw.triggerInputPins[3])
         };
+
+        ScaleChordInterface interface;
 
         StaticTuningData* defaultTuningData = &Tuning12EDO::data;
         TuningData* tuningData = nullptr;

@@ -13,7 +13,7 @@ public:
     static const int MAX_LABEL_LENGTH = 32;
     static const int MAX_VALUE_LENGTH = 32;
 
-    FieldComponent(uint16_t width, uint16_t labelWidth, const char* label = "");
+    FieldComponent(uint16_t width, uint16_t labelWidth, const char* label = "", uint8_t font = 1, uint16_t colour = 0xFFFF);
     virtual void layout();
     virtual void render();
 
@@ -26,6 +26,8 @@ protected:
     char value[MAX_VALUE_LENGTH];
 
     uint16_t labelWidth;
+    uint8_t font;
+    uint16_t colour;
 
     uint16_t valueLeft;
 
@@ -35,16 +37,19 @@ protected:
 
 
 template<class G>
-FieldComponent<G>::FieldComponent(uint16_t width, uint16_t labelWidth, const char* label) {
+FieldComponent<G>::FieldComponent(uint16_t width, uint16_t labelWidth, const char* label, uint8_t font, uint16_t colour) {
     this->setHeight(TextComponent<G>::DEFAULT_HEIGHT);
     this->setLabel(label);
     this->setWidth(width);
     this->labelWidth = labelWidth;
+    this->font = font;
+    this->colour = colour;
 }
 
 template<class G>
 void FieldComponent<G>::layout() {
     valueLeft = this->left + labelWidth;
+    this->setHeight(this->graphicsContext->getFontHeight(font));
 }
 
 template<class G>
@@ -55,15 +60,17 @@ void FieldComponent<G>::render() {
 
 template<class G>
 void FieldComponent<G>::renderLabel() {
+    this->graphicsContext->setFont(font);
+    this->graphicsContext->setTextColour(colour);
     this->graphicsContext->text(&label[0], this->left, this->top);
 }
 
 template<class G>
 void FieldComponent<G>::renderValue() {
-    // this->graphicsContext->fillRectangle(0, 0, 40, 10, 0);
-    this->graphicsContext->fillRectangle(this->valueLeft, this->top, 40, 10, 0);
+    this->graphicsContext->fillRectangle(this->valueLeft, this->top, this->width - this->valueLeft, this->height, 0);
+    this->graphicsContext->setFont(font);
+    this->graphicsContext->setTextColour(colour);
     this->graphicsContext->text(&value[0], this->valueLeft, this->top);
-    //this->graphicsContext->text("test", this->valueLeft, this->top);
 }
 
 template<class G>
