@@ -8,6 +8,10 @@ void CalibrationController::init(float sampleRate) {
 
 void CalibrationController::init() {
     Serial.println("Calibration");
+    for(int i = 0; i < 8; i++) {
+        Hardware::hw.cvOutputPins[i]->analogWrite(0);
+    }
+
     interface.render();
     startCalibrate();
 }
