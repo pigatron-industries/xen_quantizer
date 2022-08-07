@@ -12,27 +12,33 @@
 
 using namespace eurorack;
 
-class ScaleChordController : public ParameterizedController<2> {
+class ScaleChordController : public ParameterizedController<3> {
     public:
 
         enum Parameter {
             TUNING,
-            SCALE
+            SCALE,
+            CHORD
         };
 
         ScaleChordController() : ParameterizedController() {}
         virtual void init(float sampleRate);
         virtual void init();
+
+        int cycleMode(int amount);
+        virtual void cycleValue(int amount);
+
         virtual void update();
         virtual void process();
-        virtual void cycleValue(int amount);
+
+        
 
     private:
 
         IntegerInput<AnalogInputPinT> quantizedScaleOffsetPot = IntegerInput<AnalogInputPinT>(Hardware::hw.channel1PotPin, -5, 5, 0, 11);
         LinearInput<AnalogInputPinT> linearScaleOffsetPot = LinearInput<AnalogInputPinT>(Hardware::hw.channel1PotPin, -5, 5, 0, 1);
-        IntegerInput<AnalogInputPinT> chordQuality = IntegerInput<AnalogInputPinT>(Hardware::hw.channel2PotPin, -5, 5, 0, 1);
-        IntegerInput<AnalogInputPinT> chordInversion = IntegerInput<AnalogInputPinT>(Hardware::hw.channel3PotPin, -5, 5, 0, 1);
+        // IntegerInput<AnalogInputPinT> chordQuality = IntegerInput<AnalogInputPinT>(Hardware::hw.channel2PotPin, -5, 5, 0, 1);
+        // IntegerInput<AnalogInputPinT> chordInversion = IntegerInput<AnalogInputPinT>(Hardware::hw.channel3PotPin, -5, 5, 0, 1);
         // IntegerInput<AnalogInputPinT> chordVoicing = IntegerInput<AnalogInputPinT>(Hardware::hw.channel4PotPin, -5, 5, 0, 3);
 
         GateInput<> triggerInputs[4] = {
@@ -60,6 +66,7 @@ class ScaleChordController : public ParameterizedController<2> {
         
         void setTuning(int index);
         void setScale(int index);
+        void setChord(int index);
         void chordClock();
         void noteClock();
 };

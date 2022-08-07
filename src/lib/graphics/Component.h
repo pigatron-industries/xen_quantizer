@@ -27,6 +27,8 @@ public:
     void setVisibility(bool visible) { this->visible = visible; }
     void setFocusable(bool focusable) { this->focusable = focusable; }
 
+    void setFocus(bool focus) { this->focus = focus; }
+
 protected:
     G* graphicsContext = nullptr;
 
@@ -36,6 +38,7 @@ protected:
     uint16_t width = 0;
     bool visible = true;
     bool focusable = false;
+    bool focus = false;
 
 };
 

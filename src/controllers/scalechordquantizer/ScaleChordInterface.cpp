@@ -26,3 +26,15 @@ void ScaleChordInterface::setScale(const char* scaleName) {
 void ScaleChordInterface::setChord(const char* chordName) {
     chordField.setValue(chordName);
 }
+
+void ScaleChordInterface::focusTuning() {
+    focusManager.setFocus(&tuningField);
+}
+
+void ScaleChordInterface::focusScale() {
+    focusManager.setFocus(&scaleField);
+}
+
+void ScaleChordInterface::focusChord() {
+    focusManager.setFocus(&chordField);
+}

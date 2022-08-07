@@ -13,7 +13,7 @@ public:
     static const int MAX_LABEL_LENGTH = 32;
     static const int MAX_VALUE_LENGTH = 32;
 
-    FieldComponent(uint16_t width, uint16_t labelWidth, const char* label = "", uint8_t font = 1, uint16_t colour = 0xFFFF);
+    FieldComponent(uint16_t width, uint16_t labelWidth, const char* label = "", uint8_t font = 1, uint16_t colourText = 0xFFFF);
     virtual void layout();
     virtual void render();
 
@@ -27,7 +27,8 @@ protected:
 
     uint16_t labelWidth;
     uint8_t font;
-    uint16_t colour;
+    uint16_t colourText;
+    uint16_t colourFocus = TFT_NAVY;
     uint8_t paddingTop = 1;
     uint8_t paddingBottom = 1;
 
@@ -41,13 +42,13 @@ protected:
 
 
 template<class G>
-FieldComponent<G>::FieldComponent(uint16_t width, uint16_t labelWidth, const char* label, uint8_t font, uint16_t colour) {
+FieldComponent<G>::FieldComponent(uint16_t width, uint16_t labelWidth, const char* label, uint8_t font, uint16_t colourText) {
     this->setHeight(TextComponent<G>::DEFAULT_HEIGHT);
     this->setLabel(label);
     this->setWidth(width);
     this->labelWidth = labelWidth;
     this->font = font;
-    this->colour = colour;
+    this->colourText = colourText;
 }
 
 template<class G>
@@ -67,15 +68,15 @@ void FieldComponent<G>::render() {
 template<class G>
 void FieldComponent<G>::renderLabel() {
     this->graphicsContext->setFont(font);
-    this->graphicsContext->setTextColour(colour);
+    this->graphicsContext->setTextColour(colourText);
     this->graphicsContext->text(&label[0], this->left, textTop);
 }
 
 template<class G>
 void FieldComponent<G>::renderValue() {
-    this->graphicsContext->fillRectangle(this->valueLeft, this->top, valueWidth, this->height, 0);
+    this->graphicsContext->fillRectangle(this->valueLeft, this->top, valueWidth, this->height, this->focus ? colourFocus : 0);
     this->graphicsContext->setFont(font);
-    this->graphicsContext->setTextColour(colour);
+    this->graphicsContext->setTextColour(colourText);
     this->graphicsContext->text(&value[0], this->valueLeft, textTop);
 }
 
