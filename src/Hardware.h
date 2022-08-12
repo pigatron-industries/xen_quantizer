@@ -27,6 +27,7 @@ class Hardware {
 
         // Direct connections
         RotaryEncoderButton encoder = RotaryEncoderButton(ENCODER1_PIN1, ENCODER1_PIN2, ENCODER1_BTN_PIN);
+        RotaryEncoderButton encoder2 = RotaryEncoderButton(ENCODER2_PIN1, ENCODER2_PIN2, ENCODER2_BTN_PIN);
 
         #define AnalogInputPinT AnalogInputPin<NativeDevice>
         #define AnalogInputSumPinT AnalogInputSumPin<NativeDevice>

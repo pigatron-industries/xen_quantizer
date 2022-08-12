@@ -13,7 +13,7 @@ MainController* MainController::mainController = nullptr;
 MainController::MainController(float sampleRate) : AbstractMainController(Hardware::hw.encoder) {
     MainController::mainController = this;
     this->sampleRate = sampleRate;
-    this->shortPress = &MainController::incrementMode;
+    // this->shortPress = &MainController::incrementMode;
     this->clockWise = &MainController::incrementValue;
     this->antiClockWise = &MainController::decrementValue;
     initOnModeSelect = false;
@@ -44,14 +44,56 @@ void MainController::interruptHandler() {
 }
 
 void MainController::update() {
-    RotaryEncoderButton::EncoderEvent event = encoder.getEncoderEvent();
-    if(event == RotaryEncoderButton::EncoderEvent::EVENT_SHORT_PRESS) {
-        
-    }
-    doEncoderEvent(event);
+    doEncoder1Event(Hardware::hw.encoder.getEncoderEvent());
+    doEncoder2Event(Hardware::hw.encoder2.getEncoderEvent());
+
     controllers.getSelected()->update();
 
     PROFILE_PRINT
+}
+
+void MainController::doEncoder1Event(RotaryEncoderButton::EncoderEvent event) {
+    switch(event) {
+        case RotaryEncoderButton::EncoderEvent::EVENT_CLOCKWISE:
+            incrementMode();
+            break;
+        case RotaryEncoderButton::EncoderEvent::EVENT_ANTICLOCKWISE:
+            decrementMode();
+            break;
+        case RotaryEncoderButton::EncoderEvent::EVENT_HELD_CLOCKWISE:
+            (this->*heldClockWise)();
+            break;
+        case RotaryEncoderButton::EncoderEvent::EVENT_HELD_ANTICLOCKWISE:
+            (this->*heldAntiClockWise)();
+            break;
+        case RotaryEncoderButton::EncoderEvent::EVENT_SHORT_PRESS:
+            //(this->*shortPress)();
+            break;
+        case RotaryEncoderButton::EncoderEvent::EVENT_NONE:
+            break;
+    }
+}
+
+void MainController::doEncoder2Event(RotaryEncoderButton::EncoderEvent event) {
+    switch(event) {
+        case RotaryEncoderButton::EncoderEvent::EVENT_CLOCKWISE:
+            incrementValue();
+            break;
+        case RotaryEncoderButton::EncoderEvent::EVENT_ANTICLOCKWISE:
+            decrementValue();
+            break;
+        case RotaryEncoderButton::EncoderEvent::EVENT_HELD_CLOCKWISE:
+            //(this->*heldClockWise)();
+            break;
+        case RotaryEncoderButton::EncoderEvent::EVENT_HELD_ANTICLOCKWISE:
+            //(this->*heldAntiClockWise)();
+            break;
+        case RotaryEncoderButton::EncoderEvent::EVENT_SHORT_PRESS:
+            //(this->*shortPress)();
+            break;
+        case RotaryEncoderButton::EncoderEvent::EVENT_NONE:
+            break;
+    }
 }
 
 void MainController::process() {

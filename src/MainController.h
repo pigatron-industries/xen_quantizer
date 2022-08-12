@@ -20,6 +20,8 @@ private:
     float sampleRate;
 
     void controllerInit();
+    void doEncoder1Event(RotaryEncoderButton::EncoderEvent event);
+    void doEncoder2Event(RotaryEncoderButton::EncoderEvent event);
 
     IntervalTimer interruptTimer;
     static MainController* mainController;
