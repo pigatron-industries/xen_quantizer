@@ -5,6 +5,7 @@ void ScaleChordInterface::init() {
     page.addComponent(&tuningField);
     page.addComponent(&scaleField);
     page.addComponent(&chordField);
+    page.addComponent(&noteVisualiser);
 
     page.setContext(&Hardware::hw.display);
     page.layout();
@@ -15,16 +16,18 @@ void ScaleChordInterface::render() {
     page.render();
 }
 
-void ScaleChordInterface::setTuning(const char* tuningName) {
-    tuningField.setValue(tuningName);
+void ScaleChordInterface::setTuning(Tuning* tuning) {
+    tuningField.setValue(tuning->getName());
+    noteVisualiser.setTuning(tuning);
 }
 
-void ScaleChordInterface::setScale(const char* scaleName) {
-    scaleField.setValue(scaleName);
+void ScaleChordInterface::setScale(Scale* scale) {
+    scaleField.setValue(scale->getName());
+    noteVisualiser.setScale(scale);
 }
 
-void ScaleChordInterface::setChord(const char* chordName) {
-    chordField.setValue(chordName);
+void ScaleChordInterface::setChord(ChordDef* chordDef) {
+    chordField.setValue(chordDef->name);
 }
 
 void ScaleChordInterface::focusTuning() {

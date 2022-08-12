@@ -55,7 +55,6 @@ void ScaleChordController::update() {
         if(Hardware::hw.pushButtons[0].pressed()) {
             Serial.println("button 1 press");
             Hardware::hw.led1OutputPin.digitalWrite(!Hardware::hw.led1OutputPin.getDigitalValue());
-            Hardware::hw.display.init();
         } else if(Hardware::hw.pushButtons[0].released()) {
 
         }
@@ -87,7 +86,7 @@ void ScaleChordController::setTuning(int index) {
 
     Serial.print("Tuning: ");
     Serial.println(tuning->getName());
-    interface.setTuning(tuning->getName());
+    interface.setTuning(tuning);
 
     parameters[Parameter::SCALE].value = 0;
     parameters[Parameter::SCALE].last = tuningData->scales.size() - 1;
@@ -113,11 +112,11 @@ void ScaleChordController::setScale(int index) {
 
     Serial.print("Scale: ");
     Serial.println(scale->getName());
-    interface.setScale(scale->getName());
+    interface.setScale(scale);
 
     Serial.print("Chord: ");
     Serial.println(chordDef->name);
-    interface.setChord(chordDef->name);
+    interface.setChord(chordDef);
 }
 
 void ScaleChordController::setChord(int index) {
@@ -125,7 +124,7 @@ void ScaleChordController::setChord(int index) {
 
     Serial.print("Chord: ");
     Serial.println(chordDef->name);
-    interface.setChord(chordDef->name);
+    interface.setChord(chordDef);
 }
 
 void ScaleChordController::process() {
