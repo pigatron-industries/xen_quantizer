@@ -140,6 +140,12 @@ void TuningDataFileReader::readLine(FsFile& file) {
     line.lineLength = file.readBytesUntil('\n', buffer, MAX_LINE_SIZE);
     line.endOfFile = line.lineLength == 0;
     line.level = getLevel();
+
+    // remove comments
+    char* hash = strchr(buffer, '#');
+    if(hash != nullptr) {
+        *hash = 0;
+    }
 }
 
 int TuningDataFileReader::getLevel() {
@@ -148,7 +154,7 @@ int TuningDataFileReader::getLevel() {
 }
 
 char* TuningDataFileReader::getValue() {
-    return strchr(buffer, ':') + 1;
+    return strchr(buffer, ':') + 2;
 }
 
 bool TuningDataFileReader::isObject(const char* name, int level) {
