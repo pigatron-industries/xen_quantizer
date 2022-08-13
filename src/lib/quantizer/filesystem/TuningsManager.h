@@ -16,6 +16,7 @@ class TuningsManager {
 
         TuningsManager(FileSystem& fs, MemPool<>& memPool) : fs(fs), memPool(memPool) {}
         void init();
+        void clear();
         int getTuningCount();
         TuningData& loadTuningData(int index);
 

@@ -10,12 +10,20 @@ void TuningsManager::init() {
     }
 }
 
+void TuningsManager::clear() {
+    tuningsManager.clear();
+    scalesManager.clear();
+    tuningData.scales.clear();
+    tuningData.tuning = nullptr;
+    memPool.reset();
+}
+
 int TuningsManager::getTuningCount() {
     return fs.ls().getSize();
 }
 
 TuningData& TuningsManager::loadTuningData(int index) {
-    memPool.reset();
+    clear();
 
     FileInfo& file = fs.ls().getFile(index);
     TuningDataFileReader fileReader = TuningDataFileReader(*this);
