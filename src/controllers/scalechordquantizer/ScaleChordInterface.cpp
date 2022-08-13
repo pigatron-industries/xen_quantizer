@@ -5,6 +5,7 @@ void ScaleChordInterface::init() {
     page.addComponent(&tuningField);
     page.addComponent(&scaleField);
     page.addComponent(&chordField);
+    page.addComponent(&offsetField);
     page.addComponent(&noteVisualiser);
 
     page.setContext(&Hardware::hw.display);
@@ -23,6 +24,7 @@ void ScaleChordInterface::setTuning(Tuning* tuning) {
 
 void ScaleChordInterface::setScale(Scale* scale) {
     scaleField.setValue(scale->getName());
+    offsetField.setValue(scale->getOffset());
     noteVisualiser.setScale(scale);
 }
 
@@ -36,6 +38,10 @@ void ScaleChordInterface::focusTuning() {
 
 void ScaleChordInterface::focusScale() {
     focusManager.setFocus(&scaleField);
+}
+
+void ScaleChordInterface::focusOffset() {
+    focusManager.setFocus(&offsetField);
 }
 
 void ScaleChordInterface::focusChord() {

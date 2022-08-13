@@ -23,9 +23,10 @@ protected:
     uint16_t colour;
 
     uint16_t noteWidth;
+    uint16_t tuningWidth;
 
     void renderTuning();
-    void renderScale();
+    void renderNote(int note, uint16_t noteLeft);
 };
 
 #include "NoteVisualiserImpl.h"

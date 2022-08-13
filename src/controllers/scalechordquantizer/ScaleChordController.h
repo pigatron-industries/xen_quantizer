@@ -12,13 +12,14 @@
 
 using namespace eurorack;
 
-class ScaleChordController : public ParameterizedController<3> {
+class ScaleChordController : public ParameterizedController<4> {
     public:
 
         enum Parameter {
             TUNING,
             SCALE,
-            CHORD
+            CHORD,
+            OFFSET
         };
 
         ScaleChordController() : ParameterizedController() {}

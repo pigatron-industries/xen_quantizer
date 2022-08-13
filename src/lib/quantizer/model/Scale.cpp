@@ -3,7 +3,6 @@
 // #include "debug.h"
 
 bool Scale::containsNote(int note) {
-    //TODO more efficient to negatively offset note paramter instead of offset each note?
     for(int i = 0; i < notes.size(); i++) {
         if(notes[i] == note) {
             return true;

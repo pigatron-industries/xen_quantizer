@@ -20,15 +20,17 @@ class ScaleChordInterface {
         void focusTuning();
         void focusScale();
         void focusChord();
+        void focusOffset();
 
     private:
         FocusManager<TFTDisplay> focusManager;
 
-        VerticalContainer<TFTDisplay, 5> page;
+        VerticalContainer<TFTDisplay, 6> page;
         TextComponent<TFTDisplay> title = TextComponent<TFTDisplay>(TFTDisplay::WIDTH, "CHORD QUANTIZER", 2, TFT_ORANGE);
-        FieldComponent<TFTDisplay> tuningField = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 40, "TUNING:");
-        FieldComponent<TFTDisplay> scaleField = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 40, "SCALE:");
-        FieldComponent<TFTDisplay> chordField = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 40, "CHORD:");
+        FieldComponent<TFTDisplay> tuningField = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 50, "TUNING:");
+        FieldComponent<TFTDisplay> scaleField  = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 50, "SCALE:");
+        FieldComponent<TFTDisplay> chordField  = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 50, "CHORD:");
+        FieldComponent<TFTDisplay> offsetField = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 50, "OFFSET:");
 
         NoteVisualiser<TFTDisplay> noteVisualiser = NoteVisualiser<TFTDisplay>(TFTDisplay::WIDTH, 10);
 };

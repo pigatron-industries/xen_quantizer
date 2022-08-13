@@ -28,6 +28,9 @@ int ScaleChordController::cycleMode(int amount) {
         case Parameter::CHORD:
             interface.focusChord();
             break;
+        case Parameter::OFFSET:
+            interface.focusOffset();
+            break;
     }
 
     return parameters.getSelectedIndex(); 
@@ -46,6 +49,10 @@ void ScaleChordController::cycleValue(int amount) {
             interface.focusChord();
             setChord(parameters[Parameter::CHORD].value);
             break;
+        case Parameter::OFFSET:
+            interface.focusOffset();
+            scale->setOffset(parameters[Parameter::OFFSET].value);
+            interface.setScale(scale);
     }
 }
 
@@ -90,6 +97,8 @@ void ScaleChordController::setTuning(int index) {
 
     parameters[Parameter::SCALE].value = 0;
     parameters[Parameter::SCALE].last = tuningData->scales.size() - 1;
+    parameters[Parameter::OFFSET].value = 0;
+    parameters[Parameter::OFFSET].last = tuning->size() - 1;
     setScale(0);
 }
 

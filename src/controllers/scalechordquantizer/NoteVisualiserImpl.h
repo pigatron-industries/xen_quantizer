@@ -13,36 +13,38 @@ NoteVisualiser<G>::NoteVisualiser(uint16_t width, uint16_t height) {
 template<class G>
 void NoteVisualiser<G>::render() {
     renderTuning();
-    renderScale();
 }
 
 template<class G>
 void NoteVisualiser<G>::renderTuning() {
+    this->graphicsContext->fillRectangle(this->getLeft(), this->getTop(), this->getWidth(), this->getHeight(), TFT_BLACK);
     if(tuning != nullptr) {
-        this->graphicsContext->fillRectangle(this->getLeft(), this->getTop(), this->getWidth(), this->getHeight(), TFT_BLACK);
         uint16_t noteLeft = this->getLeft();
+        if(scale != nullptr) {
+            noteLeft += noteWidth*scale->getOffset();
+        }
         for(int i = 0; i < tuning->size(); i++) {
-            this->graphicsContext->fillRectangle(noteLeft, this->getTop(), noteWidth-1, this->getHeight(), TFT_NAVY);
+            renderNote(i, noteLeft);
             noteLeft += noteWidth;
+            noteLeft %= tuningWidth;
         }
     }
 }
 
 template<class G>
-void NoteVisualiser<G>::renderScale() {
-    if(scale != nullptr) {
-        for(int i = 0; i < scale->size(); i++) {
-            uint8_t note = scale->getNote(i);
-            uint16_t noteLeft = this->getLeft() + noteWidth*note;
-            this->graphicsContext->fillRectangle(noteLeft, this->getTop(), noteWidth-1, this->getHeight(), TFT_MAROON);
-        }
+void NoteVisualiser<G>::renderNote(int note, uint16_t noteLeft) {
+    uint16_t colour = TFT_NAVY;
+    if(scale != nullptr && scale->containsNote(note)) {
+        colour = TFT_MAROON;
     }
+    this->graphicsContext->fillRectangle(noteLeft, this->getTop(), noteWidth-1, this->getHeight(), colour);
 }
 
 template<class G>
 void NoteVisualiser<G>::setTuning(Tuning* tuning) { 
     this->tuning = tuning; 
     noteWidth = this->getWidth() / tuning->size();
+    tuningWidth = noteWidth * tuning->size();
     this->renderTuning();
 }
 
@@ -50,5 +52,4 @@ template<class G>
 void NoteVisualiser<G>::setScale(Scale* scale) { 
     this->scale = scale;
     setTuning(scale->getTuning());
-    this->renderScale();
 }
