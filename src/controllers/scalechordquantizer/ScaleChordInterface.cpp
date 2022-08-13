@@ -24,12 +24,16 @@ void ScaleChordInterface::setTuning(Tuning* tuning) {
 
 void ScaleChordInterface::setScale(Scale* scale) {
     scaleField.setValue(scale->getName());
-    offsetField.setValue(scale->getOffset());
+    offsetField.setValue(scale->getOffset()*scale->getTuning()->size());
     noteVisualiser.setScale(scale);
 }
 
-void ScaleChordInterface::setChord(ChordDef* chordDef) {
+void ScaleChordInterface::setChordDef(ChordDef* chordDef) {
     chordField.setValue(chordDef->name);
+}
+
+void ScaleChordInterface::setChord(Chord* chord) {
+    noteVisualiser.setChord(chord);
 }
 
 void ScaleChordInterface::focusTuning() {

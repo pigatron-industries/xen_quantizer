@@ -12,7 +12,7 @@ void ScaleChordController::init(float sampleRate) {
 void ScaleChordController::init() {
     Serial.println("Quantizer");
     interface.render();
-    chordClock();
+    chordUpdate();
 }
 
 int ScaleChordController::cycleMode(int amount) {
@@ -51,8 +51,9 @@ void ScaleChordController::cycleValue(int amount) {
             break;
         case Parameter::OFFSET:
             interface.focusOffset();
-            scale->setOffset(parameters[Parameter::OFFSET].value);
+            scale->setOffset(float(parameters[Parameter::OFFSET].value) / tuning->size());
             interface.setScale(scale);
+            chordUpdate();
     }
 }
 
@@ -125,7 +126,7 @@ void ScaleChordController::setScale(int index) {
 
     Serial.print("Chord: ");
     Serial.println(chordDef->name);
-    interface.setChord(chordDef);
+    interface.setChordDef(chordDef);
 }
 
 void ScaleChordController::setChord(int index) {
@@ -133,14 +134,16 @@ void ScaleChordController::setChord(int index) {
 
     Serial.print("Chord: ");
     Serial.println(chordDef->name);
-    interface.setChord(chordDef);
+    interface.setChordDef(chordDef);
 }
 
 void ScaleChordController::process() {
     //transpose = Hardware::hw.channel1InputPin.analogRead();
 
     if(triggerInputs[0].update() && triggerInputs[0].rose()) {
-        chordClock();
+        delay(1);
+        chordUpdate();
+        chordOutput();
     }
 
     if(triggerInputs[1].update() && triggerInputs[1].rose()) {
@@ -148,15 +151,13 @@ void ScaleChordController::process() {
     }
 }
 
-void ScaleChordController::chordClock() {
-    delay(1);
-
-    if(quantizedScaleOffsetPot.update()) {
-        Note scaleRoot = tuning->createNote(0, quantizedScaleOffsetPot.getIntValue());
-        scale->setOffset(scaleRoot.voltage);
-        Serial.print("Offset: ");
-        Serial.println(quantizedScaleOffsetPot.getIntValue());
-    }
+void ScaleChordController::chordUpdate() {
+    // if(quantizedScaleOffsetPot.update()) {
+    //     Note scaleRoot = tuning->createNote(0, quantizedScaleOffsetPot.getIntValue());
+    //     scale->setOffset(scaleRoot.voltage);
+    //     Serial.print("Offset: ");
+    //     Serial.println(quantizedScaleOffsetPot.getIntValue());
+    // }
 
     // if(chordQuality.update()) {
     //     chordDef = &scale->getChordDefs()[chordQuality.getIntValue()];
@@ -173,10 +174,18 @@ void ScaleChordController::chordClock() {
     // chord = ScaleFactory::createChord(*scale, *chordDef, root, chordInversion.getIntValue(), 0);
     chord = ScaleFactory::createChord(*scale, *chordDef, root, 0, 0);
 
+    // Hardware::hw.cvOutputPins[3]->analogWrite(chord[3].voltage);
+
+    // Serial.println(root.cycle);
+    // Serial.println(root.note);
+    // Serial.println(root.voltage);
+    interface.setChord(&chord);
+}
+
+void ScaleChordController::chordOutput() {
     Hardware::hw.cvOutputPins[0]->analogWrite(chord[0].voltage + transpose);
     Hardware::hw.cvOutputPins[1]->analogWrite(chord[1].voltage + transpose);
     Hardware::hw.cvOutputPins[2]->analogWrite(chord[2].voltage + transpose);
-    // Hardware::hw.cvOutputPins[3]->analogWrite(chord[3].voltage);
 }
 
 void ScaleChordController::noteClock() {

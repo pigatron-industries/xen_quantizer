@@ -16,10 +16,12 @@ public:
 
     void setTuning(Tuning* tuning);
     void setScale(Scale* scale);
+    void setChord(Chord* chord);
 
 protected:
     Tuning* tuning = nullptr;
     Scale* scale = nullptr;
+    Chord* chord = nullptr;
     uint16_t colour;
 
     uint16_t noteWidth;
