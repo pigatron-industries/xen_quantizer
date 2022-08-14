@@ -6,8 +6,8 @@
 
 class QuantizerScale : public QuantizerChromatic {
     public:
-        QuantizerScale(Scale& scale) : QuantizerChromatic(*scale.getTuning()) { this->scale = &scale; }
-        void setScale(Scale& scale) { this->scale = &scale; }
+        QuantizerScale(Scale& scale) : QuantizerChromatic(*scale.getTuning()) { this->scale = &scale;}
+        void setScale(Scale& scale) { this->scale = &scale; this->tuning = scale.getTuning(); }
         Scale* getScale() { return scale; }
         
         Note quantize(float voltage);

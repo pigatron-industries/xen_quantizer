@@ -111,6 +111,7 @@ void ScaleChordController::setScale(int index) {
     }
 
     scaleQuantizer.setScale(*scale);
+    chordQuantizer.setScale(*scale);
 
     // update chord parameter range
     parameters[Parameter::CHORD].value = 0;
