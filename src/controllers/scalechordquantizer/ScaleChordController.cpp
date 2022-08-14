@@ -89,6 +89,8 @@ void ScaleChordController::update() {
 }
 
 void ScaleChordController::setTuning(int index) {
+    interface.showMessage("Loading");
+
     tuningData = &Hardware::hw.tuningsManager.loadTuningData(index);
     tuning = tuningData->tuning;
 
@@ -101,6 +103,7 @@ void ScaleChordController::setTuning(int index) {
     parameters[Parameter::OFFSET].value = 0;
     parameters[Parameter::OFFSET].last = tuning->size() - 1;
     setScale(0);
+    interface.render();
 }
 
 void ScaleChordController::setScale(int index) {

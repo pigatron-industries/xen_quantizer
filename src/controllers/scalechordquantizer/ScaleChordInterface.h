@@ -4,6 +4,7 @@
 #include "Hardware.h"
 #include "lib/graphics/containers/VerticalContainer.h"
 #include "lib/graphics/components/FieldComponent.h"
+#include "lib/graphics/components/MessageBoxComponent.h"
 #include "lib/graphics/manager/FocusManager.h"
 #include "NoteVisualiser.h"
 
@@ -23,6 +24,8 @@ class ScaleChordInterface {
         void focusChord();
         void focusOffset();
 
+        void showMessage(const char* message);
+
     private:
         FocusManager<TFTDisplay> focusManager;
 
@@ -34,6 +37,8 @@ class ScaleChordInterface {
         FieldComponent<TFTDisplay> offsetField = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 50, "OFFSET:");
         FieldComponent<TFTDisplay> field       = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 50, "");
         NoteVisualiser<TFTDisplay> noteVisualiser = NoteVisualiser<TFTDisplay>(TFTDisplay::WIDTH, 10);
+
+        MessageBoxComponent<TFTDisplay> messageBox = MessageBoxComponent<TFTDisplay>(TFTDisplay::WIDTH*0.5, TFTDisplay::HEIGHT*0.5, 2, TFT_ORANGE);
 };
 
 #endif

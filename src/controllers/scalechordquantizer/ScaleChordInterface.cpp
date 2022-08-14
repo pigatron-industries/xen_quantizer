@@ -11,6 +11,9 @@ void ScaleChordInterface::init() {
 
     page.setContext(&Hardware::hw.display);
     page.layout();
+
+    messageBox.setContext(&Hardware::hw.display);
+    messageBox.layout();
 }
 
 void ScaleChordInterface::render() {
@@ -51,4 +54,8 @@ void ScaleChordInterface::focusOffset() {
 
 void ScaleChordInterface::focusChord() {
     focusManager.setFocus(&chordField);
+}
+
+void ScaleChordInterface::showMessage(const char* message) {
+    messageBox.showMessage(message);
 }

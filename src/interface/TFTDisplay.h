@@ -24,16 +24,24 @@ class TFTDisplay : public GraphicsContext {
         void clear();
         void update();
 
+        // display info
+        uint16_t getWidth() { return WIDTH; }
+        uint16_t getHeight() { return HEIGHT; }
+
         // fonts
         void setFont(uint8_t font);
         uint16_t getFontHeight(uint8_t font);
+        uint16_t getFontWidth(uint8_t font);
 
         // colours
         void setTextColour(uint16_t colour);
 
+        // text
         void text(const char* text, uint8_t x = 0, uint8_t y = 0);
 
+        // shapes
         void fillRectangle(int x, int y, int w, int h, int color);
+        void drawRectangle(int x, int y, int w, int h, int color);
     
     protected: 
         TFT_eSPI tft = TFT_eSPI();
