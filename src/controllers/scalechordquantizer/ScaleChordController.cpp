@@ -147,7 +147,8 @@ void ScaleChordController::process() {
     }
 
     if(triggerInputs[1].update() && triggerInputs[1].rose()) {
-        noteClock();
+        delay(1);
+        noteUpdate();
     }
 }
 
@@ -188,8 +189,7 @@ void ScaleChordController::chordOutput() {
     Hardware::hw.cvOutputPins[2]->analogWrite(chord[2].voltage + transpose);
 }
 
-void ScaleChordController::noteClock() {
-    delay(1);
+void ScaleChordController::noteUpdate() {
     float noteVoltage = Hardware::hw.channel2InputPin.analogRead();
     Note note = chordQuantizer.quantize(noteVoltage);
     //Note note = scaleQuantizer.quantize(noteVoltage);

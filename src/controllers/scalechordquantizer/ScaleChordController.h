@@ -70,7 +70,7 @@ class ScaleChordController : public ParameterizedController<4> {
         void setChord(int index);
         void chordUpdate();
         void chordOutput();
-        void noteClock();
+        void noteUpdate();
 };
 
 #endif

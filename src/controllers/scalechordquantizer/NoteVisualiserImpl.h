@@ -22,7 +22,6 @@ void NoteVisualiser<G>::renderTuning() {
         uint16_t noteLeft = this->getLeft();
         if(scale != nullptr) {
             noteLeft += tuningWidth*scale->getOffset();
-            Serial.println(noteLeft);
         }
         for(int i = 0; i < tuning->size(); i++) {
             renderNote(i, noteLeft);
