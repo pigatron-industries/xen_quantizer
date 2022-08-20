@@ -1,9 +1,8 @@
 #ifndef CalibrationInterface_h
 #define CalibrationInterface_h
 
+#include <eurorack_graphics.h>
 #include "Hardware.h"
-#include "lib/graphics/containers/VerticalContainer.h"
-#include "lib/graphics/components/FieldComponent.h"
 
 class CalibrationInterface {
     public:

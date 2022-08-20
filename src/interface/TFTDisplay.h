@@ -1,7 +1,7 @@
 #ifndef Display_h
 #define Display_h
 
-#include "lib/graphics/GraphicsContext.h"
+#include <eurorack_graphics.h>
 #include <TFT_eSPI.h>
 
 // #include <SPI.h>

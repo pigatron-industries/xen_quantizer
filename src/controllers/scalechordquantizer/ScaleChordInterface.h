@@ -1,11 +1,8 @@
 #ifndef ScaleChordInterface_h
 #define ScaleChordInterface_h
 
+#include <eurorack_graphics.h>
 #include "Hardware.h"
-#include "lib/graphics/containers/VerticalContainer.h"
-#include "lib/graphics/components/FieldComponent.h"
-#include "lib/graphics/components/MessageBoxComponent.h"
-#include "lib/graphics/manager/FocusManager.h"
 #include "NoteVisualiser.h"
 
 class ScaleChordInterface {

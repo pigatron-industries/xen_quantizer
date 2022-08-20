@@ -2,7 +2,7 @@
 #define NoteVisualiser_h
 
 #include <inttypes.h>
-#include "lib/graphics/Component.h"
+#include <eurorack_graphics.h>
 #include "lib/quantizer/model/Scale.h"
 
 
