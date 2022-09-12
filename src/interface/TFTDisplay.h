@@ -18,6 +18,11 @@ class TFTDisplay : public GraphicsContext {
         static const uint16_t WIDTH = TFT_HEIGHT;
         static const uint16_t HEIGHT = TFT_WIDTH;
 
+        static const uint16_t DEF_COLOUR_TEXT = TFT_WHITE;
+        static const uint16_t DEF_COLOUR_BACK = TFT_BLACK;
+        static const uint16_t DEF_COLOUR_FOCUS_TEXT = TFT_WHITE;
+        static const uint16_t DEF_COLOUR_FOCUS_BACK = TFT_NAVY;
+
         TFTDisplay() {}
         void init();
 

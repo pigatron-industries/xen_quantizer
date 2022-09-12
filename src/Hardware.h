@@ -22,7 +22,7 @@ class Hardware {
         MemPool<char> memPool = MemPool<char>(Hardware::memPoolBuffer, MEMPOOL_SIZE);
 
         // SD Card
-        FileSystem fs = FileSystem("/quantizer");
+        FileSystem fs = FileSystem(SD_CS_PIN, "/quantizer");
         TuningsManager tuningsManager = TuningsManager(fs, memPool);
 
         // Direct connections

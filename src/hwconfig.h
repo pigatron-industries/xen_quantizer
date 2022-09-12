@@ -8,6 +8,7 @@
 #define ENCODER2_PIN2 4
 #define DAC1_CS_PIN 9
 #define DAC2_CS_PIN 8
+#define SD_CS_PIN 1
 
 //GPIO expander
 #define GPIO_CS_PIN 10
