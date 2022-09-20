@@ -51,10 +51,14 @@ void ScaleChordController::cycleValue(int amount) {
             break;
         case Parameter::OFFSET:
             interface.focusOffset();
-            scale->setOffset(float(parameters[Parameter::OFFSET].value) / tuning->size());
+            updateOffset();
             interface.setScale(scale);
             chordUpdate();
     }
+}
+
+void ScaleChordController::updateOffset() {
+    scale->setOffset(float(parameters[Parameter::OFFSET].value) / tuning->size());
 }
 
 void ScaleChordController::update() {
@@ -115,6 +119,7 @@ void ScaleChordController::setScale(int index) {
 
     scaleQuantizer.setScale(*scale);
     chordQuantizer.setScale(*scale);
+    updateOffset();
 
     // update chord parameter range
     parameters[Parameter::CHORD].value = 0;

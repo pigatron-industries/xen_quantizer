@@ -1465,11 +1465,11 @@ type 0207, grid 7.5 mm</description>
 <instance part="3" gate="HEADER" x="60.96" y="2.54" smashed="yes">
 <attribute name="NAME" x="47.244" y="1.524" size="1.778" layer="96"/>
 </instance>
-<instance part="1_TX" gate="HEADER" x="2.54" y="50.8" smashed="yes">
-<attribute name="NAME" x="-11.176" y="49.784" size="1.778" layer="96"/>
+<instance part="1_TX" gate="HEADER" x="58.42" y="104.14" smashed="yes">
+<attribute name="NAME" x="44.704" y="103.124" size="1.778" layer="96"/>
 </instance>
-<instance part="0_RX" gate="HEADER" x="2.54" y="53.34" smashed="yes">
-<attribute name="NAME" x="-11.176" y="52.324" size="1.778" layer="96"/>
+<instance part="0_RX" gate="HEADER" x="60.96" y="134.62" smashed="yes">
+<attribute name="NAME" x="47.244" y="133.604" size="1.778" layer="96"/>
 </instance>
 <instance part="CV7_" gate="HEADER" x="2.54" y="-137.16" smashed="yes">
 <attribute name="NAME" x="-11.176" y="-138.176" size="1.778" layer="96"/>
@@ -2613,6 +2613,20 @@ type 0207, grid 7.5 mm</description>
 <pinref part="SW2" gate="ENCODER" pin="A"/>
 <pinref part="4" gate="HEADER" pin="3"/>
 <wire x1="63.5" y1="7.62" x2="66.04" y2="7.62" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$4" class="0">
+<segment>
+<pinref part="TFT1" gate="G$1" pin="RES"/>
+<wire x1="76.2" y1="134.62" x2="63.5" y2="134.62" width="0.1524" layer="91"/>
+<pinref part="0_RX" gate="HEADER" pin="3"/>
+</segment>
+</net>
+<net name="N$57" class="0">
+<segment>
+<pinref part="1_TX" gate="HEADER" pin="3"/>
+<pinref part="U$2" gate="G$1" pin="CS/SS"/>
+<wire x1="60.96" y1="104.14" x2="76.2" y2="104.14" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>

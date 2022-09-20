@@ -1663,6 +1663,16 @@ einem neuen Namen ab.</description>
 <wire x1="68.58" y1="78.74" x2="55.92" y2="91.4" width="0.3048" layer="16"/>
 <wire x1="55.92" y1="91.4" x2="55.92" y2="91.56" width="0.3048" layer="16"/>
 </signal>
+<signal name="N$4">
+<contactref element="TFT1" pad="RES"/>
+<contactref element="0_RX" pad="1"/>
+<wire x1="36.195" y1="108.9025" x2="68.58" y2="88.9" width="0" layer="19" extent="1-1"/>
+</signal>
+<signal name="N$57">
+<contactref element="1_TX" pad="1"/>
+<contactref element="U$2" pad="P$2"/>
+<wire x1="35.77" y1="81.45" x2="68.58" y2="86.36" width="0" layer="19" extent="1-1"/>
+</signal>
 </signals>
 <mfgpreviewcolors>
 <mfgpreviewcolor name="soldermaskcolor" color="0xC8008000"/>

@@ -68,6 +68,7 @@ class ScaleChordController : public ParameterizedController<4> {
         void setTuning(int index);
         void setScale(int index);
         void setChord(int index);
+        void updateOffset();
         void chordUpdate();
         void chordOutput();
         void noteUpdate();
