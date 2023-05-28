@@ -1666,12 +1666,18 @@ einem neuen Namen ab.</description>
 <signal name="N$4">
 <contactref element="TFT1" pad="RES"/>
 <contactref element="0_RX" pad="1"/>
-<wire x1="36.195" y1="108.9025" x2="68.58" y2="88.9" width="0" layer="19" extent="1-1"/>
+<wire x1="68.58" y1="88.9" x2="56.1975" y2="88.9" width="0.3048" layer="1"/>
+<wire x1="56.1975" y1="88.9" x2="36.195" y2="108.9025" width="0.3048" layer="1"/>
 </signal>
 <signal name="N$57">
 <contactref element="1_TX" pad="1"/>
 <contactref element="U$2" pad="P$2"/>
-<wire x1="35.77" y1="81.45" x2="68.58" y2="86.36" width="0" layer="19" extent="1-1"/>
+<wire x1="40.68" y1="86.36" x2="68.58" y2="86.36" width="0.3048" layer="1"/>
+<wire x1="35.8794" y1="82.960325" x2="36.459675" y2="83.5406" width="0.3048" layer="1"/>
+<wire x1="35.77" y1="81.45" x2="35.8794" y2="81.5594" width="0.3048" layer="1"/>
+<wire x1="37.8606" y1="83.5406" x2="40.68" y2="86.36" width="0.3048" layer="1"/>
+<wire x1="35.8794" y1="81.5594" x2="35.8794" y2="82.960325" width="0.3048" layer="1"/>
+<wire x1="36.459675" y1="83.5406" x2="37.8606" y2="83.5406" width="0.3048" layer="1"/>
 </signal>
 </signals>
 <mfgpreviewcolors>
