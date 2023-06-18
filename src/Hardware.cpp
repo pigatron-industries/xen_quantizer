@@ -2,7 +2,7 @@
 
 Hardware Hardware::hw = Hardware();
 
-char Hardware::memPoolBuffer[MEMPOOL_SIZE];
+unsigned char Hardware::memPoolBuffer[MEMPOOLTUNING_SIZE];
 
 void Hardware::init() {
     NativeDevice::instance.init();
@@ -12,7 +12,8 @@ void Hardware::init() {
     dac8164Device2.init();
     dac8164Device1.setDeferredOutput(true);
     dac8164Device2.setDeferredOutput(true);
-    fs.init();
+    fsTunings.init();
+    fsModels.init();
     tuningsManager.init();
 
     for(int i = 0; i < CHANNEL_COUNT; i++) {

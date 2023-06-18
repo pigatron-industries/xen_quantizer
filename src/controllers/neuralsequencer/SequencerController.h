@@ -3,11 +3,8 @@
 
 #include "Controller.h"
 #include "SequencerInterface.h"
-#include "lib/quantizer/data/Tuning12EDO.h"
-#include "lib/quantizer/ScaleFactory.h"
-#include "lib/quantizer/filesystem/TuningsManager.h"
-#include "lib/quantizer/QuantizerScale.h"
-#include "lib/quantizer/QuantizerChord.h"
+#include "Hardware.h"
+#include "lib/neural/filesystem/TensorflowModelManager.h"
 
 
 using namespace eurorack;
@@ -37,7 +34,10 @@ class SequencerController : public ParameterizedController<1> {
         };
 
         SequencerInterface interface;
+
+        TensorflowModelManager modelManager = TensorflowModelManager(Hardware::hw.fsModels, Hardware::hw.memPoolModel);
         
+        void loadModel(int index);
         void tick();
 };
 

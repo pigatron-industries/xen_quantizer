@@ -24,7 +24,6 @@
 # Compiled Static libraries
 *.lai
 *.la
-*.a
 *.lib
 
 # Executables
@@ -46,3 +45,6 @@ Thumbs.db
 .clang_complete
 .gcc-flags.json
 .vscode
+
+# tflite src
+/src/tflite

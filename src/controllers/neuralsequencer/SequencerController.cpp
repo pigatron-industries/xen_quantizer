@@ -2,7 +2,9 @@
 
 void SequencerController::init(float sampleRate) {
     Controller::init(sampleRate);
+    modelManager.init();
     interface.init();
+    loadModel(0);  //TODO load last used model stored as controller parameter
     init();
 }
 
@@ -18,6 +20,10 @@ int SequencerController::cycleMode(int amount) {
 
 void SequencerController::cycleValue(int amount) {
     parameters.getSelected().cycle(amount);
+}
+
+void SequencerController::loadModel(int index) {
+    modelManager.loadModel(index);
 }
 
 void SequencerController::update() {

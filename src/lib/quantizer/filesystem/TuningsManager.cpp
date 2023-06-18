@@ -2,6 +2,7 @@
 #include "TuningDataFileReader.h"
 
 void TuningsManager::init() {
+    Serial.println("TuningsManager::init");  
     fs.cd("/");
     FileList& files = fs.ls();
     for(int i = 0; i < files.getSize(); i++) {
@@ -25,9 +26,11 @@ int TuningsManager::getTuningCount() {
 TuningData& TuningsManager::loadTuningData(int index) {
     clear();
 
+    fs.cd("/");
     FileInfo& file = fs.ls().getFile(index);
-    TuningDataFileReader fileReader = TuningDataFileReader(*this);
+    Serial.print("Loading tuning: ");
     Serial.println(file.filepath);
+    TuningDataFileReader fileReader = TuningDataFileReader(*this);
     fs.read(file.filepath, &fileReader);
 
     return tuningData;

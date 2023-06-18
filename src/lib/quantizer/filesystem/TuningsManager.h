@@ -12,8 +12,6 @@
 
 class TuningsManager {
     public:
-        static TuningsManager manager;
-
         TuningsManager(FileSystem& fs, MemPool<>& memPool) : fs(fs), memPool(memPool) {}
         void init();
         void clear();
@@ -28,6 +26,7 @@ class TuningsManager {
     private:
         FileSystem& fs;
 
+        // currently loaded tuning data
         TuningData tuningData;
 
         // memory management

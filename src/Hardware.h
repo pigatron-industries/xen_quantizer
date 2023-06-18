@@ -10,20 +10,25 @@
 #include "interface/TFTDisplay.h"
 #include "lib/quantizer/filesystem/TuningsManager.h"
 
-#define MEMPOOL_SIZE 48*1024
+#define MEMPOOLTUNING_SIZE 48*1024
+#define MEMPOOLMODEL_SIZE 2*1024
 
 class Hardware {
     public:
         static Hardware hw;
         void init();
 
-        // Memory pool
-        static char memPoolBuffer[MEMPOOL_SIZE];
-        MemPool<char> memPool = MemPool<char>(Hardware::memPoolBuffer, MEMPOOL_SIZE);
-
         // SD Card
-        FileSystem fs = FileSystem(SD_CS_PIN, "/quantizer");
-        TuningsManager tuningsManager = TuningsManager(fs, memPool);
+        FileSystem fsTunings = FileSystem(SD_CS_PIN, "/tunings");
+        FileSystem fsModels = FileSystem(SD_CS_PIN, "/models");
+
+        // Memory pool
+        static unsigned char memPoolBuffer[MEMPOOLTUNING_SIZE];
+        MemPool<unsigned char> memPoolTuning = MemPool<unsigned char>(Hardware::memPoolBuffer, MEMPOOLTUNING_SIZE);
+        MemPool<unsigned char> memPoolModel = MemPool<unsigned char>(MEMPOOLMODEL_SIZE);
+
+        // Object management
+        TuningsManager tuningsManager = TuningsManager(fsTunings, memPoolTuning);
 
         // Direct connections
         RotaryEncoderButton encoder = RotaryEncoderButton(ENCODER1_PIN1, ENCODER1_PIN2, ENCODER1_BTN_PIN);
