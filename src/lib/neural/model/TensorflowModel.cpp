@@ -1,18 +1,24 @@
 #include "TensorflowModel.h"
+#include <eurorack.h>
 
 
 void TensorflowModel::init() {
-
+    TfLiteStatus s = registerOps();
+    if(s != kTfLiteOk) {
+        Serial.println("registerOps failed!");
+        return;
+    }
 }
 
 TfLiteStatus TensorflowModel::registerOps() {
     TF_LITE_ENSURE_STATUS(tflOpsResolver.AddFullyConnected());
     TF_LITE_ENSURE_STATUS(tflOpsResolver.AddLogistic());
+    TF_LITE_ENSURE_STATUS(tflOpsResolver.AddDequantize());
     return kTfLiteOk;
 }
 
 void TensorflowModel::loadModel(unsigned char* data) {
-    Serial.println("TensorflowModel::setData");
+    Serial.println("TensorflowModel::loadModel");
 
     tflModel = tflite::GetModel(data);
     if(tflModel->version() != TFLITE_SCHEMA_VERSION) {
@@ -22,14 +28,8 @@ void TensorflowModel::loadModel(unsigned char* data) {
         return;
     }
 
-    TfLiteStatus s = registerOps();
-    if(s != kTfLiteOk) {
-        Serial.println("registerOps failed!");
-        return;
-    }
-
     tflInterpreter = new tflite::MicroInterpreter(tflModel, tflOpsResolver, tensorArena, TENSOR_ARENA_SIZE);
-    s = tflInterpreter->AllocateTensors();
+    TfLiteStatus s = tflInterpreter->AllocateTensors();
     if(s != kTfLiteOk) {
         Serial.println("AllocateTensors failed!");
         return;
@@ -38,24 +38,60 @@ void TensorflowModel::loadModel(unsigned char* data) {
     input = tflInterpreter->input(0);
     output = tflInterpreter->output(0);
 
-    Serial.print("Loaded model with ");
+    loadMetadata();
+
+    Serial.print("Loaded "); 
+    Serial.write(metadata.type, 6);
+    Serial.print(" model with ");
     Serial.print(input->dims->data[1]);
     Serial.print(" inputs and ");
     Serial.print(output->dims->data[1]);
     Serial.println(" outputs");
+}
 
+void TensorflowModel::loadMetadata() {
+    for (uint32_t i=0; i < tflModel->metadata()->size(); i++) {
+        const auto meta = tflModel->metadata()->Get(i);
+        if (meta->name()->str() == "TFLITE_METADATA") {
+            const flatbuffers::Vector<uint8_t> *pvec = tflModel->buffers()->Get(meta->buffer())->data();
+            const char* buffer = reinterpret_cast<const char*>(pvec);
+            const char* ptr = memmem(buffer, pvec->size(), "xen:", 4);
+            if(ptr == nullptr) {
+                Serial.println("xen metadata not found!");
+                return;
+            }
+            ptr += 4;
+            memcpy(metadata.type, ptr, 6);
+            ptr += 6;
+            memcpy(metadata.data, ptr, 6);
+        }
+    }
+}
 
+int TensorflowModel::inputSize() {
+    return input->dims->data[1];
+}
 
+int TensorflowModel::outputSize() {
+    return output->dims->data[1];
+}
 
-    // inference
-    // input->data.f[0] = -1;
-    // s = tflInterpreter->Invoke();
-    // if(s != kTfLiteOk) {
-    //     Serial.println("Invoke failed!");
-    //     return;
-    // }
-    // float out1 = output->data.f[0];
-    // float out2 = output->data.f[1];
-    // Serial.println(out1);
-    // Serial.println(out2);
+void TensorflowModel::setInput(int index, float value) {
+    input->data.f[index] = value;
+}
+
+float TensorflowModel::getOutput(int index) {
+    return output->data.f[index];
+}
+
+TfLitePtrUnion& TensorflowModel::getOutput() {
+    return output->data.f;
+}
+
+void TensorflowModel::runInference() {
+    TfLiteStatus s = tflInterpreter->Invoke();
+    if(s != kTfLiteOk) {
+        Serial.println("Invoke failed!");
+        return;
+    }
 }

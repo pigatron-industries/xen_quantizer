@@ -2,12 +2,10 @@
 #include "TensorflowFileReader.h"
 
 void TensorflowModelManager::init() {
-    Serial.println("TensorflowModelManager::init");  
     fs.cd("/");
     FileList& files = fs.ls();
     for(int i = 0; i < files.getSize(); i++) {
         FileInfo& file = files.getFile(i);
-        Serial.println(file.filepath);  
     }
 }
 
@@ -27,13 +25,6 @@ TensorflowModel& TensorflowModelManager::loadModel(int index) {
     Serial.print("Loading model: ");
     Serial.println(file.filepath);
     TensorflowFileReader fileReader = TensorflowFileReader(memPool, model);
-    // BufferFileReader fileReader = BufferFileReader(memPool);
     fs.read(file.filepath, &fileReader);
-
-    
-    // model.loadModel(fileReader.getBuffer());
-
-    // model.setData(toy_decoder_tflite);
-
     return model;
 }

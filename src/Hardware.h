@@ -11,7 +11,7 @@
 #include "lib/quantizer/filesystem/TuningsManager.h"
 
 #define MEMPOOLTUNING_SIZE 48*1024
-#define MEMPOOLMODEL_SIZE 2*1024
+#define MEMPOOLMODEL_SIZE 160*1024
 
 class Hardware {
     public:
