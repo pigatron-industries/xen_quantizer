@@ -31,7 +31,7 @@ class TensorflowModel {
         int outputSize();
         void setInput(int index, float value);
         float getOutput(int index);
-        TfLitePtrUnion& getOutput();
+        float* getOutput();
         void runInference();
 
     private:

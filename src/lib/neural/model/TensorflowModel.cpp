@@ -84,7 +84,7 @@ float TensorflowModel::getOutput(int index) {
     return output->data.f[index];
 }
 
-TfLitePtrUnion& TensorflowModel::getOutput() {
+float* TensorflowModel::getOutput() {
     return output->data.f;
 }
 
