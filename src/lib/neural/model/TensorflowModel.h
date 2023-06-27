@@ -27,6 +27,8 @@ class TensorflowModel {
         TensorflowModel(MemPool<>& memPool) : memPool(memPool) { init(); }
         void init();
         void loadModel(unsigned char* data);
+        Metadata& getMetadata() { return metadata; }
+        bool checkType(const char* type);
         int inputSize();
         int outputSize();
         void setInput(int index, float value);

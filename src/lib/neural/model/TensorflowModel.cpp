@@ -68,6 +68,10 @@ void TensorflowModel::loadMetadata() {
     }
 }
 
+bool TensorflowModel::checkType(const char* type) {
+    return memcmp(metadata.type, type, 6) == 0;
+}
+
 int TensorflowModel::inputSize() {
     return input->dims->data[1];
 }

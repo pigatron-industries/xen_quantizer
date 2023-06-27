@@ -12,6 +12,7 @@ class TensorflowModelManager {
         void clear();
         int getModelCount();
         TensorflowModel& loadModel(int index);
+        TensorflowModel& getModel() { return model; }
 
     private:
         FileSystem& fs;

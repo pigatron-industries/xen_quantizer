@@ -24,6 +24,11 @@ void SequencerController::cycleValue(int amount) {
 
 void SequencerController::loadModel(int index) {
     modelManager.loadModel(index);
+    if(model.checkType("seqdec")) {
+        sequenceDecoderModel.init();
+    } else {
+        Serial.println("ERROR: unknown model type");
+    }
 }
 
 void SequencerController::update() {
@@ -63,7 +68,37 @@ void SequencerController::process() {
 
 
 void SequencerController::tick() {
-    // Hardware::hw.cvOutputPins[0]->analogWrite(chord[0].voltage + transpose);
-    // Hardware::hw.cvOutputPins[1]->analogWrite(chord[1].voltage + transpose);
-    // Hardware::hw.cvOutputPins[2]->analogWrite(chord[2].voltage + transpose);
+    if (sequenceDecoderModel.tick() == 0) {
+        runInference();
+        Serial.println("inference");
+    }
+
+    OutputNote* notes = sequenceDecoderModel.getOutputNotes();
+    Serial.print("notes: ");
+    for(int i = 0; i < NUM_NOTE_OUTPUTS; i++) {
+        Serial.print(" ");
+        Serial.print(notes[i].note);
+        Serial.print(" ");
+        Serial.print(notes[i].probability);
+        if(notes[i].probability > sequenceDecoderModel.getOutputThreshold()) {
+            float voltage = notes[i].note * 1.0f / 12.0f;  //TODO convert note number into voltage using scale
+            Hardware::hw.cvOutputPins[i]->analogWrite(voltage);
+            //TODO trigger outputs
+        }
+    }
+    Serial.println();
+}
+
+
+void SequencerController::runInference() {
+    latent1Input.update();
+    latent2Input.update();
+    latent3Input.update();
+    model.setInput(0, latent1Input.getValue());
+    model.setInput(1, latent2Input.getValue());
+    model.setInput(2, latent3Input.getValue());
+    Serial.println(latent1Input.getValue());
+    Serial.println(latent2Input.getValue());
+    Serial.println(latent3Input.getValue());
+    model.runInference();
 }
