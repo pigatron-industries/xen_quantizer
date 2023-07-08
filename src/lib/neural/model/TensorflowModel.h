@@ -11,8 +11,6 @@
 // #include "tensorflow/lite/micro/system_setup.h"
 // #include "tensorflow/lite/schema/schema_generated.h"
 
-#define TENSOR_ARENA_SIZE 160 * 1024
-
 class Metadata {
     public:
         Metadata() {}
@@ -43,7 +41,6 @@ class TensorflowModel {
         const tflite::Model* tflModel = nullptr;
         Metadata metadata;
 
-        uint8_t tensorArena[TENSOR_ARENA_SIZE];
         tflite::MicroInterpreter* tflInterpreter = nullptr;
         TfLiteTensor* input = nullptr;
         TfLiteTensor* output = nullptr;

@@ -10,8 +10,9 @@
 #include "interface/TFTDisplay.h"
 #include "lib/quantizer/filesystem/TuningsManager.h"
 
-#define MEMPOOLTUNING_SIZE 48*1024
-#define MEMPOOLMODEL_SIZE 160*1024
+#define MEMPOOL_TUNING_SIZE 48*1024
+#define MEMPOOL_MODEL_SIZE 1024*1024
+#define TENSOR_ARENA_SIZE 1024*1024
 
 class Hardware {
     public:
@@ -23,9 +24,11 @@ class Hardware {
         FileSystem fsModels = FileSystem(SD_CS_PIN, "/models");
 
         // Memory pool
-        static unsigned char memPoolBuffer[MEMPOOLTUNING_SIZE];
-        MemPool<unsigned char> memPoolTuning = MemPool<unsigned char>(Hardware::memPoolBuffer, MEMPOOLTUNING_SIZE);
-        MemPool<unsigned char> memPoolModel = MemPool<unsigned char>(MEMPOOLMODEL_SIZE);
+        static uint8_t memPoolTuningBuffer[MEMPOOL_TUNING_SIZE];
+        MemPool<> memPoolTuning = MemPool<>(Hardware::memPoolTuningBuffer, MEMPOOL_TUNING_SIZE);
+        static uint8_t memPoolModelBuffer[MEMPOOL_MODEL_SIZE];
+        MemPool<> memPoolModel = MemPool<>(Hardware::memPoolModelBuffer, MEMPOOL_MODEL_SIZE);
+        static uint8_t tensorArena[TENSOR_ARENA_SIZE];
 
         // Object management
         TuningsManager tuningsManager = TuningsManager(fsTunings, memPoolTuning);

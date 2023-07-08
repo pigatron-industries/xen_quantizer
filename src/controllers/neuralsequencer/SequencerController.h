@@ -35,9 +35,15 @@ class SequencerController : public ParameterizedController<1> {
             GateInput<>(*Hardware::hw.triggerInputPins[2]),
             GateInput<>(*Hardware::hw.triggerInputPins[3])
         };
-        LinearInput<AnalogInputPinT> latent1Input = LinearInput<AnalogInputPinT>(Hardware::hw.channel1PotPin, -5, 5, -1, 1);
-        LinearInput<AnalogInputPinT> latent2Input = LinearInput<AnalogInputPinT>(Hardware::hw.channel2PotPin, -5, 5, -1, 1);
-        LinearInput<AnalogInputPinT> latent3Input = LinearInput<AnalogInputPinT>(Hardware::hw.channel3PotPin, -5, 5, -1, 1);
+        LinearInput<AnalogInputPinT> latent1Input = LinearInput<AnalogInputPinT>(Hardware::hw.channel1PotPin, -5, 5, -5, 5);
+        LinearInput<AnalogInputPinT> latent2Input = LinearInput<AnalogInputPinT>(Hardware::hw.channel2PotPin, -5, 5, -5, 5);
+        LinearInput<AnalogInputPinT> latent3Input = LinearInput<AnalogInputPinT>(Hardware::hw.channel3PotPin, -5, 5, -5, 5);
+        LinearInput<AnalogInputPinT> thresholdInput = LinearInput<AnalogInputPinT>(Hardware::hw.channel4PotPin, -5, 5, 0, 0.3);
+
+        LinearInput<AnalogInputPinT> latent1CVInput = LinearInput<AnalogInputPinT>(Hardware::hw.channel1CvPin, -5, 5, -5, 5);
+        LinearInput<AnalogInputPinT> latent2CVInput = LinearInput<AnalogInputPinT>(Hardware::hw.channel2CvPin, -5, 5, -5, 5);
+        LinearInput<AnalogInputPinT> latent3CVInput = LinearInput<AnalogInputPinT>(Hardware::hw.channel3CvPin, -5, 5, -5, 5);
+        LinearInput<AnalogInputPinT> thresholdCVInput = LinearInput<AnalogInputPinT>(Hardware::hw.channel4CvPin, -5, 5, -0.3, 0.3);
 
         SequencerInterface interface;
 

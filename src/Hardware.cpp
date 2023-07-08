@@ -2,7 +2,9 @@
 
 Hardware Hardware::hw = Hardware();
 
-unsigned char Hardware::memPoolBuffer[MEMPOOLTUNING_SIZE];
+uint8_t Hardware::memPoolTuningBuffer[MEMPOOL_TUNING_SIZE];
+EXTMEM uint8_t Hardware::memPoolModelBuffer[MEMPOOL_MODEL_SIZE];
+EXTMEM uint8_t Hardware::tensorArena[TENSOR_ARENA_SIZE];
 
 void Hardware::init() {
     NativeDevice::instance.init();

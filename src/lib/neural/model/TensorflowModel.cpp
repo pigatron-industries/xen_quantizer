@@ -1,5 +1,6 @@
 #include "TensorflowModel.h"
 #include <eurorack.h>
+#include "Hardware.h"
 
 
 void TensorflowModel::init() {
@@ -28,7 +29,7 @@ void TensorflowModel::loadModel(unsigned char* data) {
         return;
     }
 
-    tflInterpreter = new tflite::MicroInterpreter(tflModel, tflOpsResolver, tensorArena, TENSOR_ARENA_SIZE);
+    tflInterpreter = new tflite::MicroInterpreter(tflModel, tflOpsResolver, Hardware::tensorArena, TENSOR_ARENA_SIZE);
     TfLiteStatus s = tflInterpreter->AllocateTensors();
     if(s != kTfLiteOk) {
         Serial.println("AllocateTensors failed!");
