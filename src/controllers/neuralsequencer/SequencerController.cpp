@@ -60,12 +60,25 @@ void SequencerController::update() {
 
 
 void SequencerController::process() {
-    if(triggerInputs[0].update() && triggerInputs[0].rose()) {
+    for(int i = 0; i < NUM_NOTE_OUTPUTS; i++) {
+        triggerOutputs[i].update();
+    }
+
+    if(resetInput.update() && resetInput.rose()) {
+        delay(1);
+        reset();
+    }
+
+    if(clockInput.update() && clockInput.rose()) {
         delay(1);
         tick();
     }
 }
 
+
+void SequencerController::reset() {
+    sequenceDecoderModel.reset();
+}
 
 void SequencerController::tick() {
     thresholdInput.update();
@@ -87,7 +100,7 @@ void SequencerController::tick() {
         if(notes[i].probability > threshold) {
             float voltage = notes[i].note * 1.0f / 12.0f;  //TODO convert note number into voltage using scale
             Hardware::hw.cvOutputPins[i]->analogWrite(voltage);
-            //TODO trigger outputs
+            triggerOutputs[i].trigger(); //TODO gate or trigger?
         }
     }
     Serial.println();

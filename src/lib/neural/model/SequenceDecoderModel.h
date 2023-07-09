@@ -23,6 +23,7 @@ class SequenceDecoderModel {
         float getOutputThreshold() { return outputThreshold; }
 
         uint8_t tick();
+        void reset() { tickCounter = -1; } 
         OutputNote* getOutputNotes();
 
     private:

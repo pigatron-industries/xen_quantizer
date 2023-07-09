@@ -29,12 +29,9 @@ class SequencerController : public ParameterizedController<1> {
 
     private:
 
-        GateInput<> triggerInputs[4] = {
-            GateInput<>(*Hardware::hw.triggerInputPins[0]),
-            GateInput<>(*Hardware::hw.triggerInputPins[1]),
-            GateInput<>(*Hardware::hw.triggerInputPins[2]),
-            GateInput<>(*Hardware::hw.triggerInputPins[3])
-        };
+        GateInput<> clockInput = GateInput<>(*Hardware::hw.triggerInputPins[0]);
+        GateInput<> resetInput = GateInput<>(*Hardware::hw.triggerInputPins[1]);
+
         LinearInput<AnalogInputPinT> latent1Input = LinearInput<AnalogInputPinT>(Hardware::hw.channel1PotPin, -5, 5, -5, 5);
         LinearInput<AnalogInputPinT> latent2Input = LinearInput<AnalogInputPinT>(Hardware::hw.channel2PotPin, -5, 5, -5, 5);
         LinearInput<AnalogInputPinT> latent3Input = LinearInput<AnalogInputPinT>(Hardware::hw.channel3PotPin, -5, 5, -5, 5);
@@ -45,6 +42,13 @@ class SequencerController : public ParameterizedController<1> {
         LinearInput<AnalogInputPinT> latent3CVInput = LinearInput<AnalogInputPinT>(Hardware::hw.channel3CvPin, -5, 5, -5, 5);
         LinearInput<AnalogInputPinT> thresholdCVInput = LinearInput<AnalogInputPinT>(Hardware::hw.channel4CvPin, -5, 5, -0.3, 0.3);
 
+        AnalogTriggerOutput<DAC8164Device> triggerOutputs[4] = {
+            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[4]),
+            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[5]),
+            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[6]),
+            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[7])
+        };
+
         SequencerInterface interface;
 
         TensorflowModelManager modelManager = TensorflowModelManager(Hardware::hw.fsModels, Hardware::hw.memPoolModel);
@@ -53,6 +57,7 @@ class SequencerController : public ParameterizedController<1> {
         
         
         void loadModel(int index);
+        void reset();
         void tick();
         void runInference();
 };
