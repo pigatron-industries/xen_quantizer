@@ -8,7 +8,7 @@
 #include "Hardware.h"
 #include "apps.h"
 
-class MainController : AbstractMainController<Controller, CONTROLLERS> {
+class MainController : DoubleEncoderController<Controller, CONTROLLERS> {
 
 public:
     MainController(float sampleRate);
@@ -20,8 +20,6 @@ private:
     float sampleRate;
 
     void controllerInit();
-    void doEncoder1Event(RotaryEncoderButton::EncoderEvent event);
-    void doEncoder2Event(RotaryEncoderButton::EncoderEvent event);
 
     IntervalTimer interruptTimer;
     static MainController* mainController;
