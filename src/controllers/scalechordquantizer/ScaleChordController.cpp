@@ -15,7 +15,7 @@ void ScaleChordController::init() {
     chordUpdate();
 }
 
-int ScaleChordController::cycleMode(int amount) {
+int ScaleChordController::cycleParameter(int amount) {
     parameters.cycle(amount);
 
     switch(parameters.getSelectedIndex()) {

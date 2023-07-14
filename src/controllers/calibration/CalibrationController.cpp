@@ -16,8 +16,8 @@ void CalibrationController::init() {
     startCalibrate();
 }
 
-int CalibrationController::cycleMode(int amount) {
-    Serial.println("cycleMode");
+int CalibrationController::cycleParameter(int amount) {
+    Serial.println("cycleParameter");
     saveCalibration();
     parameters.cycle(amount);
     startCalibrate();

@@ -26,7 +26,7 @@ class ScaleChordController : public ParameterizedController<4> {
         virtual void init(float sampleRate);
         virtual void init();
 
-        int cycleMode(int amount);
+        int cycleParameter(int amount);
         virtual void cycleValue(int amount);
 
         virtual void update();

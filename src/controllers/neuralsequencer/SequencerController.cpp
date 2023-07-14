@@ -13,7 +13,7 @@ void SequencerController::init() {
     interface.render();
 }
 
-int SequencerController::cycleMode(int amount) {
+int SequencerController::cycleParameter(int amount) {
     parameters.cycle(amount);
     return parameters.getSelectedIndex(); 
 }
