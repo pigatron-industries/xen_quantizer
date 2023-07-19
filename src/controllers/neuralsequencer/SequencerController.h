@@ -15,6 +15,10 @@ using namespace eurorack;
 class SequencerController : public ParameterizedController<1> {
     public:
 
+        enum Parameter {
+            MODEL
+        };
+
         SequencerController() : ParameterizedController() {}
         virtual void init(float sampleRate);
         virtual void init();
@@ -56,7 +60,7 @@ class SequencerController : public ParameterizedController<1> {
         SequenceDecoderModel sequenceDecoderModel = SequenceDecoderModel(model);
         
         
-        void loadModel(int index);
+        void setModel(int index);
         void reset();
         void tick();
         void runInference();

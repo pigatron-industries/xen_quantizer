@@ -2,7 +2,7 @@
 
 void ScaleChordController::init(float sampleRate) {
     Controller::init(sampleRate);
-    parameters[Parameter::TUNING].last = Hardware::hw.tuningsManager.getTuningCount()-1;
+    configParam(Parameter::TUNING, 0, Hardware::hw.tuningsManager.getTuningCount()-1);
     interface.init();
     interface.focusTuning();
     setTuning(parameters[Parameter::TUNING].value);
@@ -102,10 +102,8 @@ void ScaleChordController::setTuning(int index) {
     Serial.println(tuning->getName());
     interface.setTuning(tuning);
 
-    parameters[Parameter::SCALE].value = 0;
-    parameters[Parameter::SCALE].last = tuningData->scales.size() - 1;
-    parameters[Parameter::OFFSET].value = 0;
-    parameters[Parameter::OFFSET].last = tuning->size() - 1;
+    configParam(Parameter::SCALE, 0, tuningData->scales.size() - 1);
+    configParam(Parameter::OFFSET, 0, tuning->size() - 1);
     setScale(0);
     interface.render();
 }
@@ -122,8 +120,7 @@ void ScaleChordController::setScale(int index) {
     updateOffset();
 
     // update chord parameter range
-    parameters[Parameter::CHORD].value = 0;
-    parameters[Parameter::CHORD].last = scale->getChordDefs().size() - 1;
+    configParam(Parameter::CHORD, 0, scale->getChordDefs().size() - 1);
     chordDef = &scale->getChordDefs()[parameters[Parameter::CHORD].value];
 
     // chordQuality.setRange(0, scale->getChordDefs().size()-1);

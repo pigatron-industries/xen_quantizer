@@ -4,7 +4,7 @@ void SequencerController::init(float sampleRate) {
     Controller::init(sampleRate);
     modelManager.init();
     interface.init();
-    loadModel(0);  //TODO load last used model stored as controller parameter
+    setModel(parameters[Parameter::MODEL].value);
     init();
 }
 
@@ -15,14 +15,25 @@ void SequencerController::init() {
 
 int SequencerController::cycleParameter(int amount) {
     parameters.cycle(amount);
+    switch(parameters.getSelectedIndex()) {
+        case Parameter::MODEL:
+            interface.focusModel();
+            break;
+    }
+
     return parameters.getSelectedIndex(); 
 }
 
 void SequencerController::cycleValue(int amount) {
     parameters.getSelected().cycle(amount);
+    switch(parameters.getSelectedIndex()) {
+        case Parameter::MODEL:
+            setModel(parameters[Parameter::MODEL].value);
+            break;
+    }
 }
 
-void SequencerController::loadModel(int index) {
+void SequencerController::setModel(int index) {
     modelManager.loadModel(index);
     if(model.checkType("seqdec")) {
         sequenceDecoderModel.init();

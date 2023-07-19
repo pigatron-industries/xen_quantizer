@@ -12,3 +12,11 @@ void SequencerInterface::render() {
     Hardware::hw.display.clear();
     page.render();
 }
+
+void SequencerInterface::setModel(char* modelName) {
+    modelField.setValue(modelName);
+}
+
+void SequencerInterface::focusModel() {
+    focusManager.setFocus(&modelField);
+}

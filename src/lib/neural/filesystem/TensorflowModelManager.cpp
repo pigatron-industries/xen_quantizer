@@ -14,8 +14,7 @@ void TensorflowModelManager::clear() {
 }
 
 int TensorflowModelManager::getModelCount() {
-    // TODO
-    return 0;
+    return fs.ls().getSize();
 }
 
 TensorflowModel& TensorflowModelManager::loadModel(int index) {
