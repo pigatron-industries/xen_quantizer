@@ -18,6 +18,10 @@
   "frameworks": "arduino",
   "platforms": "*",
   "build": {
-    "srcDir": "src/lib"
+    "srcDir": "src/lib",
+    "srcFilter": [
+      "+<quantizer>",
+      "-<neural/>"
+    ]
   }
 }
