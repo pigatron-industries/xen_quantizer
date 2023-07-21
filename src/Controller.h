@@ -4,7 +4,7 @@
 #include <eurorack.h>
 #include "Hardware.h"
 
-class Controller : public AbstractController {
+class Controller : virtual public AbstractController {
     public:
         Controller() : AbstractController() {}
         virtual void init(float sampleRate) { this->sampleRate = sampleRate; }
@@ -20,6 +20,9 @@ class Controller : public AbstractController {
 
 template<int N>
 class ParameterizedController : public Controller, public AbstractParameterizedController<N> {
+    public:
+        void load() { AbstractParameterizedController<N>::load(); }
+        void save() { AbstractParameterizedController<N>::save(); }
 };
 
 #endif

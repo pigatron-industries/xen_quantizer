@@ -55,6 +55,8 @@ void ScaleChordController::cycleValue(int amount) {
             interface.setScale(scale);
             chordUpdate();
     }
+
+    save();
 }
 
 void ScaleChordController::updateOffset() {
@@ -104,7 +106,7 @@ void ScaleChordController::setTuning(int index) {
 
     configParam(Parameter::SCALE, 0, tuningData->scales.size() - 1);
     configParam(Parameter::OFFSET, 0, tuning->size() - 1);
-    setScale(0);
+    setScale(parameters[Parameter::SCALE].value);
     interface.render();
 }
 
