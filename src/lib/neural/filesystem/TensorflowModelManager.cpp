@@ -22,8 +22,9 @@ TensorflowModel& TensorflowModelManager::loadModel(int index) {
 
     FileInfo& file = fs.ls().getFile(index);
     Serial.print("Loading model: ");
-    Serial.println(file.filepath);
+    Serial.println(file.filename);
     TensorflowFileReader fileReader = TensorflowFileReader(memPool, model);
     fs.read(file.filepath, &fileReader);
+    model.setName(file.filename);
     return model;
 }

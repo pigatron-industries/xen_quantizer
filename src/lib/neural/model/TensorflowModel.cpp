@@ -18,8 +18,9 @@ TfLiteStatus TensorflowModel::registerOps() {
     return kTfLiteOk;
 }
 
-void TensorflowModel::loadModel(unsigned char* data) {
+void TensorflowModel::loadModel(unsigned char* data, const char* name) {
     Serial.println("TensorflowModel::loadModel");
+    strncpy(this->name, name, 16);
 
     tflModel = tflite::GetModel(data);
     if(tflModel->version() != TFLITE_SCHEMA_VERSION) {

@@ -2,6 +2,7 @@
 
 void SequencerInterface::init() {
     page.addComponent(&title);
+    page.addComponent(&modelField);
 
     page.setContext(&Hardware::hw.display);
 

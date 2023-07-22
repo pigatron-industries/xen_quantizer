@@ -24,7 +24,9 @@ class TensorflowModel {
     public:
         TensorflowModel(MemPool<>& memPool) : memPool(memPool) { init(); }
         void init();
-        void loadModel(unsigned char* data);
+        void loadModel(unsigned char* data, const char* name = "");
+        void setName(const char* name) { strncpy(this->name, name, 16); }
+        char* getName() { return name; }
         Metadata& getMetadata() { return metadata; }
         bool checkType(const char* type);
         int inputSize();
@@ -35,6 +37,8 @@ class TensorflowModel {
         void runInference();
 
     private:
+        char name[17] = {0};
+
         MemPool<>& memPool;
 
         tflite::MicroMutableOpResolver<3> tflOpsResolver;

@@ -38,7 +38,7 @@ class Tuning {
         Array<Interval, TUNING_MAX_NOTES> intervals;
         float cycleInterval;
         float cycleIntervalRecip;
-        char name[16] = {0};
+        char name[17] = {0};
 
         void setCycleInterval(float cycleInterval) { this->cycleInterval = cycleInterval; cycleIntervalRecip = 1.0/cycleInterval; }
         float getNoteVoltage(int cycle, int note, float offset = 0);
