@@ -17,6 +17,7 @@ void Hardware::init() {
     fsTunings.init();
     fsModels.init();
     tuningsManager.init();
+    modelManager.init();
 
     for(int i = 0; i < CHANNEL_COUNT; i++) {
         cvOutputPins[i]->setPinType(PinType::ANALOG_OUTPUT);

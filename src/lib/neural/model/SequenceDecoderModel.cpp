@@ -29,6 +29,10 @@ OutputNote* SequenceDecoderModel::getOutputNotes() {
         float output = model.getOutput(outputIndex);
         addNote(i, output);
     }
+
+    // TODO reorder notes by pitch
+
+
     return notes;
 }
 

@@ -1,5 +1,5 @@
-#ifndef SequencerController_h
-#define SequencerController_h
+#ifndef SequenceDecoderController_h
+#define SequenceDecoderController_h
 
 #include "Controller.h"
 #include "SequencerInterface.h"
@@ -12,14 +12,14 @@ using namespace eurorack;
 
 #define NUM_NOTE_OUTPUTS 4
 
-class SequencerController : public ParameterizedController<1> {
+class SequenceDecoderController : public ParameterizedController<1> {
     public:
 
         enum Parameter {
             MODEL
         };
 
-        SequencerController() : ParameterizedController() {}
+        SequenceDecoderController(const char* modelDir, const char* titleText) : ParameterizedController(), interface(titleText) { this->modelDir = modelDir; }
         virtual void init(float sampleRate);
         virtual void init();
 
@@ -29,9 +29,9 @@ class SequencerController : public ParameterizedController<1> {
         virtual void update();
         virtual void process();
 
-        
-
-    private:
+    
+    protected:
+        const char* modelDir = "/";
 
         GateInput<> clockInput = GateInput<>(*Hardware::hw.triggerInputPins[0]);
         GateInput<> resetInput = GateInput<>(*Hardware::hw.triggerInputPins[1]);
@@ -55,8 +55,7 @@ class SequencerController : public ParameterizedController<1> {
 
         SequencerInterface interface;
 
-        TensorflowModelManager modelManager = TensorflowModelManager(Hardware::hw.fsModels, Hardware::hw.memPoolModel);
-        TensorflowModel& model = modelManager.getModel();
+        TensorflowModel& model = Hardware::hw.modelManager.getModel();
         SequenceDecoderModel sequenceDecoderModel = SequenceDecoderModel(model);
         
         
@@ -64,6 +63,8 @@ class SequencerController : public ParameterizedController<1> {
         void reset();
         void tick();
         void runInference();
+
+        virtual void decodeOutput(OutputNote* notes) = 0;
 };
 
 #endif

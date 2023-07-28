@@ -1,21 +1,22 @@
-#include "SequencerController.h"
+#include "SequenceDecoderController.h"
 
-void SequencerController::init(float sampleRate) {
+
+void SequenceDecoderController::init(float sampleRate) {
     Controller::init(sampleRate);
-    modelManager.init();
-    configParam(Parameter::MODEL, 0, modelManager.getModelCount()-1);
     interface.init();
     interface.focusModel();
-    setModel(parameters[Parameter::MODEL].value);
     init();
 }
 
-void SequencerController::init() {
-    Serial.println("Sequencer");
+void SequenceDecoderController::init() {
+    Serial.println("Gen Note Decoder");
+    Hardware::hw.fsModels.cd(modelDir);
+    configParam(Parameter::MODEL, 0, Hardware::hw.modelManager.getModelCount()-1);
+    setModel(parameters[Parameter::MODEL].value);
     interface.render();
 }
 
-int SequencerController::cycleParameter(int amount) {
+int SequenceDecoderController::cycleParameter(int amount) {
     parameters.cycle(amount);
     switch(parameters.getSelectedIndex()) {
         case Parameter::MODEL:
@@ -26,7 +27,7 @@ int SequencerController::cycleParameter(int amount) {
     return parameters.getSelectedIndex(); 
 }
 
-void SequencerController::cycleValue(int amount) {
+void SequenceDecoderController::cycleValue(int amount) {
     parameters.getSelected().cycle(amount);
     switch(parameters.getSelectedIndex()) {
         case Parameter::MODEL:
@@ -37,11 +38,13 @@ void SequencerController::cycleValue(int amount) {
     save();
 }
 
-void SequencerController::setModel(int index) {
+void SequenceDecoderController::setModel(int index) {
     Serial.print("setModel:");
     Serial.println(index);
-    modelManager.loadModel(index);
+    Hardware::hw.modelManager.loadModel(index);
     if(model.checkType("seqdec")) {
+        sequenceDecoderModel.init();
+    } else if(model.checkType("perdec")) {
         sequenceDecoderModel.init();
     } else {
         Serial.println("ERROR: unknown model type");
@@ -51,7 +54,7 @@ void SequencerController::setModel(int index) {
     interface.render();
 }
 
-void SequencerController::update() {
+void SequenceDecoderController::update() {
 
     if(Hardware::hw.pushButtons[0].update()) {
         if(Hardware::hw.pushButtons[0].pressed()) {
@@ -79,7 +82,7 @@ void SequencerController::update() {
 }
 
 
-void SequencerController::process() {
+void SequenceDecoderController::process() {
     for(int i = 0; i < NUM_NOTE_OUTPUTS; i++) {
         triggerOutputs[i].update();
     }
@@ -96,11 +99,11 @@ void SequencerController::process() {
 }
 
 
-void SequencerController::reset() {
+void SequenceDecoderController::reset() {
     sequenceDecoderModel.reset();
 }
 
-void SequencerController::tick() {
+void SequenceDecoderController::tick() {
     thresholdInput.update();
     thresholdCVInput.update();
 
@@ -110,33 +113,20 @@ void SequencerController::tick() {
     }
 
     OutputNote* notes = sequenceDecoderModel.getOutputNotes();
-    float threshold = thresholdInput.getValue() + thresholdCVInput.getValue();
-    // Serial.print("notes: ");
-    for(int i = 0; i < NUM_NOTE_OUTPUTS; i++) {
-        // Serial.print(" ");
-        // Serial.print(notes[i].note);
-        // Serial.print(" ");
-        // Serial.print(notes[i].probability);
-        if(notes[i].probability > threshold) {
-            float voltage = notes[i].note * 1.0f / 12.0f;  //TODO convert note number into voltage using scale
-            Hardware::hw.cvOutputPins[i]->analogWrite(voltage);
-            triggerOutputs[i].trigger(); //TODO gate or trigger?
-        }
-    }
-    // Serial.println();
+    decodeOutput(notes);
 }
 
 
-void SequencerController::runInference() {
+void SequenceDecoderController::runInference() {
     latent1Input.update();
     latent2Input.update();
     latent3Input.update();
     latent1CVInput.update();
     latent2CVInput.update();
     latent3CVInput.update();
-    // Serial.println(latent1CVInput.getValue());
-    // Serial.println(latent2CVInput.getValue());
-    // Serial.println(latent3CVInput.getValue());
+    Serial.println(latent1Input.getValue());
+    Serial.println(latent2Input.getValue());
+    Serial.println(latent3Input.getValue());
     model.setInput(0, latent1Input.getValue() + latent1CVInput.getValue());
     model.setInput(1, latent2Input.getValue() + latent2CVInput.getValue());
     model.setInput(2, latent3Input.getValue() + latent3CVInput.getValue());

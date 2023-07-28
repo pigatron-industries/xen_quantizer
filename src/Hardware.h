@@ -9,6 +9,7 @@
 #include "hwconfig.h"
 #include "interface/TFTDisplay.h"
 #include "lib/quantizer/filesystem/TuningsManager.h"
+#include "lib/neural/filesystem/TensorFlowModelManager.h"
 
 #define MEMPOOL_TUNING_SIZE 48*1024
 #define MEMPOOL_MODEL_SIZE 1024*1024
@@ -26,12 +27,14 @@ class Hardware {
         // Memory pool
         static uint8_t memPoolTuningBuffer[MEMPOOL_TUNING_SIZE];
         MemPool<> memPoolTuning = MemPool<>(Hardware::memPoolTuningBuffer, MEMPOOL_TUNING_SIZE);
+
         static uint8_t memPoolModelBuffer[MEMPOOL_MODEL_SIZE];
         MemPool<> memPoolModel = MemPool<>(Hardware::memPoolModelBuffer, MEMPOOL_MODEL_SIZE);
         static uint8_t tensorArena[TENSOR_ARENA_SIZE];
 
         // Object management
         TuningsManager tuningsManager = TuningsManager(fsTunings, memPoolTuning);
+        TensorflowModelManager modelManager = TensorflowModelManager(fsModels, memPoolModel);
 
         // Direct connections
         RotaryEncoderButton encoder1 = RotaryEncoderButton(ENCODER1_PIN1, ENCODER1_PIN2, ENCODER1_BTN_PIN);
