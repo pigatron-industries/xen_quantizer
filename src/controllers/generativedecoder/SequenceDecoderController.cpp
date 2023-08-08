@@ -83,10 +83,6 @@ void SequenceDecoderController::update() {
 
 
 void SequenceDecoderController::process() {
-    for(int i = 0; i < NUM_NOTE_OUTPUTS; i++) {
-        triggerOutputs[i].update();
-    }
-
     if(resetInput.update() && resetInput.rose()) {
         delay(1);
         reset();
@@ -109,7 +105,7 @@ void SequenceDecoderController::tick() {
 
     if (sequenceDecoderModel.tick() == 0) {
         runInference();
-        Serial.println("inference");
+        // Serial.println("inference");
     }
 
     OutputNote* notes = sequenceDecoderModel.getOutputNotes();
@@ -124,9 +120,9 @@ void SequenceDecoderController::runInference() {
     latent1CVInput.update();
     latent2CVInput.update();
     latent3CVInput.update();
-    Serial.println(latent1Input.getValue());
-    Serial.println(latent2Input.getValue());
-    Serial.println(latent3Input.getValue());
+    // Serial.println(latent1Input.getValue());
+    // Serial.println(latent2Input.getValue());
+    // Serial.println(latent3Input.getValue());
     model.setInput(0, latent1Input.getValue() + latent1CVInput.getValue());
     model.setInput(1, latent2Input.getValue() + latent2CVInput.getValue());
     model.setInput(2, latent3Input.getValue() + latent3CVInput.getValue());

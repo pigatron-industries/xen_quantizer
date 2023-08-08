@@ -1,6 +1,14 @@
 #include "NoteSequenceDecoderController.h"
 
 
+void NoteSequenceDecoderController::process() {
+    for(int i = 0; i < NUM_NOTE_OUTPUTS; i++) {
+        triggerOutputs[i].update();
+    }
+
+    SequenceDecoderController::process();
+}
+
 void NoteSequenceDecoderController::decodeOutput(OutputNote* notes) {
     float threshold = thresholdInput.getValue() + thresholdCVInput.getValue();
     // Serial.print("notes: ");

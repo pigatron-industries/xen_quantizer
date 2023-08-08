@@ -46,13 +46,6 @@ class SequenceDecoderController : public ParameterizedController<1> {
         LinearInput<AnalogInputPinT> latent3CVInput = LinearInput<AnalogInputPinT>(Hardware::hw.channel3CvPin, -5, 5, -5, 5);
         LinearInput<AnalogInputPinT> thresholdCVInput = LinearInput<AnalogInputPinT>(Hardware::hw.channel4CvPin, -5, 5, -0.3, 0.3);
 
-        AnalogTriggerOutput<DAC8164Device> triggerOutputs[4] = {
-            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[4]),
-            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[5]),
-            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[6]),
-            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[7])
-        };
-
         SequencerInterface interface;
 
         TensorflowModel& model = Hardware::hw.modelManager.getModel();
