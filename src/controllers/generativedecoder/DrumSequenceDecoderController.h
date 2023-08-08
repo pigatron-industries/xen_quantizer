@@ -12,7 +12,7 @@ class DrumSequenceDecoderController : public SequenceDecoderController {
         virtual void process();
         
     protected:
-        virtual void decodeOutput(OutputNote* notes);
+        virtual void decodeOutput(Array<OutputNote, MAX_NOTES_OUTPUT>& notes);
 
     private:
         // 0 1 2 3

@@ -9,7 +9,7 @@ void DrumSequenceDecoderController::process() {
     SequenceDecoderController::process();
 }
 
-void DrumSequenceDecoderController::decodeOutput(OutputNote* notes) {
+void DrumSequenceDecoderController::decodeOutput(Array<OutputNote, MAX_NOTES_OUTPUT>& notes) {
     float threshold = thresholdInput.getValue() + thresholdCVInput.getValue();
     // Serial.print("notes: ");
     for(int i = 0; i < NUM_NOTE_OUTPUTS; i++) {

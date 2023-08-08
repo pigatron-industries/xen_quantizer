@@ -57,7 +57,7 @@ class SequenceDecoderController : public ParameterizedController<1> {
         void tick();
         void runInference();
 
-        virtual void decodeOutput(OutputNote* notes) = 0;
+        virtual void decodeOutput(Array<OutputNote, MAX_NOTES_OUTPUT>& notes) = 0;
 };
 
 #endif

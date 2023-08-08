@@ -11,7 +11,7 @@ class NoteSequenceDecoderController : public SequenceDecoderController {
         virtual void process();
         
     protected:
-        virtual void decodeOutput(OutputNote* notes);
+        virtual void decodeOutput(Array<OutputNote, MAX_NOTES_OUTPUT>& notes);
 
     private:
         AnalogTriggerOutput<DAC8164Device> triggerOutputs[4] = {

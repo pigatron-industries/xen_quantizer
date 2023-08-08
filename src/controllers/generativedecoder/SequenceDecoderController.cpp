@@ -108,7 +108,7 @@ void SequenceDecoderController::tick() {
         // Serial.println("inference");
     }
 
-    OutputNote* notes = sequenceDecoderModel.getOutputNotes();
+    Array<OutputNote, MAX_NOTES_OUTPUT>& notes = sequenceDecoderModel.getOutputNotes();
     decodeOutput(notes);
 }
 
