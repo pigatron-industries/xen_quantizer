@@ -16,6 +16,12 @@ class OutputNote {
         float probability = 0;
 };
 
+class PercussionGroup {
+    public:
+        uint8_t start = 0;
+        uint8_t size = 1;
+};
+
 class SequenceDecoderModel {
 
     public:
@@ -25,7 +31,11 @@ class SequenceDecoderModel {
 
         uint8_t getNotesPerTick() { return notesPerTick; }
         uint8_t getTicksPerSequence() { return ticksPerSequence; }
-        Array<uint8_t, MAX_PERCUSSION_GROUPS>& getPercussionGroups() { return percussionGroups; }
+
+        Array<PercussionGroup, MAX_PERCUSSION_GROUPS>& getPercussionGroups() { return percussionGroups; }
+        int8_t getPercussionGroupIndex(uint8_t note);
+        PercussionGroup& getPercussionGroup(uint8_t index);
+        float getPercussionGroupAccent(uint8_t groupIndex, uint8_t note);
 
         uint8_t getTickCounter() { return tickCounter; }
         float getOutputThreshold() { return outputThreshold; }
@@ -39,11 +49,11 @@ class SequenceDecoderModel {
 
         uint8_t notesPerTick = 0;
         uint8_t ticksPerSequence = 0;
-        Array<uint8_t, MAX_PERCUSSION_GROUPS> percussionGroups;
+        Array<PercussionGroup, MAX_PERCUSSION_GROUPS> percussionGroups;
 
         float outputThreshold = 0.1;
 
-        uint8_t tickCounter = -1;
+        int8_t tickCounter = -1;
         Array<OutputNote, MAX_NOTES_OUTPUT> notes;
         // OutputNote notes[MAX_NOTES_OUTPUT];
 

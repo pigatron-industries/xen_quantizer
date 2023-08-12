@@ -7,15 +7,17 @@
 #include "tensorflow/lite/micro/micro_interpreter.h"
 #include "tensorflow/lite/micro/micro_mutable_op_resolver.h"
 
-// #include "tensorflow/lite/micro/micro_log.h"
-// #include "tensorflow/lite/micro/system_setup.h"
-// #include "tensorflow/lite/schema/schema_generated.h"
+#define METADATA_TYPE_SIZE 6
+#define METADATA_DATA_SIZE 12
+#define MODEL_NAME_SIZE 16
+
 
 class Metadata {
     public:
         Metadata() {}
-        char type[6];
-        uint8_t data[6];
+        char type[METADATA_TYPE_SIZE] = {'p', 'e', 'r', 'd', 'e', 'c'};
+        uint8_t data[METADATA_DATA_SIZE] = {11, 16, 3, 5, 1, 1, 6, 2, 2, 1, 1, 1};
+        // uint8_t test[1];
 };
 
 
@@ -24,9 +26,9 @@ class TensorflowModel {
     public:
         TensorflowModel(MemPool<>& memPool) : memPool(memPool) { init(); }
         void init();
-        void loadModel(unsigned char* data, const char* name = "");
-        void setName(const char* name) { strncpy(this->name, name, 16); }
-        char* getName() { return name; }
+        void loadModel(unsigned char* data);
+        // void setName(const char* name) { strncpy(this->name, name, MODEL_NAME_SIZE); }
+        // char* getName() { return name; }
         Metadata& getMetadata() { return metadata; }
         bool checkType(const char* type);
         int inputSize();
@@ -37,7 +39,7 @@ class TensorflowModel {
         void runInference();
 
     private:
-        char name[17] = {0};
+        // char name[MODEL_NAME_SIZE+1] = {0};
 
         MemPool<>& memPool;
 

@@ -18,9 +18,9 @@ TfLiteStatus TensorflowModel::registerOps() {
     return kTfLiteOk;
 }
 
-void TensorflowModel::loadModel(unsigned char* data, const char* name) {
+void TensorflowModel::loadModel(unsigned char* data) {
     Serial.println("TensorflowModel::loadModel");
-    strncpy(this->name, name, 16);
+    // strncpy(this->name, name, MODEL_NAME_SIZE);
 
     tflModel = tflite::GetModel(data);
     if(tflModel->version() != TFLITE_SCHEMA_VERSION) {
@@ -43,7 +43,7 @@ void TensorflowModel::loadModel(unsigned char* data, const char* name) {
     loadMetadata();
 
     Serial.print("Loaded "); 
-    Serial.write(metadata.type, 6);
+    Serial.write(metadata.type, METADATA_TYPE_SIZE);
     Serial.print(" model with ");
     Serial.print(input->dims->data[1]);
     Serial.print(" inputs and ");
@@ -63,15 +63,15 @@ void TensorflowModel::loadMetadata() {
                 return;
             }
             ptr += 4;
-            memcpy(metadata.type, ptr, 6);
-            ptr += 6;
-            memcpy(metadata.data, ptr, 6);
+            memcpy(metadata.type, ptr, METADATA_TYPE_SIZE);
+            ptr += METADATA_TYPE_SIZE;
+            memcpy(metadata.data, ptr, METADATA_DATA_SIZE);
         }
     }
 }
 
 bool TensorflowModel::checkType(const char* type) {
-    return memcmp(metadata.type, type, 6) == 0;
+    return memcmp(metadata.type, type, METADATA_TYPE_SIZE) == 0;
 }
 
 int TensorflowModel::inputSize() {

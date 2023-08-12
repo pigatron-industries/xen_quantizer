@@ -9,10 +9,22 @@ void SequenceDecoderController::init(float sampleRate) {
 }
 
 void SequenceDecoderController::init() {
-    Serial.println("Gen Note Decoder");
+    Serial.println("Sequence Decoder");
     Hardware::hw.fsModels.cd(modelDir);
     configParam(Parameter::MODEL, 0, Hardware::hw.modelManager.getModelCount()-1);
-    setModel(parameters[Parameter::MODEL].value);
+
+    // if model doesn't exist reset model parameter to 0
+    if(parameters[Parameter::MODEL].value >= Hardware::hw.modelManager.getModelCount()) {
+        parameters[Parameter::MODEL].value = 0;
+        save();
+    }
+
+    if(Hardware::hw.modelManager.getModelCount() > 0) {
+        setModel(parameters[Parameter::MODEL].value);
+    } else {
+        //TODO handle no models on sd card
+    }
+    
     interface.render();
 }
 
@@ -50,7 +62,8 @@ void SequenceDecoderController::setModel(int index) {
         Serial.println("ERROR: unknown model type");
     }
 
-    interface.setModel(model.getName());
+    // interface.setModel(model.getName());
+    interface.setModel("test");
     interface.render();
 }
 

@@ -3,7 +3,7 @@
 
 #include "SequenceDecoderController.h"
 
-#define NUM_TRIGGER_OUTPUTS 6
+#define NUM_TRIGGER_OUTPUTS 5
 
 class DrumSequenceDecoderController : public SequenceDecoderController {
     public:
@@ -15,15 +15,14 @@ class DrumSequenceDecoderController : public SequenceDecoderController {
         virtual void decodeOutput(Array<OutputNote, MAX_NOTES_OUTPUT>& notes);
 
     private:
-        // 0 1 2 3
-        // 4 5 6 7
+        // 0 2 3 4
+        // 1 5 6 7
         AnalogTriggerOutput<DAC8164Device> triggerOutputs[NUM_TRIGGER_OUTPUTS] = {
             AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[0]),
             AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[4]),
             AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[1]),
             AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[2]),
-            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[3]),
-            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[5])
+            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[3])
         };
 
         int8_t getOutput(uint8_t instrument);
