@@ -30,8 +30,7 @@ void DrumSequenceDecoderController::decodeOutput(Array<OutputNote, MAX_NOTES_OUT
             int8_t accentOutput = getAccentOutput(output);
             if(accentOutput >= 0) {
                 float accent = getAccent(output, note.note);
-                Serial.print(accent);
-                Hardware::hw.cvOutputPins[accentOutput]->analogWrite(accent*2);
+                Hardware::hw.cvOutputPins[accentOutput]->analogWrite(accent*3);
             }
         }
     }

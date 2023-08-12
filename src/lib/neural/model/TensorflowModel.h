@@ -17,7 +17,6 @@ class Metadata {
         Metadata() {}
         char type[METADATA_TYPE_SIZE] = {'p', 'e', 'r', 'd', 'e', 'c'};
         uint8_t data[METADATA_DATA_SIZE] = {11, 16, 3, 5, 1, 1, 6, 2, 2, 1, 1, 1};
-        // uint8_t test[1];
 };
 
 

@@ -63,7 +63,7 @@ void SequenceDecoderController::setModel(int index) {
     }
 
     // interface.setModel(model.getName());
-    interface.setModel("test");
+    interface.setModel(Hardware::hw.modelManager.getName());
     interface.render();
 }
 

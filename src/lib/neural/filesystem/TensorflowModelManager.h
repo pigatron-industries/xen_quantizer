@@ -13,6 +13,7 @@ class TensorflowModelManager {
         int getModelCount();
         TensorflowModel& loadModel(int index);
         TensorflowModel& getModel() { return model; }
+        char* getName() { return name; }
 
     private:
         FileSystem& fs;
@@ -20,6 +21,7 @@ class TensorflowModelManager {
 
         // curently loaded model
         TensorflowModel model;
+        char* name = "";
 
 };
 
