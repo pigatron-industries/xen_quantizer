@@ -35,7 +35,25 @@ void TuningDataFileReader::readTuning(FsFile& file) {
             Serial.println("  Create equal division tuning");
             Tuning tuning = ScaleFactory::createEqualDivisionTuning(arrayItemInt(0), arrayItemFloat(1), nameBuffer);
             this->tuning = tuningsManager.addTuning(tuning);
-        }
+        } else if(isObject("cents:", 1)) {
+            Serial.println("  Create cents tuning");
+            uint8_t notes = arraySize();
+            float cycle = arrayItemFloat(notes-1) / 1200;
+            Tuning tuning = Tuning(notes, cycle, nameBuffer);
+            for(int i = 0; i < notes; i++) {
+                tuning.getInterval(i).voltage = arrayItemFloat(i) / 1200;
+            }
+            this->tuning = tuningsManager.addTuning(tuning);
+        } else if(isObject("ratios:", 1)) {
+            Serial.println("  Create ratios tuning");
+            uint8_t notes = arraySize();
+            float cycle = arrayItemFloat(notes-1);
+            Tuning tuning = Tuning(notes, cycle, nameBuffer);
+            for(int i = 0; i < notes; i++) {
+                tuning.getInterval(i).voltage = arrayItemRatioToVoltage(i);;
+            }
+            this->tuning = tuningsManager.addTuning(tuning);
+        } 
     } while(line.level >= 1);
 
     back(file);
@@ -201,4 +219,22 @@ float TuningDataFileReader::arrayItemFloat(int index) {
     Substring substring = arrayItem(index);
     float value = strtof(substring.start, &substring.end);
     return value;
+}
+
+float TuningDataFileReader::arrayItemRatioToVoltage(int index) {
+    Substring substring = arrayItem(index);
+
+    Substring topsubstring;
+    topsubstring.start = substring.start;
+    topsubstring.end = strchr(substring.start, '/');
+
+    Substring bottomsubstring;
+    bottomsubstring.start = topsubstring.end + 1;
+    bottomsubstring.end = substring.end;
+
+    int top = strtol(topsubstring.start, &topsubstring.end, 10);
+    int bottom = strtol(bottomsubstring.start, &bottomsubstring.end, 10);
+
+    float value = (float)top / (float)bottom;
+    return log(value) / log(2);
 }

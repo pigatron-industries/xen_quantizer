@@ -39,6 +39,8 @@ class TuningDataFileReader : public BufferFileReader {
         void readScale(FsFile& file);
         void readChord(FsFile& file);
 
+        float arrayItemRatioToVoltage(int index);
+
     protected:
         YamlLine line;
 

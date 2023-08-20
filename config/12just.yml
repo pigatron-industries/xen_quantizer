@@ -1,6 +1,6 @@
 tuning:
-  name: 12EDO
-  eq: [12, 1] # 12 equal divisions of 1 octave
+  name: 12JUST
+  ratios: [21/20, 9/8, 6/5, 5/4, 4/3, 7/5, 3/2, 8/5, 5/3, 7/4, 15/8, 1/2] # intervals from root to every note
 groups:
   - group: Chromatic
     scales:
