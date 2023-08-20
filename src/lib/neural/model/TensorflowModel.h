@@ -26,6 +26,7 @@ class TensorflowModel {
         TensorflowModel(MemPool<>& memPool) : memPool(memPool) { init(); }
         void init();
         void loadModel(unsigned char* data);
+        bool isLoaded() { return tflInterpreter != nullptr; }
         // void setName(const char* name) { strncpy(this->name, name, MODEL_NAME_SIZE); }
         // char* getName() { return name; }
         Metadata& getMetadata() { return metadata; }

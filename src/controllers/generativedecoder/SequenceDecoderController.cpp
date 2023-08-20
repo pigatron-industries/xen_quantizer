@@ -22,7 +22,7 @@ void SequenceDecoderController::init() {
     if(Hardware::hw.modelManager.getModelCount() > 0) {
         setModel(parameters[Parameter::MODEL].value);
     } else {
-        //TODO handle no models on sd card
+        Serial.println("No models found");
     }
     
     interface.render();
@@ -62,7 +62,6 @@ void SequenceDecoderController::setModel(int index) {
         Serial.println("ERROR: unknown model type");
     }
 
-    // interface.setModel(model.getName());
     interface.setModel(Hardware::hw.modelManager.getName());
     interface.render();
 }
@@ -113,6 +112,10 @@ void SequenceDecoderController::reset() {
 }
 
 void SequenceDecoderController::tick() {
+    if(!model.isLoaded()) {
+        return;
+    }
+
     thresholdInput.update();
     thresholdCVInput.update();
 
