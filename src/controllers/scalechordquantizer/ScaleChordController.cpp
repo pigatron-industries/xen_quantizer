@@ -151,6 +151,7 @@ void ScaleChordController::process() {
     if(triggerInputs[0].update() && triggerInputs[0].rose()) {
         delay(1);
         chordUpdate();
+        // TODO only trigger if chord has changed and output to trigger output
         chordOutput();
     }
 
@@ -195,6 +196,7 @@ void ScaleChordController::chordOutput() {
     Hardware::hw.cvOutputPins[0]->analogWrite(chord[0].voltage + transpose);
     Hardware::hw.cvOutputPins[1]->analogWrite(chord[1].voltage + transpose);
     Hardware::hw.cvOutputPins[2]->analogWrite(chord[2].voltage + transpose);
+
 }
 
 void ScaleChordController::noteUpdate() {

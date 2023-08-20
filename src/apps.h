@@ -6,6 +6,7 @@
 
 #define CONTROLLERS \
 ScaleChordController, \
+HarmonicWalkController, \
 NoteSequenceDecoderController, \
 DrumSequenceDecoderController, \
 CalibrationController

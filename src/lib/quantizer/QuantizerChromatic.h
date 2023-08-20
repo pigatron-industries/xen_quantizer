@@ -3,6 +3,10 @@
 
 #include "model/Tuning.h"
 
+/**
+ * Chromatic Quantizer
+ * Quantizes voltage to the closest note in the tuning.
+ */
 class QuantizerChromatic {
     public:
         QuantizerChromatic(Tuning& tuning) { this->tuning = &tuning; }

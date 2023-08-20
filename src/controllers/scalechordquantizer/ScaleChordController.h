@@ -49,6 +49,13 @@ class ScaleChordController : public ParameterizedController<4> {
             GateInput<>(*Hardware::hw.triggerInputPins[3])
         };
 
+        AnalogTriggerOutput<DAC8164Device> triggerOutputs[4] = {
+            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[4]),
+            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[5]),
+            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[6]),
+            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[7])
+        };
+
         ScaleChordInterface interface;
 
         StaticTuningData* defaultTuningData = &Tuning12EDO::data;

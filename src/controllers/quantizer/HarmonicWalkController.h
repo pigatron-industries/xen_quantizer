@@ -2,30 +2,35 @@
 #define HarmonicWalkController_h
 
 #include "Controller.h"
+#include "HarmonicWalkInterface.h"
 #include "lib/quantizer/data/Tuning12EDO.h"
 #include "lib/quantizer/ScaleFactory.h"
 #include "lib/quantizer/filesystem/TuningsManager.h"
 #include "lib/quantizer/QuantizerDifferential.h"
 
+#define NUM_TRIGGER_OUTPUTS 4
 
 using namespace eurorack;
 
-class HarmonicWalkController : public Controller {
+class HarmonicWalkController : public ParameterizedController<2> {
     public:
 
-        HarmonicWalkController() : Controller() {}
+        enum Parameter {
+            TUNING,
+            INTERVAL
+        };
+
+        HarmonicWalkController() : ParameterizedController() {}
         virtual void init(float sampleRate);
         virtual void init();
+
+        int cycleParameter(int amount);
+        virtual void cycleValue(int amount);
+
         virtual void update();
         virtual void process();
 
     private:
-
-        IntegerInput<AnalogInputPinT> quantizedScaleOffsetPot = IntegerInput<AnalogInputPinT>(Hardware::hw.channel1PotPin, -5, 5, 0, 11);
-        LinearInput<AnalogInputPinT> linearScaleOffsetPot = LinearInput<AnalogInputPinT>(Hardware::hw.channel1PotPin, -5, 5, 0, 1);
-        IntegerInput<AnalogInputPinT> interval = IntegerInput<AnalogInputPinT>(Hardware::hw.channel2PotPin, -5, 5, 0, 7);
-        LinearInput<AnalogInputPinT> channel3Pot = LinearInput<AnalogInputPinT>(Hardware::hw.channel3PotPin, -5, 5, -5, 5);
-        LinearInput<AnalogInputPinT> channel4Pot = LinearInput<AnalogInputPinT>(Hardware::hw.channel4PotPin, -5, 5, -5, 5);
 
         GateInput<> triggerInputs[4] = {
             GateInput<>(*Hardware::hw.triggerInputPins[0], false),
@@ -34,14 +39,27 @@ class HarmonicWalkController : public Controller {
             GateInput<>(*Hardware::hw.triggerInputPins[3], false)
         };
 
-        StaticTuningData* tuningData = &Tuning12EDO::getData();
+        AnalogTriggerOutput<DAC8164Device> triggerOutputs[NUM_TRIGGER_OUTPUTS] = {
+            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[5]),
+            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[6]),
+            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[7]),
+            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[8])
+        };
 
-        Scale* scale = &tuningData->scales[0];
+        HarmonicWalkInterface interface;
 
-        QuantizerDifferential quantizer = QuantizerDifferential(*tuningData->tuning);
+        int interval = 1;
+
+        StaticTuningData* defaultTuningData = &Tuning12EDO::data;
+        TuningData* tuningData = nullptr;
+        Tuning* tuning = defaultTuningData->tuning;
+
+        QuantizerDifferential quantizer = QuantizerDifferential(*defaultTuningData->tuning);
 
         float outputVoltage = 0;
         
+        void setTuning(int index);
+        void setInterval(int interval);
         void clock();
 };
 
