@@ -27,3 +27,15 @@ void CalibrationInterface::setVoltage(int voltage) {
 void CalibrationInterface::setOffset(int offset) {
     offsetField.setValue(offset);
 }
+
+void CalibrationInterface::focusOutput() {
+    focusManager.setFocus(&outputField);
+}
+
+void CalibrationInterface::focusVoltage() {
+    focusManager.setFocus(&voltageField);
+}
+
+void CalibrationInterface::focusOffset() {
+    focusManager.setFocus(&offsetField);
+}

@@ -14,8 +14,15 @@ class CalibrationInterface {
         void setVoltage(int voltage);
         void setOffset(int offset);
 
+        void focusOutput();
+        void focusVoltage();
+        void focusOffset();
+
     private:
         VerticalContainer<TFTDisplay, 4> page;
+
+        FocusManager<TFTDisplay> focusManager;
+
         TextComponent<TFTDisplay> title = TextComponent<TFTDisplay>(TFTDisplay::WIDTH, "CALIBRRATION", 2, TFT_ORANGE);
         FieldComponent<TFTDisplay> outputField = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 50, "OUTPUT:");
         FieldComponent<TFTDisplay> voltageField = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 50, "VOLTAGE:");

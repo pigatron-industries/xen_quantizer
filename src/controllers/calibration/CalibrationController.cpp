@@ -1,8 +1,10 @@
 #include "CalibrationController.h"
 
 void CalibrationController::init(float sampleRate) {
-    ParameterizedController<8>::init(sampleRate);
+    ParameterizedController::init(sampleRate);
+    configParam(Parameter::OUTPUTNUM, 0, 7);
     interface.init();
+    interface.focusOutput();
     init();
 }
 
@@ -17,15 +19,51 @@ void CalibrationController::init() {
 }
 
 int CalibrationController::cycleParameter(int amount) {
-    Serial.println("cycleParameter");
-    saveCalibration();
     parameters.cycle(amount);
-    startCalibrate();
-    return parameters.getSelectedIndex();
+
+    switch(parameters.getSelectedIndex()) {
+        case Parameter::OUTPUTNUM:
+            interface.focusOutput();
+            break;
+        case Parameter::VOLTAGE:
+            interface.focusVoltage();
+            break;
+        case Parameter::OFFSET:
+            interface.focusOffset();
+            break;
+    }
+
+    return parameters.getSelectedIndex(); 
 }
 
 void CalibrationController::cycleValue(int amount) {
-    Serial.println("cycleValue");
+    parameters.getSelected().cycle(amount);
+    switch(parameters.getSelectedIndex()) {
+        case Parameter::OUTPUTNUM:
+            setOutput(parameters[Parameter::OUTPUTNUM].value);
+            break;
+        case Parameter::VOLTAGE:
+            //TODO set voltage from encoder
+            break;
+        case Parameter::OFFSET:
+            setOffset(amount);
+            break;
+    }
+}
+
+void CalibrationController::selectValue() {
+    Serial.println("Reset");
+    calibration.reset();
+    startCalibrate();
+}
+
+void CalibrationController::setOutput(uint8_t output) {
+    saveCalibration();
+    currentOutput = output;
+    startCalibrate();
+}
+
+void CalibrationController::setOffset(int8_t amount) {
     if(currentVoltage == 0) {
         calibration.offset(-amount);
     } else {
@@ -42,24 +80,18 @@ void CalibrationController::update() {
 }
 
 void CalibrationController::startCalibrate() {
-    int output = parameters.getSelectedIndex();
-    calibration.calibratePin(Hardware::hw.cvOutputPins[output]);
-
+    calibration.calibratePin(Hardware::hw.cvOutputPins[currentOutput]);
     updateOutput();
-
-    interface.setOutput(output);
+    interface.setOutput(currentOutput);
 }
 
 void CalibrationController::saveCalibration() {
-    int output = parameters.getSelectedIndex();
-    Hardware::hw.cvOutputPins[output]->saveCalibration();
+    Hardware::hw.cvOutputPins[currentOutput]->saveCalibration();
 }
 
 void CalibrationController::updateOutput() {
-    int output = parameters.getSelectedIndex();
     uint16_t binaryValue = calibration.convertReverse(currentVoltage);
-    Hardware::hw.cvOutputPins[output]->analogWrite(currentVoltage);
-
+    Hardware::hw.cvOutputPins[currentOutput]->analogWrite(currentVoltage);
     interface.setVoltage(currentVoltage);
     interface.setOffset(binaryValue);
 }
