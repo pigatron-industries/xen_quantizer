@@ -25,33 +25,28 @@ void SequenceDecoderModel::init() {
         }
     }
 
-    tickCounter = -1;
     Serial.print("notesPerTick: ");
     Serial.println(notesPerTick);
     Serial.print("ticksPerSequence: ");
     Serial.println(ticksPerSequence);
 }
 
-uint8_t SequenceDecoderModel::tick() {
-    tickCounter++;
-    if(tickCounter >= ticksPerSequence) {
-        tickCounter = 0;
+void SequenceDecoderModel::decodeOutput() {
+    sequence.clear();
+    for(uint8_t i = 0; i < ticksPerSequence; i++) {
+        sequence.add(getOutputNotes(i));
     }
-    return tickCounter;
 }
 
-Array<OutputNote, MAX_NOTES_OUTPUT>& SequenceDecoderModel::getOutputNotes() {
+OutputNotes& SequenceDecoderModel::getOutputNotes(int8_t tick) {
     notes.clear();
-   
     for(uint8_t i = 0; i < notesPerTick; i++) {
-        int outputIndex = tickCounter * notesPerTick + i;
+        int outputIndex = tick * notesPerTick + i;
         float probability = model.getOutput(outputIndex);
         addNote(i, probability);
     }
 
     // TODO reorder notes by pitch
-
-
     return notes;
 }
 

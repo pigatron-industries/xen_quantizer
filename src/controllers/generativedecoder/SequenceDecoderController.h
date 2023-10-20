@@ -6,7 +6,7 @@
 #include "Hardware.h"
 #include "lib/neural/filesystem/TensorflowModelManager.h"
 #include "lib/neural/model/SequenceDecoderModel.h"
-
+#include "TickCounter.h"
 
 using namespace eurorack;
 
@@ -50,6 +50,8 @@ class SequenceDecoderController : public ParameterizedController<1> {
 
         TensorflowModel& model = Hardware::hw.modelManager.getModel();
         SequenceDecoderModel sequenceDecoderModel = SequenceDecoderModel(model);
+
+        TickCounter tickCounter;
         
         
         void setModel(int index);

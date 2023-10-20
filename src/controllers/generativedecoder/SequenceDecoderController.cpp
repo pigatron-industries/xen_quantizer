@@ -54,10 +54,9 @@ void SequenceDecoderController::setModel(int index) {
     Serial.print("setModel:");
     Serial.println(index);
     Hardware::hw.modelManager.loadModel(index);
-    if(model.checkType("seqdec")) {
+    if(model.checkType("seqdec") || model.checkType("perdec")) {
         sequenceDecoderModel.init();
-    } else if(model.checkType("perdec")) {
-        sequenceDecoderModel.init();
+        tickCounter.setTicksPerSequence(sequenceDecoderModel.getTicksPerSequence());
     } else {
         Serial.println("ERROR: unknown model type");
     }
@@ -108,7 +107,7 @@ void SequenceDecoderController::process() {
 
 
 void SequenceDecoderController::reset() {
-    sequenceDecoderModel.reset();
+    tickCounter.reset();
 }
 
 void SequenceDecoderController::tick() {
@@ -119,13 +118,12 @@ void SequenceDecoderController::tick() {
     thresholdInput.update();
     thresholdCVInput.update();
 
-    if (sequenceDecoderModel.tick() == 0) {
+    if (tickCounter.tick() == 0) {
         runInference();
-        // Serial.println("inference");
     }
 
-    Array<OutputNote, MAX_NOTES_OUTPUT>& notes = sequenceDecoderModel.getOutputNotes();
-    decodeOutput(notes);
+    OutputNotesSequence& notesSequence = sequenceDecoderModel.getOutputNotesSequence();
+    decodeOutput(notesSequence[tickCounter.getTickCount()]);
 }
 
 
@@ -143,4 +141,5 @@ void SequenceDecoderController::runInference() {
     model.setInput(1, latent2Input.getValue() + latent2CVInput.getValue());
     model.setInput(2, latent3Input.getValue() + latent3CVInput.getValue());
     model.runInference();
+    sequenceDecoderModel.decodeOutput();
 }

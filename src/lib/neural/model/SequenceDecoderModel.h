@@ -5,6 +5,7 @@
 #include <eurorack.h>
 
 #define MAX_NOTES_OUTPUT 4
+#define MAX_TICKS 32
 #define MAX_PERCUSSION_GROUPS 6
 
 #define DECODER_TYPE_NOTE "seqdec"
@@ -22,6 +23,9 @@ class PercussionGroup {
         uint8_t size = 1;
 };
 
+typedef Array<OutputNote, MAX_NOTES_OUTPUT> OutputNotes;
+typedef Array<OutputNotes, MAX_TICKS> OutputNotesSequence;
+
 class SequenceDecoderModel {
 
     public:
@@ -37,12 +41,10 @@ class SequenceDecoderModel {
         PercussionGroup& getPercussionGroup(uint8_t index);
         float getPercussionGroupAccent(uint8_t groupIndex, uint8_t note);
 
-        uint8_t getTickCounter() { return tickCounter; }
         float getOutputThreshold() { return outputThreshold; }
 
-        uint8_t tick();
-        void reset() { tickCounter = -1; } 
-        Array<OutputNote, MAX_NOTES_OUTPUT>& getOutputNotes();
+        void decodeOutput();
+        OutputNotesSequence& getOutputNotesSequence() { return sequence; }
 
     private:
         TensorflowModel& model;
@@ -53,10 +55,10 @@ class SequenceDecoderModel {
 
         float outputThreshold = 0.1;
 
-        int8_t tickCounter = -1;
-        Array<OutputNote, MAX_NOTES_OUTPUT> notes;
-        // OutputNote notes[MAX_NOTES_OUTPUT];
+        OutputNotes notes;
+        OutputNotesSequence sequence;
 
+        OutputNotes& getOutputNotes(int8_t tick);
         void addNote(uint8_t note, float output);
 };
 
