@@ -32,7 +32,6 @@ class ScaleChordInterface {
         FieldComponent<TFTDisplay> scaleField  = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 50, "SCALE:");
         FieldComponent<TFTDisplay> chordField  = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 50, "CHORD:");
         FieldComponent<TFTDisplay> offsetField = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 50, "OFFSET:");
-        FieldComponent<TFTDisplay> field       = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 50, "");
         NoteVisualiser<TFTDisplay> noteVisualiser = NoteVisualiser<TFTDisplay>(TFTDisplay::WIDTH, 10);
 
         MessageBoxComponent<TFTDisplay> messageBox = MessageBoxComponent<TFTDisplay>(TFTDisplay::WIDTH*0.5, TFTDisplay::HEIGHT*0.5, 2, TFT_ORANGE);

@@ -5,6 +5,8 @@
 #include <eurorack_graphics.h>
 #include "lib/neural/model/SequenceDecoderModel.h"
 
+#define VISIBLE_NOTES 12
+
 
 template<class G>
 class SequenceVisualiser : public Component<G> {
@@ -13,20 +15,24 @@ public:
     SequenceVisualiser(uint16_t width, uint16_t height);
     virtual void render();
 
+    void setNumNotes(uint8_t numNotes);
     void setSequence(OutputNotesSequence* sequence);
 
 protected:
     OutputNotesSequence* sequence = nullptr;
-    Scale* scale = nullptr;
-    Chord* chord = nullptr;
+    
+    uint16_t numNotes = VISIBLE_NOTES;
 
-    uint16_t colour;
-    uint16_t noteWidth;
+    uint16_t colours[VISIBLE_NOTES];
+    uint16_t bottom;
+    uint16_t tickWidth;
+    uint16_t noteHeight;
     uint16_t sequenceWidth;
+    uint16_t sequenceHeight;
 
     void renderSequence();
     void renderTick(OutputNotes& notes, uint16_t tickLeft);
 };
 
-// #include "SequenceVisualiserImpl.h"
+#include "SequenceVisualiserImpl.h"
 #endif

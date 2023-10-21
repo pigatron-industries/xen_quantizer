@@ -18,20 +18,14 @@ void DrumSequenceDecoderController::decodeOutput(Array<OutputNote, MAX_NOTES_OUT
         // Serial.print(notes[i].note);
         // Serial.print(" ");
         // Serial.print(notes[i].probability);
-        if(note.probability > threshold) {
-            int8_t output = getOutput(note.note);
-            // Serial.print(note.note);
-            // Serial.print(" ");
-            // Serial.print(output);
-            // Serial.print("  / ");
-            if(output < NUM_TRIGGER_OUTPUTS) {
-                triggerOutputs[output].trigger();
-            }
-            int8_t accentOutput = getAccentOutput(output);
-            if(accentOutput >= 0) {
-                float accent = getAccent(output, note.note);
-                Hardware::hw.cvOutputPins[accentOutput]->analogWrite(accent*3);
-            }
+        int8_t output = getOutput(note.note);
+        if(output < NUM_TRIGGER_OUTPUTS) {
+            triggerOutputs[output].trigger();
+        }
+        int8_t accentOutput = getAccentOutput(output);
+        if(accentOutput >= 0) {
+            float accent = getAccent(output, note.note);
+            Hardware::hw.cvOutputPins[accentOutput]->analogWrite(accent*3);
         }
     }
 

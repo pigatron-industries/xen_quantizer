@@ -3,6 +3,7 @@
 
 #include <eurorack_graphics.h>
 #include "Hardware.h"
+#include "SequenceVisualiser.h"
 
 class SequencerInterface {
     public:
@@ -11,6 +12,7 @@ class SequencerInterface {
         void render();
 
         void setModel(char* modelName);
+        void setSequence(OutputNotesSequence* sequence);
         void focusModel();
 
     private:
@@ -19,6 +21,7 @@ class SequencerInterface {
         VerticalContainer<TFTDisplay, 4> page;
         TextComponent<TFTDisplay> title;
         FieldComponent<TFTDisplay> modelField = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 50, "MODEL:");
+        SequenceVisualiser<TFTDisplay> sequenceVisualiser = SequenceVisualiser<TFTDisplay>(TFTDisplay::WIDTH, 24);
 
         MessageBoxComponent<TFTDisplay> messageBox = MessageBoxComponent<TFTDisplay>(TFTDisplay::WIDTH*0.5, TFTDisplay::HEIGHT*0.5, 2, TFT_ORANGE);
 };

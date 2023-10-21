@@ -115,10 +115,10 @@ void SequenceDecoderController::tick() {
         return;
     }
 
-    thresholdInput.update();
-    thresholdCVInput.update();
-
     if (tickCounter.tick() == 0) {
+        thresholdInput.update();
+        thresholdCVInput.update();
+        sequenceDecoderModel.setOutputThreshold(thresholdInput.getValue() + thresholdCVInput.getValue());
         runInference();
     }
 
@@ -141,5 +141,7 @@ void SequenceDecoderController::runInference() {
     model.setInput(1, latent2Input.getValue() + latent2CVInput.getValue());
     model.setInput(2, latent3Input.getValue() + latent3CVInput.getValue());
     model.runInference();
+
     sequenceDecoderModel.decodeOutput();
+    interface.setSequence(&sequenceDecoderModel.getOutputNotesSequence());
 }

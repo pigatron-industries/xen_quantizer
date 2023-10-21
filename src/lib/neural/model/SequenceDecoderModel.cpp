@@ -43,7 +43,9 @@ OutputNotes& SequenceDecoderModel::getOutputNotes(int8_t tick) {
     for(uint8_t i = 0; i < notesPerTick; i++) {
         int outputIndex = tick * notesPerTick + i;
         float probability = model.getOutput(outputIndex);
-        addNote(i, probability);
+        if (probability >= outputThreshold) {
+            addNote(i, probability);
+        }
     }
 
     // TODO reorder notes by pitch

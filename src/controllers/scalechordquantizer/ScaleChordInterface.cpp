@@ -6,11 +6,12 @@ void ScaleChordInterface::init() {
     page.addComponent(&scaleField);
     page.addComponent(&chordField);
     page.addComponent(&offsetField);
-    page.addComponent(&field);
     page.addComponent(&noteVisualiser);
 
     page.setContext(&Hardware::hw.display);
     page.layout();
+
+    noteVisualiser.setTop(TFTDisplay::HEIGHT - noteVisualiser.getHeight() - 2);
 
     messageBox.setContext(&Hardware::hw.display);
     messageBox.layout();

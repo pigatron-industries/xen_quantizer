@@ -4,6 +4,13 @@ template<class G>
 SequenceVisualiser<G>::SequenceVisualiser(uint16_t width, uint16_t height) {
     this->setWidth(width);
     this->setHeight(height);
+    setNumNotes(12);
+}
+
+template<class G>
+void SequenceVisualiser<G>::setNumNotes(uint8_t numNotes) {
+    noteHeight = this->getHeight() / numNotes; 
+    sequenceHeight = noteHeight * numNotes;
 }
 
 template<class G>
@@ -11,7 +18,19 @@ void SequenceVisualiser<G>::setSequence(OutputNotesSequence* sequence) {
     this->sequence = sequence; 
     tickWidth = this->getWidth() / sequence->size();
     sequenceWidth = tickWidth * sequence->size();
-    this->render();
+    colours[0] = TFT_WHITE;
+    colours[1] = TFT_YELLOW;
+    colours[2] = TFT_RED;
+    colours[3] = TFT_RED;
+    colours[4] = TFT_RED;
+    colours[5] = TFT_RED;
+    colours[6] = TFT_RED;
+    colours[7] = TFT_RED;
+    colours[8] = TFT_GREEN;
+    colours[9] = TFT_GREEN;
+    colours[10] = TFT_ORANGE;
+    colours[11] = TFT_ORANGE;
+    render();
 }
 
 template<class G>
@@ -22,8 +41,8 @@ void SequenceVisualiser<G>::render() {
 
 template<class G>
 void SequenceVisualiser<G>::renderSequence() {
-    // TODO 
     if(sequence != nullptr) {
+        bottom = this->getTop() + sequenceHeight;
         uint16_t tickLeft = this->getLeft();
         for(int i = 0; i < sequence->size(); i++) {
             renderTick((*sequence)[i], tickLeft);
@@ -35,17 +54,10 @@ void SequenceVisualiser<G>::renderSequence() {
 template<class G>
 void SequenceVisualiser<G>::renderTick(OutputNotes& notes, uint16_t tickLeft) {
     // uint16_t colour = TFT_NAVY;
-    // if(scale != nullptr && scale->containsNote(note)) {
-    //     colour = TFT_MAROON;
-    // }
-    // if(chord != nullptr) {
-    //     if((*chord)[0].note == note) {
-    //         colour = TFT_GREEN;
-    //     } else if ((*chord)[1].note == note) {
-    //         colour = TFT_RED;
-    //     } else if ((*chord)[2].note == note) {
-    //         colour = TFT_RED;
-    //     }
-    // }
-    // this->graphicsContext->fillRectangle(noteLeft, this->getTop(), noteWidth-1, this->getHeight(), colour);
+    // this->graphicsContext->fillRectangle(tickLeft, this->getTop(), tickWidth-1, this->getHeight(), colour);
+
+    for (int i = 0; i < notes.size(); i++) {
+        uint16_t colour = colours[notes[i].note];
+        this->graphicsContext->fillRectangle(tickLeft, bottom - (notes[i].note * noteHeight), tickWidth-1, noteHeight, colour);
+    }
 }

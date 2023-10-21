@@ -18,11 +18,9 @@ void NoteSequenceDecoderController::decodeOutput(Array<OutputNote, MAX_NOTES_OUT
         // Serial.print(notes[i].note);
         // Serial.print(" ");
         // Serial.print(notes[i].probability);
-        if(note.probability > threshold) {
-            float voltage = note.note * 1.0f / 12.0f;  //TODO convert note number into voltage using scale
-            Hardware::hw.cvOutputPins[i]->analogWrite(voltage);
-            triggerOutputs[i].trigger(); //TODO gate or trigger?
-        }
+        float voltage = note.note * 1.0f / 12.0f;  //TODO convert note number into voltage using scale
+        Hardware::hw.cvOutputPins[i]->analogWrite(voltage);
+        triggerOutputs[i].trigger(); //TODO gate or trigger?
     }
     // Serial.println();
 }

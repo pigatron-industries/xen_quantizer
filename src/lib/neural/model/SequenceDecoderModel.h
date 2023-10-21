@@ -41,6 +41,7 @@ class SequenceDecoderModel {
         PercussionGroup& getPercussionGroup(uint8_t index);
         float getPercussionGroupAccent(uint8_t groupIndex, uint8_t note);
 
+        void setOutputThreshold(float threshold) { outputThreshold = threshold; }
         float getOutputThreshold() { return outputThreshold; }
 
         void decodeOutput();
