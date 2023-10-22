@@ -11,9 +11,9 @@ Change the mode by holding down the left encoder switch and turning clockwise or
 
 ### 1. Scale and Chord Quantizer
 
-### 2. Neural Drum Sequence Generator
+### 2. Neural Note Sequence Generator
 
-### 3. Neural Note Sequence Generator
+### 3. Neural Drum Sequence Generator
 
-### 3. Calibration
+### 4. Calibration
 
