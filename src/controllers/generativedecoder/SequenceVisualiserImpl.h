@@ -20,17 +20,31 @@ void SequenceVisualiser<G>::setSequence(OutputNotesSequence* sequence) {
     sequenceWidth = tickWidth * sequence->size();
     colours[0] = TFT_WHITE;
     colours[1] = TFT_YELLOW;
-    colours[2] = TFT_RED;
-    colours[3] = TFT_RED;
-    colours[4] = TFT_RED;
-    colours[5] = TFT_RED;
-    colours[6] = TFT_RED;
-    colours[7] = TFT_RED;
+    colours[2] = TFT_MAGENTA;
+    colours[3] = TFT_MAGENTA;
+    colours[4] = TFT_MAGENTA;
+    colours[5] = TFT_MAGENTA;
+    colours[6] = TFT_MAGENTA;
+    colours[7] = TFT_MAGENTA;
     colours[8] = TFT_GREEN;
     colours[9] = TFT_GREEN;
-    colours[10] = TFT_ORANGE;
-    colours[11] = TFT_ORANGE;
+    colours[10] = TFT_BLUE;
+    colours[11] = TFT_BLUE;
     render();
+}
+
+template<class G>
+void SequenceVisualiser<G>::setCurrentTick(uint8_t tick) {
+    // clear current tick
+    uint16_t tickLeft = tickWidth * currentTick;
+    this->graphicsContext->fillRectangle(tickLeft, this->getTop(), tickWidth-1, this->getHeight(), TFT_BLACK);
+    renderTick((*sequence)[currentTick], tickLeft);
+
+    // render new tick
+    currentTick = tick;
+    tickLeft = tickWidth * currentTick;
+    this->graphicsContext->fillRectangle(tickLeft, this->getTop(), tickWidth-1, this->getHeight(), TFT_MAROON);
+    renderTick((*sequence)[currentTick], tickLeft);
 }
 
 template<class G>
@@ -58,6 +72,6 @@ void SequenceVisualiser<G>::renderTick(OutputNotes& notes, uint16_t tickLeft) {
 
     for (int i = 0; i < notes.size(); i++) {
         uint16_t colour = colours[notes[i].note];
-        this->graphicsContext->fillRectangle(tickLeft, bottom - (notes[i].note * noteHeight), tickWidth-1, noteHeight, colour);
+        this->graphicsContext->fillRectangle(tickLeft, bottom - noteHeight - (notes[i].note * noteHeight), tickWidth-1, noteHeight, colour);
     }
 }

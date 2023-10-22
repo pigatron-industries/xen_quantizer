@@ -122,6 +122,8 @@ void SequenceDecoderController::tick() {
         runInference();
     }
 
+    interface.setCurrentTick(tickCounter.getTickCount());
+
     OutputNotesSequence& notesSequence = sequenceDecoderModel.getOutputNotesSequence();
     decodeOutput(notesSequence[tickCounter.getTickCount()]);
 }

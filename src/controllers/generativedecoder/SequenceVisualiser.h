@@ -17,9 +17,11 @@ public:
 
     void setNumNotes(uint8_t numNotes);
     void setSequence(OutputNotesSequence* sequence);
+    void setCurrentTick(uint8_t tick);
 
 protected:
     OutputNotesSequence* sequence = nullptr;
+    uint8_t currentTick = 0;
     
     uint16_t numNotes = VISIBLE_NOTES;
 

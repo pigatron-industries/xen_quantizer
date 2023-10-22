@@ -35,6 +35,7 @@ class SequenceDecoderController : public ParameterizedController<1> {
 
         GateInput<> clockInput = GateInput<>(*Hardware::hw.triggerInputPins[0]);
         GateInput<> resetInput = GateInput<>(*Hardware::hw.triggerInputPins[1]);
+        GateInput<> inferenceInput = GateInput<>(*Hardware::hw.triggerInputPins[2]);
 
         LinearInput<AnalogInputPinT> latent1Input = LinearInput<AnalogInputPinT>(Hardware::hw.channel1PotPin, -5, 5, -5, 5);
         LinearInput<AnalogInputPinT> latent2Input = LinearInput<AnalogInputPinT>(Hardware::hw.channel2PotPin, -5, 5, -5, 5);

@@ -9,7 +9,7 @@ void SequencerInterface::init() {
 
     page.layout();
 
-    sequenceVisualiser.setTop(TFTDisplay::HEIGHT - sequenceVisualiser.getHeight() - 2);
+    sequenceVisualiser.setTop(TFTDisplay::HEIGHT - sequenceVisualiser.getHeight());
 }
 
 void SequencerInterface::render() {
@@ -23,6 +23,10 @@ void SequencerInterface::setModel(char* modelName) {
 
 void SequencerInterface::setSequence(OutputNotesSequence* sequence) {
     sequenceVisualiser.setSequence(sequence);
+}
+
+void SequencerInterface::setCurrentTick(uint8_t tick) {
+    sequenceVisualiser.setCurrentTick(tick);
 }
 
 void SequencerInterface::focusModel() {
