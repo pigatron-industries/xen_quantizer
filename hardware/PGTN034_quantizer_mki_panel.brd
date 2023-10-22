@@ -175,8 +175,8 @@
 <wire x1="26.67" y1="85.598" x2="26.67" y2="82.677" width="0" layer="20"/>
 <text x="33.3375" y="17.145" size="1.778" layer="25">OUT</text>
 <text x="33.3375" y="6.985" size="1.778" layer="25">TRIG</text>
-<text x="33.3375" y="39.0525" size="1.778" layer="25">IN</text>
-<text x="32.0675" y="28.575" size="1.778" layer="25">TRIG</text>
+<text x="33.3375" y="28.8925" size="1.778" layer="25">IN</text>
+<text x="31.75" y="39.0525" size="1.778" layer="25">TRIG</text>
 <text x="32.0675" y="47.625" size="1.778" layer="25">CV</text>
 <text x="28.575" y="61.2775" size="1.778" layer="25">ASSIGN</text>
 <wire x1="6.35" y1="0" x2="64.77" y2="0" width="0.1524" layer="21"/>
