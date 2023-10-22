@@ -47,6 +47,8 @@ class SequenceDecoderController : public ParameterizedController<1> {
         LinearInput<AnalogInputPinT> latent3CVInput = LinearInput<AnalogInputPinT>(Hardware::hw.channel3CvPin, -5, 5, -5, 5);
         LinearInput<AnalogInputPinT> thresholdCVInput = LinearInput<AnalogInputPinT>(Hardware::hw.channel4CvPin, -5, 5, -0.3, 0.3);
 
+        bool manualInference = false;
+
         SequencerInterface interface;
 
         TensorflowModel& model = Hardware::hw.modelManager.getModel();

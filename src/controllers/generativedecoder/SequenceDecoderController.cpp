@@ -66,29 +66,18 @@ void SequenceDecoderController::setModel(int index) {
 }
 
 void SequenceDecoderController::update() {
-
-    if(Hardware::hw.pushButtons[0].update()) {
-        if(Hardware::hw.pushButtons[0].pressed()) {
-            Serial.println("button 1 press");
-            Hardware::hw.led1OutputPin.digitalWrite(!Hardware::hw.led1OutputPin.getDigitalValue());
-        } else if(Hardware::hw.pushButtons[0].released()) {
-
+    if(Hardware::hw.pushButtons[2].update() && Hardware::hw.pushButtons[2].pressed()) {
+        Serial.println("button 3 press");
+        if (manualInference) {
+            runInference();
         }
     }
 
-    if(Hardware::hw.pushButtons[1].update() && Hardware::hw.pushButtons[1].pressed()) {
-        Serial.println("button 2 press");
-        Hardware::hw.led2OutputPin.digitalWrite(!Hardware::hw.led2OutputPin.getDigitalValue());
-    }
-
-    if(Hardware::hw.pushButtons[2].update() && Hardware::hw.pushButtons[2].pressed()) {
-        Serial.println("button 3 press");
-        Hardware::hw.led3OutputPin.digitalWrite(!Hardware::hw.led3OutputPin.getDigitalValue());
-    }
-
-    if(Hardware::hw.pushButtons[3].update() && Hardware::hw.pushButtons[3].pressed()) {
-        Serial.println("button 4 press");
-        Hardware::hw.led4OutputPin.digitalWrite(!Hardware::hw.led4OutputPin.getDigitalValue());
+    Hardware::hw.pushButtons[2].update();
+    if (Hardware::hw.pushButtons[2].heldFor(1000)) {
+        Serial.println("button 3 hold");
+        manualInference = !manualInference;
+        Hardware::hw.led3OutputPin.digitalWrite(manualInference);
     }
 }
 
@@ -103,6 +92,10 @@ void SequenceDecoderController::process() {
         delay(1);
         tick();
     }
+
+    if(manualInference && inferenceInput.update() && inferenceInput.rose()) {
+        runInference();
+    }
 }
 
 
@@ -115,10 +108,9 @@ void SequenceDecoderController::tick() {
         return;
     }
 
-    if (tickCounter.tick() == 0) {
-        thresholdInput.update();
-        thresholdCVInput.update();
-        sequenceDecoderModel.setOutputThreshold(thresholdInput.getValue() + thresholdCVInput.getValue());
+    tickCounter.tick();
+
+    if (!manualInference && tickCounter.getTickCount() == 0) {
         runInference();
     }
 
@@ -130,6 +122,8 @@ void SequenceDecoderController::tick() {
 
 
 void SequenceDecoderController::runInference() {
+    thresholdInput.update();
+    thresholdCVInput.update();
     latent1Input.update();
     latent2Input.update();
     latent3Input.update();
@@ -139,6 +133,7 @@ void SequenceDecoderController::runInference() {
     // Serial.println(latent1Input.getValue());
     // Serial.println(latent2Input.getValue());
     // Serial.println(latent3Input.getValue());
+    sequenceDecoderModel.setOutputThreshold(thresholdInput.getValue() + thresholdCVInput.getValue());
     model.setInput(0, latent1Input.getValue() + latent1CVInput.getValue());
     model.setInput(1, latent2Input.getValue() + latent2CVInput.getValue());
     model.setInput(2, latent3Input.getValue() + latent3CVInput.getValue());

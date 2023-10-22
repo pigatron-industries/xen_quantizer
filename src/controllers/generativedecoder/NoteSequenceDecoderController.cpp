@@ -10,7 +10,6 @@ void NoteSequenceDecoderController::process() {
 }
 
 void NoteSequenceDecoderController::decodeOutput(Array<OutputNote, MAX_NOTES_OUTPUT>& notes) {
-    float threshold = thresholdInput.getValue() + thresholdCVInput.getValue();
     // Serial.print("notes: ");
     for(int i = 0; i < notes.size(); i++) {
         OutputNote& note = notes[i];
