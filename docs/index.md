@@ -18,3 +18,4 @@ A 4 channel quantizer and sequence generator
 ## Documentation
 
 * [User Manual](user.md)
+* [Bill of Materials](bom.md)
