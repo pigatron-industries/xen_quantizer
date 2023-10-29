@@ -4,7 +4,9 @@ void CalibrationInterface::init() {
     page.addComponent(&title);
     page.addComponent(&outputField);
     page.addComponent(&voltageField);
+    page.addComponent(&valueField);
     page.addComponent(&offsetField);
+    page.addComponent(&scaleField);
 
     page.setContext(&Hardware::hw.display);
 
@@ -24,8 +26,16 @@ void CalibrationInterface::setVoltage(int voltage) {
     voltageField.setValue(voltage);
 }
 
+void CalibrationInterface::setValue(int offset) {
+    valueField.setValue(offset);
+}
+
 void CalibrationInterface::setOffset(int offset) {
     offsetField.setValue(offset);
+}
+
+void CalibrationInterface::setScale(int scale) {
+    scaleField.setValue(scale);
 }
 
 void CalibrationInterface::focusOutput() {
@@ -36,6 +46,6 @@ void CalibrationInterface::focusVoltage() {
     focusManager.setFocus(&voltageField);
 }
 
-void CalibrationInterface::focusOffset() {
-    focusManager.setFocus(&offsetField);
+void CalibrationInterface::focusValue() {
+    focusManager.setFocus(&valueField);
 }

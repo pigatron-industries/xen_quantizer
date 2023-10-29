@@ -9,8 +9,7 @@ class CalibrationController : public ParameterizedController<3> {
 
         enum Parameter {
             OUTPUTNUM = 0,
-            VOLTAGE,
-            OFFSET
+            VALUE
         };
 
         CalibrationController() : ParameterizedController() {}
@@ -31,7 +30,7 @@ class CalibrationController : public ParameterizedController<3> {
         CalibrationInterface interface;
 
         void setOutput(uint8_t output);
-        void setOffset(int8_t amount);
+        void setValue(int8_t amount);
 
         void startCalibrate();
         void saveCalibration();

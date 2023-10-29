@@ -25,11 +25,8 @@ int CalibrationController::cycleParameter(int amount) {
         case Parameter::OUTPUTNUM:
             interface.focusOutput();
             break;
-        case Parameter::VOLTAGE:
-            interface.focusVoltage();
-            break;
-        case Parameter::OFFSET:
-            interface.focusOffset();
+        case Parameter::VALUE:
+            interface.focusValue();
             break;
     }
 
@@ -42,11 +39,8 @@ void CalibrationController::cycleValue(int amount) {
         case Parameter::OUTPUTNUM:
             setOutput(parameters[Parameter::OUTPUTNUM].value);
             break;
-        case Parameter::VOLTAGE:
-            //TODO set voltage from encoder
-            break;
-        case Parameter::OFFSET:
-            setOffset(amount);
+        case Parameter::VALUE:
+            setValue(amount);
             break;
     }
 }
@@ -63,7 +57,7 @@ void CalibrationController::setOutput(uint8_t output) {
     startCalibrate();
 }
 
-void CalibrationController::setOffset(int8_t amount) {
+void CalibrationController::setValue(int8_t amount) {
     if(currentVoltage == 0) {
         calibration.offset(-amount);
     } else {
@@ -93,7 +87,12 @@ void CalibrationController::updateOutput() {
     uint16_t binaryValue = calibration.convertReverse(currentVoltage);
     Hardware::hw.cvOutputPins[currentOutput]->analogWrite(currentVoltage);
     interface.setVoltage(currentVoltage);
-    interface.setOffset(binaryValue);
+    interface.setValue(binaryValue);
+    interface.setOffset(calibration.getDigitalOffset());
+    interface.setScale(calibration.getDigitalScale());
+
+    // Serial.print(calibration.getDigitalOffset());
+    // Serial.print(calibration.getDigitalScale());
 }
 
 void CalibrationController::process() {
