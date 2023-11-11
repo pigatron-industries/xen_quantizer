@@ -5,6 +5,9 @@ SequenceVisualiser<G>::SequenceVisualiser(uint16_t width, uint16_t height) {
     this->setWidth(width);
     this->setHeight(height);
     setNumNotes(12);
+    for (int i = 0; i < VISIBLE_NOTES; i++) {
+        colours[i] = TFT_WHITE;
+    }
 }
 
 template<class G>
@@ -18,18 +21,6 @@ void SequenceVisualiser<G>::setSequence(OutputNotesSequence* sequence) {
     this->sequence = sequence; 
     tickWidth = this->getWidth() / sequence->size();
     sequenceWidth = tickWidth * sequence->size();
-    colours[0] = TFT_WHITE;
-    colours[1] = TFT_YELLOW;
-    colours[2] = TFT_MAGENTA;
-    colours[3] = TFT_MAGENTA;
-    colours[4] = TFT_MAGENTA;
-    colours[5] = TFT_MAGENTA;
-    colours[6] = TFT_MAGENTA;
-    colours[7] = TFT_MAGENTA;
-    colours[8] = TFT_GREEN;
-    colours[9] = TFT_GREEN;
-    colours[10] = TFT_BLUE;
-    colours[11] = TFT_BLUE;
     render();
 }
 
@@ -67,11 +58,17 @@ void SequenceVisualiser<G>::renderSequence() {
 
 template<class G>
 void SequenceVisualiser<G>::renderTick(OutputNotes& notes, uint16_t tickLeft) {
-    // uint16_t colour = TFT_NAVY;
-    // this->graphicsContext->fillRectangle(tickLeft, this->getTop(), tickWidth-1, this->getHeight(), colour);
-
     for (int i = 0; i < notes.size(); i++) {
-        uint16_t colour = colours[notes[i].note];
-        this->graphicsContext->fillRectangle(tickLeft, bottom - noteHeight - (notes[i].note * noteHeight), tickWidth-1, noteHeight, colour);
+        uint8_t pitch = notes[i].note % 12;
+
+        uint16_t colour = 0;
+        if (colourByOctave) {
+            uint8_t octave = notes[i].note / 12;
+            colour = colours[octave];
+        } else {
+            colour = colours[pitch];
+        }
+        
+        this->graphicsContext->fillRectangle(tickLeft, bottom - noteHeight - (pitch * noteHeight), tickWidth-1, noteHeight, colour);
     }
 }
