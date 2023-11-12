@@ -29,10 +29,10 @@ class NoteSequenceDecoderController : public SequenceDecoderController {
 
     private:
         AnalogTriggerOutput<DAC8164Device> triggerOutputs[4] = {
-            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[4]),
-            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[5]),
-            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[6]),
-            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[7])
+            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[0]),
+            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[1]),
+            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[2]),
+            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[3])
         };
 };
 

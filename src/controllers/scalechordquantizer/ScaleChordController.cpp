@@ -193,10 +193,9 @@ void ScaleChordController::chordUpdate() {
 }
 
 void ScaleChordController::chordOutput() {
-    Hardware::hw.cvOutputPins[0]->analogWrite(chord[0].voltage + transpose);
-    Hardware::hw.cvOutputPins[1]->analogWrite(chord[1].voltage + transpose);
-    Hardware::hw.cvOutputPins[2]->analogWrite(chord[2].voltage + transpose);
-
+    Hardware::hw.cvOutputPins[4]->analogWrite(chord[0].voltage + transpose);
+    Hardware::hw.cvOutputPins[5]->analogWrite(chord[1].voltage + transpose);
+    Hardware::hw.cvOutputPins[6]->analogWrite(chord[2].voltage + transpose);
 }
 
 void ScaleChordController::noteUpdate() {
@@ -204,5 +203,5 @@ void ScaleChordController::noteUpdate() {
     Note note = chordQuantizer.quantize(noteVoltage);
     //Note note = scaleQuantizer.quantize(noteVoltage);
 
-    Hardware::hw.cvOutputPins[3]->analogWrite(note.voltage + transpose);
+    Hardware::hw.cvOutputPins[7]->analogWrite(note.voltage + transpose);
 }
