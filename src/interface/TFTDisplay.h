@@ -2,16 +2,9 @@
 #define Display_h
 
 #include <eurorack_graphics.h>
+#define setup_t etft_espi_setup_t // fix conflict between TFT_eSPI and usb_host
 #include <TFT_eSPI.h>
 
-// #include <SPI.h>
-// #include <Wire.h>
-
-// #define DISPLAY_WIDTH 64
-
-// #define DISPLAY_FONT u8g2_font_5x7_mf
-// #define DISPLAY_FONT_HEIGHT 7
-// #define DISPLAY_FONT_WIDTH 5
 
 class TFTDisplay : public GraphicsContext {
     public:

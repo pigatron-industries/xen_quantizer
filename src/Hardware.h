@@ -6,6 +6,8 @@
 #include <eurorack_sd.h>
 #include <eurorack_dac8164.h>
 #include <eurorack_mcp23s17.h>
+#include <USBHost_t36.h>
+
 #include "hwconfig.h"
 #include "interface/TFTDisplay.h"
 #include "lib/quantizer/filesystem/TuningsManager.h"
@@ -23,6 +25,10 @@ class Hardware {
         // SD Card
         FileSystem fsTunings = FileSystem(SD_CS_PIN, "/tunings");
         FileSystem fsModels = FileSystem(SD_CS_PIN, "/models");
+
+        // USB host
+        USBHost usb;
+        MIDIDevice midiDevice = MIDIDevice(usb);
 
         // Memory pool
         static uint8_t memPoolTuningBuffer[MEMPOOL_TUNING_SIZE];

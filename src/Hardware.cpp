@@ -18,8 +18,9 @@ void Hardware::init() {
     fsModels.init();
     tuningsManager.init();
     modelManager.init();
+    usb.begin();
 
-    for(int i = 0; i < CHANNEL_COUNT; i++) {
+    for(int i = 0; i < 8; i++) {
         cvOutputPins[i]->setPinType(PinType::ANALOG_OUTPUT);
         cvOutputPins[i]->loadCalibration();
     }
