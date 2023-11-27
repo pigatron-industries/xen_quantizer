@@ -2,7 +2,7 @@
 
 void ScaleChordController::init(float sampleRate) {
     Controller::init(sampleRate);
-    configParam(Parameter::TUNING, 0, Hardware::hw.tuningsManager.getTuningCount()-1);
+    configParam(Parameter::TUNING, 0, Hardware::hw.tuningsManager.getTuningCount()-1, false);
     interface.init();
     interface.focusTuning();
     setTuning(parameters[Parameter::TUNING].value);
@@ -37,17 +37,19 @@ int ScaleChordController::cycleParameter(int amount) {
 }
 
 void ScaleChordController::cycleValue(int amount) {
-    parameters.getSelected().cycle(amount);
+    int value = parameters.getSelected().cycle(amount);
     switch(parameters.getSelectedIndex()) {
-        case Parameter::TUNING:
-            setTuning(parameters[Parameter::TUNING].value);
+        case Parameter::TUNING: {
+            FileInfo& file = Hardware::hw.tuningsManager.getFileInfo(value);
+            interface.setTuningName(file.filename);
             break;
+        }
         case Parameter::SCALE:
-            setScale(parameters[Parameter::SCALE].value);
+            setScale(parameters[Parameter::SCALE].getValue());
             break;
         case Parameter::CHORD:
             interface.focusChord();
-            setChord(parameters[Parameter::CHORD].value);
+            setChord(parameters[Parameter::CHORD].getValue());
             break;
         case Parameter::OFFSET:
             interface.focusOffset();
@@ -57,6 +59,26 @@ void ScaleChordController::cycleValue(int amount) {
     }
 
     save();
+}
+
+void ScaleChordController::selectValue() {
+    int prevValue = parameters.getSelected().getValue();
+    int newValue = parameters.getSelected().select();
+    switch(parameters.getSelectedIndex()) {
+        case Parameter::TUNING:
+            if (newValue != prevValue) {
+                setTuning(newValue);
+            } else {
+                interface.setTuning(tuning);
+            }
+            break;
+        case Parameter::SCALE:
+            break;
+        case Parameter::CHORD:
+            break;
+        case Parameter::OFFSET:
+            break;
+    }
 }
 
 void ScaleChordController::updateOffset() {

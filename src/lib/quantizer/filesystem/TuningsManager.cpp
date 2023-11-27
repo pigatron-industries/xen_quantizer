@@ -23,6 +23,11 @@ int TuningsManager::getTuningCount() {
     return fs.ls().getSize();
 }
 
+FileInfo& TuningsManager::getFileInfo(int index) {
+    fs.cd("/");
+    return fs.ls().getFile(index);
+}
+
 TuningData& TuningsManager::loadTuningData(int index) {
     clear();
 

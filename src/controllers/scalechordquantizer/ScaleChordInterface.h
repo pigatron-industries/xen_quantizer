@@ -11,6 +11,7 @@ class ScaleChordInterface {
         void init();
         void render();
 
+        void setTuningName(char* name);
         void setTuning(Tuning* tuning);
         void setScale(Scale* scale);
         void setChordDef(ChordDef* chordDef);

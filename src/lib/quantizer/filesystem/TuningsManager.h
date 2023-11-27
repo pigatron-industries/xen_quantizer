@@ -16,6 +16,7 @@ class TuningsManager {
         void init();
         void clear();
         int getTuningCount();
+        FileInfo& getFileInfo(int index);
         TuningData& loadTuningData(int index);
 
         Tuning* addTuning(Tuning& tuning);

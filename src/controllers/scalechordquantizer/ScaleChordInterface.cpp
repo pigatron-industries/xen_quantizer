@@ -22,6 +22,11 @@ void ScaleChordInterface::render() {
     page.render();
 }
 
+void ScaleChordInterface::setTuningName(char* name) {
+    tuningField.setValue(name);
+    // TOOD indicate this hasn't been loaded yet
+}
+
 void ScaleChordInterface::setTuning(Tuning* tuning) {
     tuningField.setValue(tuning->getName());
     noteVisualiser.setTuning(tuning);
