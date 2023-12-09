@@ -34,6 +34,9 @@ void TuningDataFileReader::readTuning(FsFile& file) {
         } else if(isObject("eq:", 1)) {
             Serial.println("  Create equal division tuning");
             Tuning tuning = ScaleFactory::createEqualDivisionTuning(arrayItemInt(0), arrayItemFloat(1), nameBuffer);
+            for(int i = 0; i < tuning.size(); i++) {
+                Serial.println(tuning.getInterval(i).voltage);
+            }
             this->tuning = tuningsManager.addTuning(tuning);
         } else if(isObject("cents:", 1)) {
             Serial.println("  Create cents tuning");
@@ -46,11 +49,13 @@ void TuningDataFileReader::readTuning(FsFile& file) {
             this->tuning = tuningsManager.addTuning(tuning);
         } else if(isObject("ratios:", 1)) {
             Serial.println("  Create ratios tuning");
-            uint8_t notes = arraySize();
-            float cycle = arrayItemFloat(notes-1);
-            Tuning tuning = Tuning(notes, cycle, nameBuffer);
-            for(int i = 0; i < notes; i++) {
-                tuning.getInterval(i).voltage = arrayItemRatioToVoltage(i);;
+            uint8_t intervalCount = arraySize();
+            float cycle = arrayItemFloat(intervalCount-1);
+            Tuning tuning = Tuning(intervalCount, cycle, nameBuffer);
+            tuning.getInterval(0).voltage = 0;
+            for(int i = 1; i < intervalCount; i++) {
+                tuning.getInterval(i).voltage = arrayItemRatioToVoltage(i-1);
+                Serial.println(tuning.getInterval(i).voltage);
             }
             this->tuning = tuningsManager.addTuning(tuning);
         } 
