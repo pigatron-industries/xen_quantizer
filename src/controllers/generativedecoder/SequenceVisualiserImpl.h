@@ -25,17 +25,19 @@ void SequenceVisualiser<G>::setSequence(OutputNotesSequence* sequence) {
 }
 
 template<class G>
-void SequenceVisualiser<G>::setCurrentTick(uint8_t tick) {
+void SequenceVisualiser<G>::setCurrentTick(int8_t tick) {
     // clear current tick
     uint16_t tickLeft = tickWidth * currentTick;
     this->graphicsContext->fillRectangle(tickLeft, this->getTop(), tickWidth-1, this->getHeight(), TFT_BLACK);
     renderTick((*sequence)[currentTick], tickLeft);
 
     // render new tick
-    currentTick = tick;
-    tickLeft = tickWidth * currentTick;
-    this->graphicsContext->fillRectangle(tickLeft, this->getTop(), tickWidth-1, this->getHeight(), TFT_MAROON);
-    renderTick((*sequence)[currentTick], tickLeft);
+    if (tick >= 0) {
+        currentTick = tick;
+        tickLeft = tickWidth * currentTick;
+        this->graphicsContext->fillRectangle(tickLeft, this->getTop(), tickWidth-1, this->getHeight(), TFT_MAROON);
+        renderTick((*sequence)[currentTick], tickLeft);
+    }
 }
 
 template<class G>

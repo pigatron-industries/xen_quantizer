@@ -13,7 +13,7 @@ class SequencerInterface {
 
         void setModel(char* modelName);
         void setSequence(OutputNotesSequence* sequence);
-        void setCurrentTick(uint8_t tick);
+        void setCurrentTick(int8_t tick);
         void focusModel();
 
         SequenceVisualiser<TFTDisplay> sequenceVisualiser = SequenceVisualiser<TFTDisplay>(TFTDisplay::WIDTH, 12*3);

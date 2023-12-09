@@ -17,7 +17,7 @@ public:
 
     void setNumNotes(uint8_t numNotes);
     void setSequence(OutputNotesSequence* sequence);
-    void setCurrentTick(uint8_t tick);
+    void setCurrentTick(int8_t tick);
     void setColourByOctave(bool colourByOctave) { this->colourByOctave = colourByOctave; }
 
     uint16_t colours[VISIBLE_NOTES];

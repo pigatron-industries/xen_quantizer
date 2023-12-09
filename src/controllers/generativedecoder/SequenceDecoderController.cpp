@@ -101,6 +101,7 @@ void SequenceDecoderController::process() {
 
 void SequenceDecoderController::reset() {
     tickCounter.reset();
+    interface.setCurrentTick(tickCounter.getTickCount());
 }
 
 void SequenceDecoderController::tick() {

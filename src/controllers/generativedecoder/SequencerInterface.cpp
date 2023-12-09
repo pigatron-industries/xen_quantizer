@@ -25,7 +25,7 @@ void SequencerInterface::setSequence(OutputNotesSequence* sequence) {
     sequenceVisualiser.setSequence(sequence);
 }
 
-void SequencerInterface::setCurrentTick(uint8_t tick) {
+void SequencerInterface::setCurrentTick(int8_t tick) {
     sequenceVisualiser.setCurrentTick(tick);
 }
 
