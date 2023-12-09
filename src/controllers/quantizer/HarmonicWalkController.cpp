@@ -1,5 +1,7 @@
 #include "HarmonicWalkController.h"
 
+#define CV_OUTPUT_START 4
+
 void HarmonicWalkController::init(float sampleRate) {
     Controller::init(sampleRate);
     configParam(Parameter::TUNING, 0, Hardware::hw.tuningsManager.getTuningCount()-1);
@@ -80,6 +82,6 @@ void HarmonicWalkController::process() {
 void HarmonicWalkController::clock() {
     float inputVoltage = Hardware::hw.channel1InputPin.analogRead();
     outputVoltage = quantizer.quantize(outputVoltage, inputVoltage, interval);
-    Hardware::hw.cvOutputPins[0]->analogWrite(outputVoltage);
+    Hardware::hw.cvOutputPins[CV_OUTPUT_START]->analogWrite(outputVoltage);
     triggerOutputs[0].trigger();
 }

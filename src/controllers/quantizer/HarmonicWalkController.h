@@ -40,10 +40,10 @@ class HarmonicWalkController : public ParameterizedController<2> {
         };
 
         AnalogTriggerOutput<DAC8164Device> triggerOutputs[NUM_TRIGGER_OUTPUTS] = {
-            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[5]),
-            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[6]),
-            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[7]),
-            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[8])
+            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[0]),
+            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[1]),
+            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[2]),
+            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[3])
         };
 
         HarmonicWalkInterface interface;
