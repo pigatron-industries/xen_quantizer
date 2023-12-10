@@ -1,5 +1,8 @@
 #include "SequenceDecoderController.h"
 
+#define BTN_PAUSECLOCK 0  // Pause clock until next reset
+#define BTN_INFERENCE 2  // Manual inference /  button
+
 
 void SequenceDecoderController::init(float sampleRate) {
     Controller::init(sampleRate);
@@ -65,19 +68,31 @@ void SequenceDecoderController::setModel(int index) {
     interface.render();
 }
 
+
+
 void SequenceDecoderController::update() {
-    if(Hardware::hw.pushButtons[2].update() && Hardware::hw.pushButtons[2].pressed()) {
+    // Press button 1 to pause clock until next reset
+    Hardware::hw.pushButtons[BTN_PAUSECLOCK].update();
+    if (Hardware::hw.pushButtons[BTN_PAUSECLOCK].pressed()) {
+        Serial.println("button 1 press");
+        pauseClock = true;
+        Hardware::hw.led1OutputPin.digitalWrite(true);
+    }
+
+    // Hold button 3 to toggle manual inference mode
+    Hardware::hw.pushButtons[BTN_INFERENCE].update();
+    if (Hardware::hw.pushButtons[BTN_INFERENCE].heldFor(1000)) {
+        Serial.println("button 3 hold");
+        manualInference = !manualInference;
+        Hardware::hw.led3OutputPin.digitalWrite(manualInference);
+    }
+
+    // Press button 3 or send trigger signal while in manual inference mode to run inference
+    if(Hardware::hw.pushButtons[BTN_INFERENCE].pressed()) {
         Serial.println("button 3 press");
         if (manualInference) {
             runInference();
         }
-    }
-
-    Hardware::hw.pushButtons[2].update();
-    if (Hardware::hw.pushButtons[2].heldFor(1000)) {
-        Serial.println("button 3 hold");
-        manualInference = !manualInference;
-        Hardware::hw.led3OutputPin.digitalWrite(manualInference);
     }
 }
 
@@ -88,7 +103,7 @@ void SequenceDecoderController::process() {
         reset();
     }
 
-    if(clockInput.update() && clockInput.rose()) {
+    if(clockInput.update() && clockInput.rose() && !pauseClock) {
         delay(1);
         tick();
     }
@@ -101,6 +116,8 @@ void SequenceDecoderController::process() {
 
 void SequenceDecoderController::reset() {
     tickCounter.reset();
+    pauseClock = false;
+    Hardware::hw.led1OutputPin.digitalWrite(false);
     interface.setCurrentTick(tickCounter.getTickCount());
 }
 
