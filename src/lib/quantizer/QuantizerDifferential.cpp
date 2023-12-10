@@ -1,8 +1,8 @@
 #include "QuantizerDifferential.h"
 
 float QuantizerDifferential::quantize(float root, float voltage, int intervalIndex) {
-    Interval& interval = tuning->getInterval(intervalIndex);
-    float quantized = quantizeToMultiple(voltage, interval.voltage, root);
+    float intervalVoltage = tuning->getIntervalVoltage(intervalIndex);
+    float quantized = quantizeToMultiple(voltage, intervalVoltage, root);
     return quantized;
 }
 

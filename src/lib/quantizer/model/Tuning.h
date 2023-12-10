@@ -49,6 +49,15 @@ class Tuning {
          */
         Interval& getInterval(int i) { return intervals[i]; }
 
+        float getIntervalVoltage(int i) {
+            i = i%intervals.size();
+            if (i == 0) {
+                return cycleInterval;
+            } else {
+                return intervals[i].voltage;
+            }
+        }
+
         char* getName() { return name; }
 
         /**
@@ -89,7 +98,6 @@ class Tuning {
         void setCycleInterval(float cycleInterval) { this->cycleInterval = cycleInterval; cycleIntervalRecip = 1.0/cycleInterval; }
         float getNoteVoltage(int cycle, int note, float offset = 0);
         float getCycleVoltage(int cycle) { return cycle * this->cycleInterval; }
-        float getIntervalVoltage(int note) { return intervals[note].voltage; }
 };
 
 #endif

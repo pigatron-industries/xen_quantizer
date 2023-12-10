@@ -16,8 +16,8 @@ class HarmonicWalkController : public ParameterizedController<2> {
     public:
 
         enum Parameter {
-            TUNING,
-            INTERVAL
+            TUNING
+            // INTERVAL
         };
 
         HarmonicWalkController() : ParameterizedController() {}
@@ -31,6 +31,9 @@ class HarmonicWalkController : public ParameterizedController<2> {
         virtual void process();
 
     private:
+
+        LinearInput<AnalogInputPinT> intervalInput = LinearInput<AnalogInputPinT>(Hardware::hw.channel1PotPin, -5, 5, 0, 1);
+        LinearInput<AnalogInputPinT> intervalCVInput = LinearInput<AnalogInputPinT>(Hardware::hw.channel1CvPin, -5, 5, -1, 1);
 
         GateInput<> triggerInputs[4] = {
             GateInput<>(*Hardware::hw.triggerInputPins[0], false),

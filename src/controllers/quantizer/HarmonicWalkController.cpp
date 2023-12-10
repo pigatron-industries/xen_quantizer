@@ -5,11 +5,9 @@
 void HarmonicWalkController::init(float sampleRate) {
     Controller::init(sampleRate);
     configParam(Parameter::TUNING, 0, Hardware::hw.tuningsManager.getTuningCount()-1);
-    configParam(Parameter::INTERVAL, 1, 7);
     interface.init();
     interface.focusTuning();
     setTuning(parameters[Parameter::TUNING].value);
-    setInterval(parameters[Parameter::INTERVAL].value);
     init();
 }
 
@@ -25,9 +23,6 @@ int HarmonicWalkController::cycleParameter(int amount) {
         case Parameter::TUNING:
             interface.focusTuning();
             break;
-        case Parameter::INTERVAL:
-            interface.focusInterval();
-            break;
     }
 
     return parameters.getSelectedIndex(); 
@@ -39,15 +34,17 @@ void HarmonicWalkController::cycleValue(int amount) {
         case Parameter::TUNING:
             setTuning(parameters[Parameter::TUNING].value);
             break;
-        case Parameter::INTERVAL:
-            setInterval(parameters[Parameter::INTERVAL].value);
-            break;
     }
 
     save();
 }
 
 void HarmonicWalkController::update() {
+    if(intervalInput.update() || intervalCVInput.update()) {
+        float interval = intervalInput.getValue() + intervalCVInput.getValue();
+        int intervalNum = int(interval * tuning->size()) % tuning->size() + 1;
+        setInterval(intervalNum);
+    }
 }
 
 void HarmonicWalkController::setTuning(int index) {
@@ -64,8 +61,10 @@ void HarmonicWalkController::setTuning(int index) {
 }
 
 void HarmonicWalkController::setInterval(int interval) {
-    this->interval = interval;
-    interface.setInterval(interval);
+    if(this->interval != interval) {
+        this->interval = interval;
+        interface.setInterval(interval);
+    }
 }
 
 void HarmonicWalkController::process() {
