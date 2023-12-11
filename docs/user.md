@@ -7,6 +7,9 @@ order: 2
 
 Change the mode by holding down the left encoder switch and turning clockwise or anticlockwise.
 
+Parameters are changed by first selecting it with left encoder, then changing the value with the right encoder. 
+Some parameters need to be set by pressing down on the right encoder.
+
 ## 1. Scale and Chord Quantizer
 
 ---
@@ -18,6 +21,9 @@ Change the mode by holding down the left encoder switch and turning clockwise or
 ## 3 & 4. Generative Decoder for Notes and Percussion
 
 A generative decoder for musical notes and percussion.
+
+Decoder models are pretrained models stored on the SD card. 
+Percussion models go in the **/models/perc** folder, and musical note models in the **/models/note** folder.
 
 ### Inputs:
 
