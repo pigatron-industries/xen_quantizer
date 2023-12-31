@@ -3,11 +3,26 @@
 #include <initializer_list>
 #include "TuningTest.h"
 
-Tuning TuningTest::tuning = Tuning(12);
+Tuning TuningTest::tuning = Tuning(12, 1, "12EDO");
 
 void TuningTest::test_createNote(int cycle, int note, float expectedVoltage) {
     Note createdNote = tuning.createNote(cycle, note);
     TEST_ASSERT_EQUAL_FLOAT(expectedVoltage, createdNote.voltage);
+}
+
+void test_tuning() {
+    TEST_ASSERT_EQUAL_FLOAT(0, TuningTest::tuning.getInterval(0).voltage);
+    TEST_ASSERT_EQUAL_FLOAT(0.08333334, TuningTest::tuning.getInterval(1).voltage);
+    TEST_ASSERT_EQUAL_FLOAT(0.1666667, TuningTest::tuning.getInterval(2).voltage);
+    TEST_ASSERT_EQUAL_FLOAT(0.25, TuningTest::tuning.getInterval(3).voltage);
+    TEST_ASSERT_EQUAL_FLOAT(0.3333334, TuningTest::tuning.getInterval(4).voltage);
+    TEST_ASSERT_EQUAL_FLOAT(0.4166667, TuningTest::tuning.getInterval(5).voltage);
+    TEST_ASSERT_EQUAL_FLOAT(0.5, TuningTest::tuning.getInterval(6).voltage);
+    TEST_ASSERT_EQUAL_FLOAT(0.5833334, TuningTest::tuning.getInterval(7).voltage);
+    TEST_ASSERT_EQUAL_FLOAT(0.6666667, TuningTest::tuning.getInterval(8).voltage);
+    TEST_ASSERT_EQUAL_FLOAT(0.75, TuningTest::tuning.getInterval(9).voltage);
+    TEST_ASSERT_EQUAL_FLOAT(0.8333334, TuningTest::tuning.getInterval(10).voltage);
+    TEST_ASSERT_EQUAL_FLOAT(0.9166667, TuningTest::tuning.getInterval(11).voltage);
 }
 
 void test_createNote() {
@@ -58,6 +73,7 @@ void test_findCycle() {
 }
 
 void test_Tuning() {
+    RUN_TEST(test_tuning);
     RUN_TEST(test_createNote);
     RUN_TEST(test_findCycle);
 }

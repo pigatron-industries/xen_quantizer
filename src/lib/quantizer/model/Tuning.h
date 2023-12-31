@@ -33,7 +33,7 @@ class Tuning {
          */
         Tuning(int notes, float cycle, const char* name = "") {
             for(int i = 0; i < notes; i++) {
-                intervals.add(Interval(cycle*i/notes));
+                intervals.add(Interval((cycle*i)/notes));
             }
             setCycleInterval(cycle);
             strncpy(this->name, name, 16);
@@ -48,14 +48,11 @@ class Tuning {
          * Get the interval at the given index.
          */
         Interval& getInterval(int i) { return intervals[i]; }
+        float getCycleInterval() { return cycleInterval; }
 
         float getIntervalVoltage(int i) {
             i = i%intervals.size();
-            if (i == 0) {
-                return cycleInterval;
-            } else {
-                return intervals[i].voltage;
-            }
+            return intervals[i].voltage;
         }
 
         char* getName() { return name; }
@@ -96,8 +93,8 @@ class Tuning {
         char name[17] = {0};
 
         void setCycleInterval(float cycleInterval) { this->cycleInterval = cycleInterval; cycleIntervalRecip = 1.0/cycleInterval; }
-        float getNoteVoltage(int cycle, int note, float offset = 0);
         float getCycleVoltage(int cycle) { return cycle * this->cycleInterval; }
+        float getNoteVoltage(int cycle, int note, float offset = 0);
 };
 
 #endif

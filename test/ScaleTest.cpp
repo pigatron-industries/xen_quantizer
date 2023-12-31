@@ -3,7 +3,7 @@
 #include <initializer_list>
 #include "ScaleTest.h"
 
-Tuning ScaleTest::tuning = Tuning(12);
+Tuning ScaleTest::tuning = Tuning(12, 1, "12EDO");
 ChordDef ScaleTest::chordDef = ChordDef({0, 2, 4, 6});
 Scale ScaleTest::scale = Scale(ScaleTest::tuning, {0, 2, 4, 5, 7, 9, 11}, ScaleTest::chordDef);
 

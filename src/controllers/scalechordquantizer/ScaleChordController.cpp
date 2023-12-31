@@ -203,6 +203,11 @@ void ScaleChordController::chordUpdate() {
 
     float chordVoltage = Hardware::hw.channel1InputPin.analogRead();
 
+    // prevent chord going below root note
+    if(chordVoltage <= 0) {
+        chordVoltage = 0;
+    }
+
     Note root = scaleQuantizer.quantize(chordVoltage);
 
     // chord = ScaleFactory::createChord(*scale, *chordDef, root, chordInversion.getIntValue(), 0);
