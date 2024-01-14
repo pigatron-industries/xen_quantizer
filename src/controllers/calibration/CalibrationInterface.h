@@ -3,6 +3,7 @@
 
 #include <eurorack_graphics.h>
 #include "Hardware.h"
+#include "OutputVisualiser.h"
 
 class CalibrationInterface {
     public:
@@ -22,7 +23,7 @@ class CalibrationInterface {
         void focusValue();
 
     private:
-        VerticalContainer<TFTDisplay, 6> page;
+        VerticalContainer<TFTDisplay, 7> page;
 
         FocusManager<TFTDisplay> focusManager;
 
@@ -34,6 +35,7 @@ class CalibrationInterface {
         FieldComponent<TFTDisplay> offsetField = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 50, "OFFSET:");
         FieldComponent<TFTDisplay> scaleField = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 50, "SCALE:");
 
+        OutputVisualiser<TFTDisplay> outputVisualiser = OutputVisualiser<TFTDisplay>(TFTDisplay::WIDTH, 10);
 };
 
 #endif

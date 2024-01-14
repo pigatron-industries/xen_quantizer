@@ -7,6 +7,7 @@ void CalibrationInterface::init() {
     page.addComponent(&valueField);
     page.addComponent(&offsetField);
     page.addComponent(&scaleField);
+    page.addComponent(&outputVisualiser);
 
     page.setContext(&Hardware::hw.display);
 
@@ -20,6 +21,7 @@ void CalibrationInterface::render() {
 
 void CalibrationInterface::setOutput(int output) {
     outputField.setValue(output);
+    outputVisualiser.setSelectedOutput(output);
 }
 
 void CalibrationInterface::setVoltage(int voltage) {

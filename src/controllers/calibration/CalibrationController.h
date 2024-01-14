@@ -4,12 +4,11 @@
 #include "Controller.h"
 #include "CalibrationInterface.h"
 
-class CalibrationController : public ParameterizedController<3> {
+class CalibrationController : public ParameterizedController<1> {
     public:
 
         enum Parameter {
-            OUTPUTNUM = 0,
-            VALUE
+            VALUE = 0
         };
 
         CalibrationController() : ParameterizedController() {}
@@ -23,6 +22,7 @@ class CalibrationController : public ParameterizedController<3> {
 
     private:
         IntegerInput<AnalogInputPinT> octaveInput = IntegerInput<AnalogInputPinT>(Hardware::hw.channel1PotPin, -5, 5, -4, 4);
+        IntegerInput<AnalogInputPinT> channelInput = IntegerInput<AnalogInputPinT>(Hardware::hw.channel2PotPin, -5, 5, 0, 7);
 
         uint8_t currentOutput = 0;
         int8_t currentVoltage = 0;

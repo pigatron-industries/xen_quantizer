@@ -2,7 +2,6 @@
 
 void CalibrationController::init(float sampleRate) {
     ParameterizedController::init(sampleRate);
-    configParam(Parameter::OUTPUTNUM, 0, 7);
     interface.init();
     interface.focusOutput();
     init();
@@ -22,9 +21,6 @@ int CalibrationController::cycleParameter(int amount) {
     parameters.cycle(amount);
 
     switch(parameters.getSelectedIndex()) {
-        case Parameter::OUTPUTNUM:
-            interface.focusOutput();
-            break;
         case Parameter::VALUE:
             interface.focusValue();
             break;
@@ -36,9 +32,6 @@ int CalibrationController::cycleParameter(int amount) {
 void CalibrationController::cycleValue(int amount) {
     parameters.getSelected().cycle(amount);
     switch(parameters.getSelectedIndex()) {
-        case Parameter::OUTPUTNUM:
-            setOutput(parameters[Parameter::OUTPUTNUM].value);
-            break;
         case Parameter::VALUE:
             setValue(amount);
             break;
@@ -70,6 +63,10 @@ void CalibrationController::update() {
     if(octaveInput.update()) {
         currentVoltage = octaveInput.getIntValue();
         updateOutput();
+    }
+
+    if(channelInput.update()) {
+        setOutput(channelInput.getIntValue());
     }
 }
 
