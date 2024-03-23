@@ -28,6 +28,7 @@ class Hardware {
 
         // USB host
         USBHost usb;
+        USBHub hub = USBHub(usb);
         MIDIDevice midiDevice = MIDIDevice(usb);
 
         // Memory pool

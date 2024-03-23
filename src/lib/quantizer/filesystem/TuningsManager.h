@@ -22,7 +22,7 @@ class TuningsManager {
         Tuning* addTuning(Tuning& tuning);
         Scale* addScale(Scale& scale);
 
-        Tuning* getTuning() { return &tuningsManager.getObjects().get(0); }
+        Tuning* getTuning() { return &tuningsManager.get(0); }
 
     private:
         FileSystem& fs;
@@ -32,8 +32,8 @@ class TuningsManager {
 
         // memory management
         MemPool<>& memPool;
-        ObjectManager<Tuning> tuningsManager = ObjectManager<Tuning>(memPool);
-        ObjectManager<Scale> scalesManager = ObjectManager<Scale>(memPool);
+        LinkedList<Tuning> tuningsManager = LinkedList<Tuning>(memPool);
+        LinkedList<Scale> scalesManager = LinkedList<Scale>(memPool);
 
 };
 
