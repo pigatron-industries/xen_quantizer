@@ -42,12 +42,12 @@ TuningData& TuningsManager::loadTuningData(int index) {
 }
 
 Tuning* TuningsManager::addTuning(Tuning& tuning) {
-    tuningData.tuning = tuningsManager.add(tuning);
+    tuningData.tuning = tuningsManager.add(tuning, &memPool);
     return tuningData.tuning;
 }
 
 Scale* TuningsManager::addScale(Scale& scale) {
-    Scale* newScale = scalesManager.add(scale);
+    Scale* newScale = scalesManager.add(scale, &memPool);
     tuningData.addScale(newScale);
     return newScale;
 }

@@ -32,8 +32,8 @@ class TuningsManager {
 
         // memory management
         MemPool<>& memPool;
-        LinkedList<Tuning> tuningsManager = LinkedList<Tuning>(memPool);
-        LinkedList<Scale> scalesManager = LinkedList<Scale>(memPool);
+        LinkedList<Tuning> tuningsManager = LinkedList<Tuning>();
+        LinkedList<Scale> scalesManager = LinkedList<Scale>();
 
 };
 
