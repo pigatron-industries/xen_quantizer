@@ -9,15 +9,15 @@
 class OutputChannelState {
     public:
         OutputChannelState() {}
-        int8_t channel = 0;
+        int8_t midiChannel = 0;
         int8_t note = -1;
 };
 
 
 class MidiProcessor {
     public:
-        MidiProcessor(uint8_t numChannels) { numChannels = numChannels; }
-        MidiProcessor() { numChannels = MAX_OUTPUT_CHANNELS; }
+        MidiProcessor(uint8_t numChannels);
+        MidiProcessor() : MidiProcessor(MAX_OUTPUT_CHANNELS) {}
         void handleMessage(uint8_t command, uint8_t channel, uint8_t data1, uint8_t data2);
 
     protected:
@@ -38,6 +38,8 @@ class MidiProcessor {
         void handleStart();
         void handleStop();
         void handleReset();
+
+        void setOutputChannel(int8_t outputChannel, int8_t midiChannel);
 
         int8_t getOutputChannel(int8_t midiChannel);
         int8_t getOutputChannelForNote(int8_t channel, int8_t note);

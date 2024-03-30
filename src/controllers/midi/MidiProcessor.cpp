@@ -2,6 +2,14 @@
 #include "MidiConstants.h"
 
 
+MidiProcessor::MidiProcessor(uint8_t numChannels) { 
+    this->numChannels = numChannels;
+    for(int8_t outputChannel = 0; outputChannel < numChannels; outputChannel++) {
+        setOutputChannel(outputChannel, outputChannel);
+    }
+}
+
+
 void MidiProcessor::handleMessage(uint8_t command, uint8_t channel, uint8_t data1, uint8_t data2) {
     switch(command) {
         case COMMAND_NOTEOFF:
@@ -100,10 +108,18 @@ void MidiProcessor::handleReset() {
 
 }
 
-int8_t MidiProcessor::getOutputChannel(int8_t channel) {
-    //TODO configure cv channels
-    //TODO find output channel that doesn't have a note being output
-    return 0;
+void MidiProcessor::setOutputChannel(int8_t outputChannel, int8_t midiChannel) {
+    outputChannelState[outputChannel].midiChannel = midiChannel;
+}
+
+int8_t MidiProcessor::getOutputChannel(int8_t midiChannel) {
+    for(int8_t outputChannel = 0; outputChannel < numChannels; outputChannel++) {
+        if(outputChannelState[outputChannel].midiChannel == midiChannel && outputChannelState[outputChannel].note == -1) {
+            return outputChannel;
+        }
+    }
+
+    return -1;
 }
 
 int8_t MidiProcessor::getOutputChannelForNote(int8_t channel, int8_t note) {

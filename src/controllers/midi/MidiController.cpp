@@ -14,6 +14,7 @@ void MidiController::init() {
 }
 
 void MidiController::update() {
+    // usb host read channel
     if(Hardware::hw.midiDevice.read(0)) {
         byte command = HI_NYBBLE(Hardware::hw.midiDevice.getType());
         byte channel = Hardware::hw.midiDevice.getChannel() - 1;
@@ -21,6 +22,17 @@ void MidiController::update() {
         byte data2 = Hardware::hw.midiDevice.getData2();
         handleMessage(command, channel, data1, data2);
     }
+
+    // usb midi read channel
+    #ifdef USB_MIDI
+    if(usbMIDI.read(0)) {
+        byte command = HI_NYBBLE(usbMIDI.getType());
+        byte channel = usbMIDI.getChannel() - 1;
+        byte data1 = usbMIDI.getData1();
+        byte data2 = usbMIDI.getData2();
+        handleMessage(command, channel, data1, data2);
+    }
+    #endif
 }
 
 void MidiController::process() {
