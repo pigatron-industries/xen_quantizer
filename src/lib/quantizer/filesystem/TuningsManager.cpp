@@ -5,8 +5,8 @@ void TuningsManager::init() {
     Serial.println("TuningsManager::init");  
     fs.cd("/");
     FileList& files = fs.ls();
-    for(int i = 0; i < files.getSize(); i++) {
-        FileInfo& file = files.getFile(i);
+    for(int i = 0; i < files.size(); i++) {
+        FileInfo& file = files.get(i);
         Serial.println(file.filepath);  
     }
 }
@@ -20,19 +20,19 @@ void TuningsManager::clear() {
 }
 
 int TuningsManager::getTuningCount() {
-    return fs.ls().getSize();
+    return fs.ls().size();
 }
 
 FileInfo& TuningsManager::getFileInfo(int index) {
     fs.cd("/");
-    return fs.ls().getFile(index);
+    return fs.ls().get(index);
 }
 
 TuningData& TuningsManager::loadTuningData(int index) {
     clear();
 
     fs.cd("/");
-    FileInfo& file = fs.ls().getFile(index);
+    FileInfo& file = fs.ls().get(index);
     Serial.print("Loading tuning: ");
     Serial.println(file.filepath);
     TuningDataFileReader fileReader = TuningDataFileReader(*this);

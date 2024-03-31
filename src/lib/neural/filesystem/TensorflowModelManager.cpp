@@ -4,8 +4,8 @@
 void TensorflowModelManager::init() {
     fs.cd("/");
     FileList& files = fs.ls();
-    for(int i = 0; i < files.getSize(); i++) {
-        FileInfo& file = files.getFile(i);
+    for(int i = 0; i < files.size(); i++) {
+        FileInfo& file = files.get(i);
     }
 }
 
@@ -14,13 +14,13 @@ void TensorflowModelManager::clear() {
 }
 
 int TensorflowModelManager::getModelCount() {
-    return fs.ls().getSize();
+    return fs.ls().size();
 }
 
 TensorflowModel& TensorflowModelManager::loadModel(int index) {
     clear();
 
-    FileInfo& file = fs.ls().getFile(index);
+    FileInfo& file = fs.ls().get(index);
     Serial.print("Loading model: ");
     Serial.println(file.filename);
     name = file.filename;
