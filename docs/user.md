@@ -20,9 +20,9 @@ Some parameters need to be set by pressing down on the right encoder.
 
 ## 3 & 4. Generative Decoder for Notes and Percussion
 
-A generative decoder for musical notes and percussion.
+A generative decoder for musical notes and percussion. This is the decoder part of a pretrained variational autoencoder, where the inputs map to a location in the latent space of the model.
 
-Decoder models are pretrained models stored on the SD card. 
+Pretrained decoder models are stored on the SD card. 
 Percussion models go in the **/models/perc** folder, and musical note models in the **/models/note** folder.
 
 ### Inputs:

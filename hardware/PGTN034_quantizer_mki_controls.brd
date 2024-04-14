@@ -19,10 +19,10 @@
 <layer number="22" name="bPlace" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="yes"/>
 <layer number="24" name="bOrigins" color="15" fill="1" visible="yes" active="yes"/>
-<layer number="25" name="tNames" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="26" name="bNames" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="27" name="tValues" color="7" fill="1" visible="no" active="yes"/>
-<layer number="28" name="bValues" color="7" fill="1" visible="no" active="yes"/>
+<layer number="25" name="tNames" color="7" fill="1" visible="no" active="yes"/>
+<layer number="26" name="bNames" color="7" fill="1" visible="no" active="yes"/>
+<layer number="27" name="tValues" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="28" name="bValues" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="29" name="tStop" color="7" fill="3" visible="no" active="yes"/>
 <layer number="30" name="bStop" color="7" fill="6" visible="no" active="yes"/>
 <layer number="31" name="tCream" color="7" fill="4" visible="no" active="yes"/>
@@ -952,7 +952,7 @@ einem neuen Namen ab.</description>
 <attribute name="NAME" x="8.2296" y="19.9898" size="1.27" layer="21"/>
 </element>
 <element name="TI1" library="controls" package="WQP-PJ301M-12_JACK" value="WQP-PJ301M-12_JACK" x="11.43" y="36.83" smashed="yes" rot="R270">
-<attribute name="NAME" x="6.9596" y="41.5798" size="1.27" layer="21"/>
+<attribute name="NAME" x="4.4196" y="41.5798" size="1.27" layer="21"/>
 <attribute name="SPICEPREFIX" value="J" x="11.43" y="36.83" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
 <element name="TI2" library="controls" package="WQP-PJ301M-12_JACK" value="WQP-PJ301M-12_JACK" x="26.67" y="36.83" smashed="yes" rot="R270">
@@ -1048,7 +1048,7 @@ einem neuen Namen ab.</description>
 </element>
 <element name="R1" library="resistors" package="R0603" value="100k" x="15.24" y="40.64" smashed="yes" rot="MR0">
 <attribute name="NAME" x="18.669" y="40.132" size="1.016" layer="26" rot="MR0"/>
-<attribute name="VALUE" x="15.875" y="38.735" size="1.016" layer="28" rot="MR0"/>
+<attribute name="VALUE" x="15.875" y="42.545" size="1.016" layer="28" rot="MR0"/>
 </element>
 <element name="R2" library="resistors" package="R0603" value="100k" x="30.48" y="40.64" smashed="yes" rot="MR0">
 <attribute name="NAME" x="33.909" y="40.132" size="1.016" layer="26" rot="MR0"/>
@@ -1064,7 +1064,7 @@ einem neuen Namen ab.</description>
 </element>
 <element name="R5" library="resistors" package="R0603" value="1M" x="8.89" y="40.64" smashed="yes" rot="MR180">
 <attribute name="NAME" x="10.541" y="41.148" size="1.016" layer="26" rot="MR180"/>
-<attribute name="VALUE" x="8.255" y="42.545" size="1.016" layer="28" rot="MR180"/>
+<attribute name="VALUE" x="9.525" y="42.545" size="1.016" layer="28" rot="MR180"/>
 </element>
 <element name="R6" library="resistors" package="R0603" value="1M" x="24.13" y="40.64" smashed="yes" rot="MR180">
 <attribute name="NAME" x="25.781" y="41.148" size="1.016" layer="26" rot="MR180"/>
