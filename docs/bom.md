@@ -42,5 +42,8 @@ order: 4
 | 3.5mm Jack Socket              | TH        | 20       | [Thonkiconn 3.5mm Jack PJ398SM](https://www.thonk.co.uk/shop/thonkiconn/)
 | Tactile Push Button with LED   | TH        | 4        | [Low-profile LED button](https://www.thonk.co.uk/shop/low-profile-led-buttons/)
 | OLED 0.49" 64x32 I2C SSD1306   |           | 1        | [0.96" 160x80 SPI ST7735](https://www.buydisplay.com/spi-tft-0-96-inch-lcd-display-module-160x80-ips-st7735-with-arduino-library)
+| Male-Female Spacer M2x6mm      |           | 4        |
+| Screw M2x6mm                   |           | 4        |
 | Teensy 4.1                     |           | 1        |
+| Micro SD Card Reader           | TH        | 1        | [Yamaichi Micro SD Card holder – PJS008U-3000](https://www.thonk.co.uk/shop/radio-music-sd-card-holder-only/)
 | Knobs                          |           | 6        |
