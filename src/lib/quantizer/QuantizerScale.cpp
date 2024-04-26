@@ -1,12 +1,17 @@
 #include "QuantizerScale.h"
 
 Note QuantizerScale::quantize(float voltage) {
-    int cycle = tuning->findCycle(voltage, scale->getOffset());
+    return quantize(voltage, scale->getOffset());
+}
+
+
+Note QuantizerScale::quantize(float voltage, float offset) {
+    int cycle = tuning->findCycle(voltage, offset);
     Note prevNote = scale->getLastNote(cycle-1);
     Note nextNote;
 
     for(int i = 0; i < scale->size(); i++) {
-        nextNote = tuning->createNote(cycle, scale->getNote(i), scale->getOffset());
+        nextNote = tuning->createNote(cycle, scale->getNote(i), offset);
         if(nextNote.voltage > voltage) {
             return getClosestNote(voltage, prevNote, nextNote);
         }

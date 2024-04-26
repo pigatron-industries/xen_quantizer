@@ -56,7 +56,6 @@ void ScaleChordController::cycleValue(int amount) {
         case Parameter::OFFSET:
             interface.focusOffset();
             updateOffset();
-            interface.setScale(scale);
             chordUpdate();
     }
 
@@ -84,7 +83,15 @@ void ScaleChordController::selectValue() {
 }
 
 void ScaleChordController::updateOffset() {
-    scale->setOffset(float(parameters[Parameter::OFFSET].value) / tuning->size());
+    int offsetNotes = (parameters[Parameter::OFFSET].value + scaleOffsetPot.getIntValue() + scaleOffsetCv.getIntValue()) % tuning->size();
+    float offset = float(offsetNotes) / float(tuning->size());
+
+    // Note scaleRoot = scaleQuantizer.quantize(offset, 0);
+    Note scaleRoot = tuning->createNote(0, offsetNotes);
+
+    Serial.println(scaleRoot.voltage);
+    scale->setOffset(scaleRoot.voltage);
+    interface.setScale(scale);
 }
 
 
@@ -100,6 +107,8 @@ void ScaleChordController::setTuning(int index) {
 
     configParam(Parameter::SCALE, 0, tuningData->scales.size() - 1);
     configParam(Parameter::OFFSET, 0, tuning->size() - 1);
+    scaleOffsetPot.setRange(0, tuning->size() - 1);
+    scaleOffsetCv.setRange(0, tuning->size() - 1);
     setScale(parameters[Parameter::SCALE].value);
     interface.render();
 }
@@ -188,12 +197,9 @@ void ScaleChordController::process() {
 }
 
 void ScaleChordController::chordUpdate() {
-    // if(quantizedScaleOffsetPot.update()) {
-    //     Note scaleRoot = tuning->createNote(0, quantizedScaleOffsetPot.getIntValue());
-    //     scale->setOffset(scaleRoot.voltage);
-    //     Serial.print("Offset: ");
-    //     Serial.println(quantizedScaleOffsetPot.getIntValue());
-    // }
+    if(scaleOffsetPot.update() || scaleOffsetCv.update()) {
+        updateOffset();
+    }
 
     // if(chordQuality.update()) {
     //     chordDef = &scale->getChordDefs()[chordQuality.getIntValue()];

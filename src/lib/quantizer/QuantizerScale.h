@@ -15,6 +15,7 @@ class QuantizerScale : public QuantizerChromatic {
         Scale* getScale() { return scale; }
         
         Note quantize(float voltage);
+        Note quantize(float voltage, float offset);
 
     protected:
         Scale* scale;
