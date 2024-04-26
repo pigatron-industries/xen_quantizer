@@ -1,0 +1,30 @@
+tuning:
+  name: 19EDO
+  eq: [19, 1] # 19 equal divisions of 1 octave
+groups:
+  - group: Chromatic
+    scales:
+      - name: Chromatic
+        notes: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+    chords:
+      - name: Major
+        notes: [0, 6, 11]
+      - name: Minor
+        notes: [0, 5, 11]
+      - name: Diminished
+        notes: [0, 5, 9]
+      - name: Augmented
+        notes: [0, 6, 13]
+  - group: Heptatonic
+    scales:
+      - name: Primary # Major / Natural Minor
+        notes: [0, 3, 6, 8, 11, 14, 17]  # 3-3-2-3-3-3-2
+      - name: Secondary
+        notes: [0, 3, 5, 8, 11, 14, 17]  # 3-2-3-3-3-3-2
+    chords:
+      - name: Tertian
+        notes: [0, 2, 4, 6]
+      - name: Quartal
+        notes: [0, 3, 6, 9]
+      - name: Quintal
+        notes: [0, 4, 8, 12]
