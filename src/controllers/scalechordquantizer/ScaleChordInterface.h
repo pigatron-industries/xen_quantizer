@@ -16,6 +16,7 @@ class ScaleChordInterface {
         void setScale(Scale* scale);
         void setChordDef(ChordDef* chordDef);
         void setChord(Chord* chord);
+        void setOffset(int offset);
 
         void focusTuning();
         void focusScale();

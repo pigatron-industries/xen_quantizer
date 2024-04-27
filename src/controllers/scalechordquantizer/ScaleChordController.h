@@ -37,8 +37,8 @@ class ScaleChordController : public ParameterizedController<4> {
 
     private:
 
-        IntegerInput<AnalogInputPinT> scaleOffsetPot = IntegerInput<AnalogInputPinT>(Hardware::hw.channel1PotPin, -5, 5, 0, 11);
-        IntegerInput<AnalogInputPinT> scaleOffsetCv = IntegerInput<AnalogInputPinT>(Hardware::hw.channel1CvPin, -5, 5, 0, 11);
+        IntegerInput<AnalogInputPinT> scaleOffsetPot = IntegerInput<AnalogInputPinT>(Hardware::hw.channel1PotPin, -5, 5, -11, 11);
+        IntegerInput<AnalogInputPinT> scaleOffsetCv = IntegerInput<AnalogInputPinT>(Hardware::hw.channel1CvPin, -5, 5, -11, 11);
         // LinearInput<AnalogInputPinT> linearScaleOffsetPot = LinearInput<AnalogInputPinT>(Hardware::hw.channel1PotPin, -5, 5, 0, 1);
         // IntegerInput<AnalogInputPinT> chordQuality = IntegerInput<AnalogInputPinT>(Hardware::hw.channel2PotPin, -5, 5, 0, 1);
         // IntegerInput<AnalogInputPinT> chordInversion = IntegerInput<AnalogInputPinT>(Hardware::hw.channel3PotPin, -5, 5, 0, 1);

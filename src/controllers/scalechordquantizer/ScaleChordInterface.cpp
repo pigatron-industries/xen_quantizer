@@ -24,7 +24,6 @@ void ScaleChordInterface::render() {
 
 void ScaleChordInterface::setTuningName(char* name) {
     tuningField.setValue(name);
-    // TOOD indicate this hasn't been loaded yet
 }
 
 void ScaleChordInterface::setTuning(Tuning* tuning) {
@@ -34,7 +33,6 @@ void ScaleChordInterface::setTuning(Tuning* tuning) {
 
 void ScaleChordInterface::setScale(Scale* scale) {
     scaleField.setValue(scale->getName());
-    offsetField.setValue(scale->getOffset()*scale->getTuning()->size());
     noteVisualiser.setScale(scale);
 }
 
@@ -44,6 +42,10 @@ void ScaleChordInterface::setChordDef(ChordDef* chordDef) {
 
 void ScaleChordInterface::setChord(Chord* chord) {
     noteVisualiser.setChord(chord);
+}
+
+void ScaleChordInterface::setOffset(int offset) {
+    offsetField.setValue(offset);
 }
 
 void ScaleChordInterface::focusTuning() {

@@ -83,15 +83,17 @@ void ScaleChordController::selectValue() {
 }
 
 void ScaleChordController::updateOffset() {
-    int offsetNotes = (parameters[Parameter::OFFSET].value + scaleOffsetPot.getIntValue() + scaleOffsetCv.getIntValue()) % tuning->size();
-    float offset = float(offsetNotes) / float(tuning->size());
+    int scaleNote = (parameters[Parameter::OFFSET].value + scaleOffsetPot.getIntValue() + scaleOffsetCv.getIntValue()) % scale->size();
+    if(scaleNote < 0) {
+        scaleNote += scale->size();
+    }
+    Serial.println(scaleNote);
+    int tuningNote = scale->getNote(scaleNote);
+    Interval& interval = tuning->getInterval(tuningNote);
 
-    // Note scaleRoot = scaleQuantizer.quantize(offset, 0);
-    Note scaleRoot = tuning->createNote(0, offsetNotes);
-
-    Serial.println(scaleRoot.voltage);
-    scale->setOffset(scaleRoot.voltage);
+    scale->setOffset(-interval.voltage);
     interface.setScale(scale);
+    interface.setOffset(scaleNote);
 }
 
 
@@ -106,9 +108,6 @@ void ScaleChordController::setTuning(int index) {
     interface.setTuning(tuning);
 
     configParam(Parameter::SCALE, 0, tuningData->scales.size() - 1);
-    configParam(Parameter::OFFSET, 0, tuning->size() - 1);
-    scaleOffsetPot.setRange(0, tuning->size() - 1);
-    scaleOffsetCv.setRange(0, tuning->size() - 1);
     setScale(parameters[Parameter::SCALE].value);
     interface.render();
 }
@@ -122,22 +121,23 @@ void ScaleChordController::setScale(int index) {
 
     scaleQuantizer.setScale(*scale);
     chordQuantizer.setScale(*scale);
-    updateOffset();
+
+    // update offset parameter range
+    scaleOffsetPot.setRange(1 - scale->size(), scale->size() - 1);
+    scaleOffsetCv.setRange(1 - scale->size(), scale->size() - 1);
+    configParam(Parameter::OFFSET, 0, scale->size() - 1);
 
     // update chord parameter range
     configParam(Parameter::CHORD, 0, scale->getChordDefs().size() - 1);
     chordDef = &scale->getChordDefs()[parameters[Parameter::CHORD].value];
+    interface.setChordDef(chordDef);
 
-    // chordQuality.setRange(0, scale->getChordDefs().size()-1);
-    // chordQuality.update();
+    updateOffset();
 
     Serial.print("Scale: ");
     Serial.println(scale->getName());
-    interface.setScale(scale);
-
     Serial.print("Chord: ");
     Serial.println(chordDef->name);
-    interface.setChordDef(chordDef);
 }
 
 void ScaleChordController::setChord(int index) {
@@ -212,9 +212,9 @@ void ScaleChordController::chordUpdate() {
     float chordVoltage = Hardware::hw.channel1InputPin.analogRead();
 
     // prevent chord going below root note
-    if(chordVoltage <= 0) {
-        chordVoltage = 0;
-    }
+    // if(chordVoltage <= 0) {
+    //     chordVoltage = 0;
+    // }
 
     Note root = scaleQuantizer.quantize(chordVoltage);
 

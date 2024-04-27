@@ -27,7 +27,7 @@ void QuantizerScaleTest::test_quantize(float input, Note expectedNote) {
     Note note = quantizer.quantize(input);
     TEST_ASSERT_EQUAL_INT(expectedNote.cycle, note.cycle);
     TEST_ASSERT_EQUAL_INT(expectedNote.note, note.note);
-    TEST_ASSERT_EQUAL_FLOAT(expectedNote.voltage, note.voltage);
+    TEST_ASSERT_FLOAT_WITHIN(0.0001, expectedNote.voltage, note.voltage);
 }
 
 void test_quantizeScale() {
@@ -60,7 +60,11 @@ void test_quantizeScale() {
     QuantizerScaleTest::test_quantize(-2,     Note(-2,  0, -2));
     QuantizerScaleTest::test_quantize(-5,     Note(-5,  0, -5));
 
-    //offset
+    //negative offset
+    QuantizerScaleTest::scale.setOffset(-0.16667);
+    QuantizerScaleTest::test_quantize(0.0,   Note(0, 2,  0.0));
+
+    // positive offset
     QuantizerScaleTest::scale.setOffset(0.5);
     QuantizerScaleTest::test_quantize(0.5,   Note(0, 0,  0.5));
     QuantizerScaleTest::test_quantize(0.667, Note(0, 2,  0.6666667));

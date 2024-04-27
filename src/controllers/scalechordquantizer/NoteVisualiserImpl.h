@@ -21,7 +21,10 @@ void NoteVisualiser<G>::renderTuning() {
     if(tuning != nullptr) {
         uint16_t noteLeft = this->getLeft();
         if(scale != nullptr) {
-            noteLeft += tuningWidth*scale->getOffset();
+            noteLeft = noteLeft + int(scale->getOffset()*tuning->size())*noteWidth;
+            if(noteLeft < 0) {
+                noteLeft += tuningWidth;
+            }
         }
         for(int i = 0; i < tuning->size(); i++) {
             renderNote(i, noteLeft);
