@@ -7,7 +7,7 @@ import lib.tuning as tuning
 
 
 class TuningPlot():
-    def __init__(self, direction = 'h', size = 10, rangehigh = 1):
+    def __init__(self, direction = 'h', size = 10, rangehigh = 1.0):
         self.pos = 0
         self.ticks = []
         self.ticklabels = []
@@ -38,7 +38,7 @@ class TuningPlot():
     def plotChord(self, chord, root = 0, label = None):
         self.plotTuning(chord.mode.tuning, self.rangehigh, chord.getNotes(root), label)
 
-    def plotDissonance(self, harmonics, scale = 4):
+    def plotDissonance(self, harmonics, scale = 4.0):
         freq = 500 * array(harmonics)
         amp = 0.88 ** (array(harmonics)-1)
         diss = sethares.dissonanceCurve(freq, amp, 2**self.rangehigh)
@@ -106,16 +106,17 @@ class TuningPolarPlot():
         self.ratios = ratios
         self.ratiosOffset = offset
 
-    def plotTuning(self, tuning, repeat = 1, notes = None, label = None):
-        x_values = []
-        y_values = []
+    def plotTuning(self, tuning:tuning.Tuning, repeat = 1, notes = None, label = None):
+        self.repeatInterval = tuning.repeatInterval
         for i in range(len(tuning.intervals)*repeat):
             if (notes is None or i in notes):
                 interval = tuning.getInterval(i)
+                repeatInterval = tuning.repeatInterval
                 intervalName = tuning.getIntervalName(i)
-                plt.plot(interval*2*math.pi, 1, marker='o', markersize=10, color="#008583")
+                pos = interval*2*math.pi/repeatInterval
+                plt.plot(pos, 1, marker='o', markersize=10, color="#008583")
                 # self.ax.add_line(lines.Line2D([interval, interval], [self.pos,self.pos+1], lw=2))
-                self.ax.annotate(intervalName, xy=(interval*2*math.pi, 1), xycoords='data', xytext=(interval*2*math.pi, 1.25), 
+                self.ax.annotate(intervalName, xy=(pos, 1), xycoords='data', xytext=(pos, 1.25), 
                     textcoords='data', va='center', ha='center', color="#008583")
 
     def plotScale(self, scale, root = 0, repeat = 1, label = None, wrap = False):
@@ -153,12 +154,16 @@ class TuningPolarPlot():
         self.ax.annotate(label, xy=(0, 0), xycoords='data', ha='center', color=color, fontsize=16)
 
     def plot(self):
-        plt.yticks([1], [""])
-        plt.xticks([(tuning.ratioToOctaves(n/d)+self.ratiosOffset)%1*2*math.pi for n, d in self.ratios], ['' for n, d in self.ratios])
+        xticks = []
         for i in range(len(self.ratios)):
-            ratioLabel = '{}/{}'.format(self.ratios[i][0], self.ratios[i][1])
-            x = (tuning.ratioToOctaves(self.ratios[i][0]/self.ratios[i][1])+self.ratiosOffset)%1*2*math.pi
-            self.ax.annotate(ratioLabel, xy=(x, 0.7), xycoords='data', ha='center', color="black")
+            n = self.ratios[i][0]
+            d = self.ratios[i][1]
+            pos = (tuning.ratioToOctaves(n/d)+self.ratiosOffset)/self.repeatInterval % self.repeatInterval
+            xticks.append(pos*2*math.pi)
+            ratioLabel = f'{n}/{d}'
+            self.ax.annotate(ratioLabel, xy=(pos*2*math.pi, 0.7), xycoords='data', ha='center', color="black")
+        plt.yticks([1], [""])
+        plt.xticks(xticks, ['' for n, d in self.ratios])
         self.ax.set_theta_direction(-1)
         self.ax.set_theta_offset(math.pi / 2.0)
         self.ax.set(ylim=(0, 1.1))

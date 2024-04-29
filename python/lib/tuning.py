@@ -2,7 +2,11 @@ import math
 from numpy import array
 
 class Tuning():
-    def __init__(self, name, intervals = None, repeatInterval = 1, intervalNames = None):
+    """
+    A tuning is a set of intervals that are repeated at a repeatInterval intervals.
+
+    """
+    def __init__(self, name, intervals = None, repeatInterval = 1.0, intervalNames = None):
         self.name = name
         if intervals is None:
             intervals = []
@@ -13,17 +17,22 @@ class Tuning():
         else:
             self.intervalNames = intervalNames
         self.repeatInterval = repeatInterval
+
     def addIntervalOctave(self, octave, name = ''):
         self.intervals.append(octave)
         self.intervalNames.append(name)
+
     def addIntervalRatio(self, ratio, name = ''):
         self.addIntervalOctave(math.log(ratio, 2), name)
+
     def addIntervalCents(self, cents, name = ''):
         self.addIntervalOctave(cents/1200, name)
+
     def getInterval(self, note):
         noteMod = note % len(self.intervals)
         repeat = note // len(self.intervals)
         return self.intervals[noteMod] + repeat*self.repeatInterval
+    
     def getIntervalName(self, note):
         noteMod = note % len(self.intervals)
         return self.intervalNames[noteMod]
@@ -70,12 +79,12 @@ def ratioToOctaves(ratio):
     return math.log(ratio, 2)
 
 
-def createEqualDivisionTuning(name, divisions, repeat = 1, intervalNames = None):
-    t = Tuning(name, [])
-    for interval in range(0, divisions):
+def createEqualDivisionTuning(name, divisions, repeatInterval = 1.0, intervalNames = None):
+    t = Tuning(name, [], repeatInterval)
+    for note in range(0, divisions):
         if intervalNames is None:
-            intervalName = interval
+            intervalName = note
         else:
-            intervalName = intervalNames[interval]
-        t.addIntervalOctave(repeat/divisions*interval, intervalName)
+            intervalName = intervalNames[note]
+        t.addIntervalOctave(repeatInterval/divisions*note, intervalName)
     return t
