@@ -102,7 +102,7 @@ class TuningPolarPlot():
         yvalues = list(map(lambda r: tuning.ratioToOctaves(r)*2*math.pi, linspace(1, 2**self.rangehigh, len(diss))))
         self.ax.plot(yvalues, ((scale-diss)/scale))
 
-    def plotRatios(self, ratios, offset=0):
+    def plotRatios(self, ratios, offset=0.0):
         self.ratios = ratios
         self.ratiosOffset = offset
 
