@@ -30,6 +30,17 @@ class Tuning():
 
 
 class Scale():
+
+    @classmethod
+    def fromSteps(cls, name, tuning, intervals):
+        note = 0
+        notes = [0]
+        for interval in intervals:
+            note += interval
+            if note < len(tuning.intervals):
+                notes.append(note)
+        return cls(name, tuning, notes)
+
     def __init__(self, name, tuning, notes):
         self.tuning = tuning
         self.name = name
