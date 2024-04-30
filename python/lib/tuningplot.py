@@ -95,7 +95,7 @@ class TuningPolarPlot():
         self.plotnum = self.plotnum + 1
         self.ax = self.fig.add_subplot(self.height, self.width, self.plotnum, projection='polar')
 
-    def plotDissonance(self, harmonics, scale = 4):
+    def plotDissonance(self, harmonics, scale = 4.0):
         freq = 500 * array(harmonics)
         amp = 0.88 ** (array(harmonics)-1)
         diss = sethares.dissonanceCurve(freq, amp, 2**self.rangehigh)

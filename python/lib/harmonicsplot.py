@@ -15,7 +15,7 @@ class HarmonicsPlot():
     def clear(self):
         self.amplitude = self.time*0
 
-    def addHarmonic(self, harmonic = 1, amplitude = 0.5, phase = 0, shift = 0):
+    def addHarmonic(self, harmonic = 1, amplitude = 0.5, phase = 0.0, shift = 0):
         self.amplitude = self.amplitude + np.sin(((self.time+shift)*harmonic+phase)*2*math.pi) * amplitude
 
     def plot(self, label=''):
