@@ -4,13 +4,15 @@
 
 MidiProcessor::MidiProcessor(uint8_t numChannels) { 
     this->numChannels = numChannels;
+    // default midi channels 1-4 for output channels 1-4
     for(int8_t outputChannel = 0; outputChannel < numChannels; outputChannel++) {
         setOutputChannel(outputChannel, outputChannel);
     }
 }
 
 
-void MidiProcessor::handleMessage(uint8_t command, uint8_t channel, uint8_t data1, uint8_t data2) {
+void MidiProcessor::handleMessage(uint8_t type, uint8_t channel, uint8_t data1, uint8_t data2) {
+    uint8_t command = HI_NYBBLE(type);
     switch(command) {
         case COMMAND_NOTEOFF:
             Serial.println("Note off");

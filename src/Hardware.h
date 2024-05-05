@@ -29,7 +29,16 @@ class Hardware {
         // USB host
         USBHost usb;
         USBHub hub = USBHub(usb);
-        MIDIDevice midiDevice = MIDIDevice(usb);
+        MIDIDevice midi01 = MIDIDevice(usb);
+        MIDIDevice midi02 = MIDIDevice(usb);
+        // MIDIDevice midi03 = MIDIDevice(usb);
+        // MIDIDevice midi04 = MIDIDevice(usb);
+        MIDIDevice* midiDevice[2] = {
+            &midi01,
+            &midi02,
+            // &midi03,
+            // &midi04
+        };
 
         // Memory pool
         static uint8_t memPoolTuningBuffer[MEMPOOL_TUNING_SIZE];

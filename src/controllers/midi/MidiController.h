@@ -26,6 +26,16 @@ class MidiController : public ParameterizedController<1>, public MidiProcessor {
         };
 
         MidiInterface interface;
+
+        GateInput<> triggerInputs[4] = {
+            GateInput<>(*Hardware::hw.triggerInputPins[0]),
+            GateInput<>(*Hardware::hw.triggerInputPins[1]),
+            GateInput<>(*Hardware::hw.triggerInputPins[2]),
+            GateInput<>(*Hardware::hw.triggerInputPins[3])
+        };
+
+        void readMidi();
+        void sendMidi(int fromPort, uint8_t type, uint8_t data1, uint8_t data2, uint8_t channel);
 };
 
 #endif  
