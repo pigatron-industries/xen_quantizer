@@ -2,9 +2,8 @@
 #define ScaleChordController_h
 
 #include "Controller.h"
-#include "lib/quantizer/data/Tuning12EDO.h"
+#include "controllers/TuningSelection.h"
 #include "lib/quantizer/ScaleFactory.h"
-#include "lib/quantizer/filesystem/TuningsManager.h"
 #include "lib/quantizer/QuantizerScale.h"
 #include "lib/quantizer/QuantizerChord.h"
 #include "ScaleChordInterface.h"
@@ -12,7 +11,7 @@
 
 using namespace eurorack;
 
-class ScaleChordController : public ParameterizedController<4> {
+class ScaleChordController : public ParameterizedController<4>, TuningSelection {
     public:
 
         enum Parameter {
@@ -60,10 +59,6 @@ class ScaleChordController : public ParameterizedController<4> {
 
         ScaleChordInterface interface;
 
-        StaticTuningData* defaultTuningData = &Tuning12EDO::data;
-        TuningData* tuningData = nullptr;
-
-        Tuning* tuning = defaultTuningData->tuning;
         Scale* scale = &defaultTuningData->scales[0];
         ChordDef* chordDef = &scale->getChordDefs()[0];
 

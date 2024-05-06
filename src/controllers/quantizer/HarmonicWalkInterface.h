@@ -10,6 +10,7 @@ class HarmonicWalkInterface {
         void init();
         void render();
 
+        void setTuningName(char* name);
         void setTuning(Tuning* tuning);
         void setInterval(int interval);
 

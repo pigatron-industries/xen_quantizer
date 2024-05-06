@@ -4,7 +4,10 @@
 
 void MidiController::init(float sampleRate) {
     Controller::init(sampleRate);
+    configParam(Parameter::TUNING, 0, Hardware::hw.tuningsManager.getTuningCount()-1, false);
     interface.init();
+    interface.focusTuning();
+    setTuning(parameters[Parameter::TUNING].value);
     init();
 }
 
@@ -12,6 +15,56 @@ void MidiController::init() {
     Serial.println("Midi");
     interface.render();
 }
+
+int MidiController::cycleParameter(int amount) {
+    parameters.cycle(amount);
+    switch(parameters.getSelectedIndex()) {
+        case Parameter::TUNING:
+            interface.focusTuning();
+            break;
+    }
+    return parameters.getSelectedIndex();
+}
+
+void MidiController::cycleValue(int amount) {
+    int value = parameters.getSelected().cycle(amount);
+    switch(parameters.getSelectedIndex()) {
+        case Parameter::TUNING: {
+            FileInfo& file = Hardware::hw.tuningsManager.getFileInfo(value);
+            interface.setTuningName(file.filename);
+            break;
+        }
+    }
+    save();
+}
+
+void MidiController::selectValue() {
+    int prevValue = parameters.getSelected().getValue();
+    int newValue = parameters.getSelected().select();
+    switch(parameters.getSelectedIndex()) {
+        case Parameter::TUNING:
+            if (newValue != prevValue) {
+                setTuning(newValue);
+            } else {
+                interface.setTuning(tuning);
+            }
+            break;
+    }
+}
+
+void MidiController::setTuning(int index) {
+    interface.showMessage("Loading");
+
+    tuningData = &Hardware::hw.tuningsManager.loadTuningData(index);
+    tuning = tuningData->tuning;
+
+    Serial.print("Tuning: ");
+    Serial.println(tuning->getName());
+    interface.setTuning(tuning);
+
+    interface.render();
+}
+
 
 void MidiController::update() {
     readMidi();
@@ -21,7 +74,6 @@ void MidiController::readMidi() {
     int port = 0;
     for (MIDIDevice* midiDevice : Hardware::hw.midiDevice) {
         if (midiDevice->read()) {
-            Serial.println("Midi read");
             uint8_t type =       midiDevice->getType();
             uint8_t data1 =      midiDevice->getData1();
             uint8_t data2 =      midiDevice->getData2();
@@ -78,4 +130,10 @@ void MidiController::setVelocity(uint8_t outputChannel, float velocity) {
         velocity = 0;
     }
     Hardware::hw.cvOutputPins[outputChannel]->analogWrite(velocity);
+}
+
+float MidiController::convertNote(int8_t note) {
+    int periodNum = note / tuning->size();
+    int noteNum = note - (periodNum * tuning->size());
+    return tuning->getNoteVoltage(periodNum, noteNum);
 }

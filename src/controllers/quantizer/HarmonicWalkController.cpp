@@ -29,14 +29,29 @@ int HarmonicWalkController::cycleParameter(int amount) {
 }
 
 void HarmonicWalkController::cycleValue(int amount) {
-    parameters.getSelected().cycle(amount);
+    int value = parameters.getSelected().cycle(amount);
     switch(parameters.getSelectedIndex()) {
         case Parameter::TUNING:
-            setTuning(parameters[Parameter::TUNING].value);
+            FileInfo& file = Hardware::hw.tuningsManager.getFileInfo(value);
+            interface.setTuningName(file.filename);
             break;
     }
 
     save();
+}
+
+void HarmonicWalkController::selectValue() {
+    int prevValue = parameters.getSelected().getValue();
+    int newValue = parameters.getSelected().select();
+    switch(parameters.getSelectedIndex()) {
+        case Parameter::TUNING:
+            if (newValue != prevValue) {
+                setTuning(newValue);
+            } else {
+                interface.setTuning(tuning);
+            }
+            break;
+    }
 }
 
 void HarmonicWalkController::update() {

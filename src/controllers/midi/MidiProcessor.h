@@ -44,8 +44,8 @@ class MidiProcessor {
         int8_t getOutputChannel(int8_t midiChannel);
         int8_t getOutputChannelForNote(int8_t channel, int8_t note);
 
-        float convertNote(int8_t note);
-        float convertBend(int16_t bend);
+        virtual float convertNote(int8_t note);
+        virtual float convertBend(int16_t bend);
         float convertVelocity(uint8_t velocity);
         float convertControl(uint16_t value);
 };

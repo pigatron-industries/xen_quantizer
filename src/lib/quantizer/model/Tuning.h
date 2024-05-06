@@ -86,6 +86,8 @@ class Tuning {
          */
         int findCycle(float voltage, float offset = 0);
 
+        float getNoteVoltage(int cycle, int note, float offset = 0);
+
     private:
         Array<Interval, TUNING_MAX_NOTES> intervals;
         float cycleInterval;
@@ -94,7 +96,6 @@ class Tuning {
 
         void setCycleInterval(float cycleInterval) { this->cycleInterval = cycleInterval; cycleIntervalRecip = 1.0/cycleInterval; }
         float getCycleVoltage(int cycle) { return cycle * this->cycleInterval; }
-        float getNoteVoltage(int cycle, int note, float offset = 0);
 };
 
 #endif
