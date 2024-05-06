@@ -116,6 +116,9 @@ void MidiProcessor::setOutputChannel(int8_t outputChannel, int8_t midiChannel) {
 
 int8_t MidiProcessor::getOutputChannel(int8_t midiChannel) {
     for(int8_t outputChannel = 0; outputChannel < numChannels; outputChannel++) {
+        Serial.println(outputChannel);
+        Serial.println(outputChannelState[outputChannel].midiChannel);
+        Serial.println(outputChannelState[outputChannel].note);
         if(outputChannelState[outputChannel].midiChannel == midiChannel && outputChannelState[outputChannel].note == -1) {
             return outputChannel;
         }

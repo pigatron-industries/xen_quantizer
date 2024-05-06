@@ -3,7 +3,11 @@
 void MidiInterface::init() {
     page.addComponent(&title);
     page.addComponent(&tuningField);
-    // page.addComponent(&noteVisualiser);
+    page.addComponent(&channelsRow);
+    channelsRow.addComponent(&channelFields[0]);
+    channelsRow.addComponent(&channelFields[1]);
+    channelsRow.addComponent(&channelFields[2]);
+    channelsRow.addComponent(&channelFields[3]);
 
     page.setContext(&Hardware::hw.display);
     page.layout();
@@ -28,8 +32,16 @@ void MidiInterface::setTuning(Tuning* tuning) {
     tuningField.setValue(tuning->getName());
 }
 
+void MidiInterface::setChannel(int outputChannel, int midiChannel) {
+    channelFields[outputChannel].setValue(midiChannel);
+}
+
 void MidiInterface::focusTuning() {
     focusManager.setFocus(&tuningField);
+}
+
+void MidiInterface::focusChannel(int outputChannel) {
+    focusManager.setFocus(&channelFields[outputChannel]);
 }
 
 void MidiInterface::showMessage(const char* message) {

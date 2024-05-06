@@ -7,6 +7,11 @@ void MidiController::init(float sampleRate) {
     configParam(Parameter::TUNING, 0, Hardware::hw.tuningsManager.getTuningCount()-1, false);
     interface.init();
     interface.focusTuning();
+    for(int i = 0; i < 4; i++) {
+        configParam(Parameter::CHANNEL0 + i, i, 15);
+        setOutputChannel(i, parameters[i].value);
+        interface.setChannel(i, parameters[i].value);
+    }
     setTuning(parameters[Parameter::TUNING].value);
     init();
 }
@@ -22,6 +27,12 @@ int MidiController::cycleParameter(int amount) {
         case Parameter::TUNING:
             interface.focusTuning();
             break;
+        case Parameter::CHANNEL0:
+        case Parameter::CHANNEL1:
+        case Parameter::CHANNEL2:
+        case Parameter::CHANNEL3:
+            interface.focusChannel(parameters.getSelectedIndex() - Parameter::CHANNEL0);
+            break;
     }
     return parameters.getSelectedIndex();
 }
@@ -34,6 +45,13 @@ void MidiController::cycleValue(int amount) {
             interface.setTuningName(file.filename);
             break;
         }
+        case Parameter::CHANNEL0:
+        case Parameter::CHANNEL1:
+        case Parameter::CHANNEL2:
+        case Parameter::CHANNEL3:
+            setOutputChannel(parameters.getSelectedIndex() - Parameter::CHANNEL0, value);
+            interface.setChannel(parameters.getSelectedIndex() - Parameter::CHANNEL0, value);
+            break;
     }
     save();
 }

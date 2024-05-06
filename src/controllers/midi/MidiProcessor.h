@@ -23,6 +23,7 @@ class MidiProcessor {
     protected:
         virtual void setPitch(uint8_t outputChannel, float pitch) = 0;
         virtual void setVelocity(uint8_t outputChannel, float velocity) = 0;
+        void setOutputChannel(int8_t outputChannel, int8_t midiChannel);
 
     private:
         uint8_t numChannels = MAX_OUTPUT_CHANNELS;
@@ -38,8 +39,6 @@ class MidiProcessor {
         void handleStart();
         void handleStop();
         void handleReset();
-
-        void setOutputChannel(int8_t outputChannel, int8_t midiChannel);
 
         int8_t getOutputChannel(int8_t midiChannel);
         int8_t getOutputChannelForNote(int8_t channel, int8_t note);
