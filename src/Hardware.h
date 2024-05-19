@@ -75,6 +75,12 @@ class Hardware {
         AnalogInput(channel2InputPin, A17) //CV2
         AnalogInput(channel3InputPin, A12) //CV3
         AnalogInput(channel4InputPin, A13) //CV4
+        AnalogInputPin<>* channelCvInputPins[CHANNEL_COUNT] = {
+            &channel1InputPin,
+            &channel2InputPin,
+            &channel3InputPin,
+            &channel4InputPin
+        };
 
         DigitalInput(trigger1InputPin, 36)
         DigitalInput(trigger2InputPin, 35)
@@ -102,6 +108,12 @@ class Hardware {
         DigitalOutput(led2OutputPin, 31)
         DigitalOutput(led3OutputPin, 32)
         DigitalOutput(led4OutputPin, 37)
+        DigitalOutputPin<>* ledOutputPins[CHANNEL_COUNT] = {
+            &led1OutputPin,
+            &led2OutputPin,
+            &led3OutputPin,
+            &led4OutputPin
+        };
 
         DAC8164Device dac8164Device1 = DAC8164Device(-1, DAC1_CS_PIN);
         DAC8164Device dac8164Device2 = DAC8164Device(-1, DAC2_CS_PIN);

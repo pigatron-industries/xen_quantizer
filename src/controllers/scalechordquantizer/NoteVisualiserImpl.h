@@ -19,9 +19,12 @@ void NoteVisualiser<G>::render() {
 template<class G>
 void NoteVisualiser<G>::renderTuning() {
     if(tuning != nullptr) {
-        uint16_t noteLeft = this->getLeft();
+        int16_t noteLeft = this->getLeft();
         if(scale != nullptr) {
-            noteLeft = noteLeft + int(scale->getOffset()*tuning->size())*noteWidth;
+            noteLeft = noteLeft + int(roundf(scale->getOffset()*tuning->size()))*noteWidth;
+            Serial.println(scale->getOffset());
+            Serial.println(noteWidth);
+            Serial.println(noteLeft);
             if(noteLeft < 0) {
                 noteLeft += tuningWidth;
             }

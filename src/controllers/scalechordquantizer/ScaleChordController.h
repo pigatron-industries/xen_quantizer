@@ -51,18 +51,19 @@ class ScaleChordController : public ParameterizedController<4>, TuningSelection 
         };
 
         AnalogTriggerOutput<DAC8164Device> triggerOutputs[4] = {
-            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[0]),
-            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[1]),
-            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[2]),
-            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[3])
+            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[0], 50000),
+            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[1], 50000),
+            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[2], 50000),
+            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[3], 50000)
         };
 
         ScaleChordInterface interface;
 
         Scale* scale = &defaultTuningData->scales[0];
         ChordDef* chordDef = &scale->getChordDefs()[0];
-
         Chord chord;
+
+        bool fixedOutput[4];
 
         QuantizerScale scaleQuantizer = QuantizerScale(*scale);
         QuantizerChord chordQuantizer = QuantizerChord(*scale, chord);
@@ -73,9 +74,8 @@ class ScaleChordController : public ParameterizedController<4>, TuningSelection 
         void setScale(int index);
         void setChord(int index);
         void updateOffset();
-        void chordUpdate();
-        void chordOutput();
-        void noteUpdate();
+        void updateChord();
+        void updateOutput(int index);
 };
 
 #endif
