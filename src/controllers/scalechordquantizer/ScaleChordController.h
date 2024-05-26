@@ -41,7 +41,7 @@ class ScaleChordController : public ParameterizedController<4>, TuningSelection 
         // LinearInput<AnalogInputPinT> linearScaleOffsetPot = LinearInput<AnalogInputPinT>(Hardware::hw.channel1PotPin, -5, 5, 0, 1);
         // IntegerInput<AnalogInputPinT> chordQuality = IntegerInput<AnalogInputPinT>(Hardware::hw.channel2PotPin, -5, 5, 0, 1);
         // IntegerInput<AnalogInputPinT> chordInversion = IntegerInput<AnalogInputPinT>(Hardware::hw.channel3PotPin, -5, 5, 0, 1);
-        // IntegerInput<AnalogInputPinT> chordVoicing = IntegerInput<AnalogInputPinT>(Hardware::hw.channel4PotPin, -5, 5, 0, 3);
+        AnalogGateInput<AnalogInputPinT> noQuantizeInput = AnalogGateInput<AnalogInputPinT>(Hardware::hw.channel4CvPin);
 
         GateInput<> triggerInputs[4] = {
             GateInput<>(*Hardware::hw.triggerInputPins[0]),

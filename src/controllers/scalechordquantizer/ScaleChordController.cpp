@@ -157,6 +157,8 @@ void ScaleChordController::update() {
         }
     }
 
+    noQuantizeInput.update();
+
     // if(linearScaleOffsetPot.update()) {
     //     scaleQuantizer.getScale()->setOffset(linearScaleOffsetPot.getValue());
     // }
@@ -179,9 +181,24 @@ void ScaleChordController::process() {
     if(triggers[0]) {
         updateChord();
     }
-    for (int i = 0; i < 4; i++) {
-        if (triggers[i]) {
-            updateOutput(i);
+
+    if(noQuantizeInput.isGateOn()) {
+        // pass through outputs
+        for(int i = 0; i < 4; i++) {
+            float noteVoltage = Hardware::hw.channelCvInputPins[i]->analogRead();
+            Hardware::hw.cvOutputPins[CV_OUTPUT_START + i]->analogWrite(noteVoltage);
+            // TODO should triggers be passed through or not?
+            // if(triggers[i]) {
+            //     triggerOutputs[i].trigger();
+            // }
+        }
+        return;
+    } else {
+        // quantized outputs
+        for (int i = 0; i < 4; i++) {
+            if (triggers[i]) {
+                updateOutput(i);
+            }
         }
     }
 
