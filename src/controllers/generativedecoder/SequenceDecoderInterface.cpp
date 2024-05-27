@@ -1,6 +1,6 @@
-#include "SequencerInterface.h"
+#include "SequenceDecoderInterface.h"
 
-void SequencerInterface::init() {
+void SequenceDecoderInterface::init() {
     page.addComponent(&title);
     page.addComponent(&modelField);
     page.addComponent(&sequenceVisualiser);
@@ -12,23 +12,23 @@ void SequencerInterface::init() {
     sequenceVisualiser.setTop(TFTDisplay::HEIGHT - sequenceVisualiser.getHeight());
 }
 
-void SequencerInterface::render() {
+void SequenceDecoderInterface::render() {
     Hardware::hw.display.clear();
     page.render();
 }
 
-void SequencerInterface::setModel(char* modelName) {
+void SequenceDecoderInterface::setModel(char* modelName) {
     modelField.setValue(modelName);
 }
 
-void SequencerInterface::setSequence(OutputNotesSequence* sequence) {
+void SequenceDecoderInterface::setSequence(OutputNotesSequence* sequence) {
     sequenceVisualiser.setSequence(sequence);
 }
 
-void SequencerInterface::setCurrentTick(int8_t tick) {
+void SequenceDecoderInterface::setCurrentTick(int8_t tick) {
     sequenceVisualiser.setCurrentTick(tick);
 }
 
-void SequencerInterface::focusModel() {
+void SequenceDecoderInterface::focusModel() {
     focusManager.setFocus(&modelField);
 }

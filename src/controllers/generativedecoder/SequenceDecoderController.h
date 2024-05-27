@@ -2,7 +2,7 @@
 #define SequenceDecoderController_h
 
 #include "Controller.h"
-#include "SequencerInterface.h"
+#include "SequenceDecoderInterface.h"
 #include "Hardware.h"
 #include "lib/neural/filesystem/TensorflowModelManager.h"
 #include "lib/neural/model/SequenceDecoderModel.h"
@@ -50,7 +50,7 @@ class SequenceDecoderController : public ParameterizedController<1> {
         bool pauseClock = false;
         bool manualInference = false;
 
-        SequencerInterface interface;
+        SequenceDecoderInterface interface;
 
         TensorflowModel& model = Hardware::hw.modelManager.getModel();
         SequenceDecoderModel sequenceDecoderModel = SequenceDecoderModel(model);
