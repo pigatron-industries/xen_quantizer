@@ -17,6 +17,10 @@ void HarmonicWalkInterface::render() {
     page.render();
 }
 
+void HarmonicWalkInterface::setTuningName(char* name) {
+    tuningField.setValue(name);
+}
+
 void HarmonicWalkInterface::setTuning(Tuning* tuning) {
     tuningField.setValue(tuning->getName());
 }

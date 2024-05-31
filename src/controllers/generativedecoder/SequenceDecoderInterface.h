@@ -1,13 +1,13 @@
-#ifndef SequencerInterface_h
-#define SequencerInterface_h
+#ifndef SequenceDecoderInterface_h
+#define SequenceDecoderInterface_h
 
 #include <eurorack_graphics.h>
 #include "Hardware.h"
 #include "SequenceVisualiser.h"
 
-class SequencerInterface {
+class SequenceDecoderInterface {
     public:
-        SequencerInterface(const char* titleText) : title(TFTDisplay::WIDTH, titleText, 2, TFT_ORANGE) {}
+        SequenceDecoderInterface(const char* titleText) : title(TFTDisplay::WIDTH, titleText, 2, TFT_ORANGE) {}
         void init();
         void render();
 

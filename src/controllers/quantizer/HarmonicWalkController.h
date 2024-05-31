@@ -3,6 +3,7 @@
 
 #include "Controller.h"
 #include "HarmonicWalkInterface.h"
+#include "controllers/TuningSelection.h"
 #include "lib/quantizer/data/Tuning12EDO.h"
 #include "lib/quantizer/ScaleFactory.h"
 #include "lib/quantizer/filesystem/TuningsManager.h"
@@ -12,7 +13,7 @@
 
 using namespace eurorack;
 
-class HarmonicWalkController : public ParameterizedController<2> {
+class HarmonicWalkController : public ParameterizedController<2>, public TuningSelection {
     public:
 
         enum Parameter {
@@ -26,6 +27,7 @@ class HarmonicWalkController : public ParameterizedController<2> {
 
         int cycleParameter(int amount);
         virtual void cycleValue(int amount);
+        void selectValue();
 
         virtual void update();
         virtual void process();
@@ -52,10 +54,6 @@ class HarmonicWalkController : public ParameterizedController<2> {
         HarmonicWalkInterface interface;
 
         int interval = 1;
-
-        StaticTuningData* defaultTuningData = &Tuning12EDO::data;
-        TuningData* tuningData = nullptr;
-        Tuning* tuning = defaultTuningData->tuning;
 
         QuantizerDifferential quantizer = QuantizerDifferential(*defaultTuningData->tuning);
 

@@ -12,9 +12,9 @@ void ScaleChordController::init(float sampleRate) {
 }
 
 void ScaleChordController::init() {
-    Serial.println("Quantizer");
+    Serial.println("Chord Quantizer");
     interface.render();
-    chordUpdate();
+    updateChord();
 }
 
 int ScaleChordController::cycleParameter(int amount) {
@@ -56,7 +56,7 @@ void ScaleChordController::cycleValue(int amount) {
         case Parameter::OFFSET:
             interface.focusOffset();
             updateOffset();
-            chordUpdate();
+            updateChord();
     }
 
     save();
@@ -87,7 +87,6 @@ void ScaleChordController::updateOffset() {
     if(scaleNote < 0) {
         scaleNote += scale->size();
     }
-    Serial.println(scaleNote);
     int tuningNote = scale->getNote(scaleNote);
     Interval& interval = tuning->getInterval(tuningNote);
 
@@ -149,30 +148,16 @@ void ScaleChordController::setChord(int index) {
 }
 
 void ScaleChordController::update() {
-
-    if(Hardware::hw.pushButtons[0].update()) {
-        if(Hardware::hw.pushButtons[0].pressed()) {
-            Serial.println("button 1 press");
-            Hardware::hw.led1OutputPin.digitalWrite(!Hardware::hw.led1OutputPin.getDigitalValue());
-        } else if(Hardware::hw.pushButtons[0].released()) {
-
+    for(int i = 0; i < 4; i++) {
+        if(Hardware::hw.pushButtons[i].update()) {
+            if(Hardware::hw.pushButtons[i].pressed()) {
+                fixedOutput[i] = !fixedOutput[i];
+                Hardware::hw.ledOutputPins[i]->digitalWrite(fixedOutput[i]);
+            } 
         }
     }
 
-    if(Hardware::hw.pushButtons[1].update() && Hardware::hw.pushButtons[1].pressed()) {
-        Serial.println("button 2 press");
-        Hardware::hw.led2OutputPin.digitalWrite(!Hardware::hw.led2OutputPin.getDigitalValue());
-    }
-
-    if(Hardware::hw.pushButtons[2].update() && Hardware::hw.pushButtons[2].pressed()) {
-        Serial.println("button 3 press");
-        Hardware::hw.led3OutputPin.digitalWrite(!Hardware::hw.led3OutputPin.getDigitalValue());
-    }
-
-    if(Hardware::hw.pushButtons[3].update() && Hardware::hw.pushButtons[3].pressed()) {
-        Serial.println("button 4 press");
-        Hardware::hw.led4OutputPin.digitalWrite(!Hardware::hw.led4OutputPin.getDigitalValue());
-    }
+    noQuantizeInput.update();
 
     // if(linearScaleOffsetPot.update()) {
     //     scaleQuantizer.getScale()->setOffset(linearScaleOffsetPot.getValue());
@@ -183,20 +168,43 @@ void ScaleChordController::update() {
 void ScaleChordController::process() {
     //transpose = Hardware::hw.channel1InputPin.analogRead();
 
-    if(triggerInputs[0].update() && triggerInputs[0].rose()) {
+    bool triggers[4];
+    for(int i = 0; i < 4; i++) {
+        triggerOutputs[i].update();
+        triggers[i] = triggerInputs[i].update() && triggerInputs[i].rose();
+    }
+    bool anyTriggers = triggers[0] || triggers[1] || triggers[2] || triggers[3];
+    if (anyTriggers) { // delay to allow for delays in cv input
         delay(1);
-        chordUpdate();
-        // TODO only trigger if chord has changed and output to trigger output
-        chordOutput();
     }
 
-    if(triggerInputs[1].update() && triggerInputs[1].rose()) {
-        delay(1);
-        noteUpdate();
+    if(triggers[0]) {
+        updateChord();
     }
+
+    if(noQuantizeInput.isGateOn()) {
+        // pass through outputs
+        for(int i = 0; i < 4; i++) {
+            float noteVoltage = Hardware::hw.channelCvInputPins[i]->analogRead();
+            Hardware::hw.cvOutputPins[CV_OUTPUT_START + i]->analogWrite(noteVoltage);
+            // TODO should triggers be passed through or not?
+            // if(triggers[i]) {
+            //     triggerOutputs[i].trigger();
+            // }
+        }
+        return;
+    } else {
+        // quantized outputs
+        for (int i = 0; i < 4; i++) {
+            if (triggers[i]) {
+                updateOutput(i);
+            }
+        }
+    }
+
 }
 
-void ScaleChordController::chordUpdate() {
+void ScaleChordController::updateChord() {
     if(scaleOffsetPot.update() || scaleOffsetCv.update()) {
         updateOffset();
     }
@@ -229,16 +237,16 @@ void ScaleChordController::chordUpdate() {
     interface.setChord(&chord);
 }
 
-void ScaleChordController::chordOutput() {
-    Hardware::hw.cvOutputPins[CV_OUTPUT_START]->analogWrite(chord[0].voltage + transpose);
-    Hardware::hw.cvOutputPins[CV_OUTPUT_START+1]->analogWrite(chord[1].voltage + transpose);
-    Hardware::hw.cvOutputPins[CV_OUTPUT_START+2]->analogWrite(chord[2].voltage + transpose);
-}
+void ScaleChordController::updateOutput(int i) {
+    // Serial.print("Output ");
+    // Serial.println(i);
+    if (fixedOutput[i] && chord.size() > i) {
+        Hardware::hw.cvOutputPins[CV_OUTPUT_START + i]->analogWrite(chord[i].voltage + transpose);
+    } else {
+        float noteVoltage = Hardware::hw.channelCvInputPins[i]->analogRead();
+        Note note = chordQuantizer.quantize(noteVoltage);
+        Hardware::hw.cvOutputPins[CV_OUTPUT_START + i]->analogWrite(note.voltage + transpose);
+    }
 
-void ScaleChordController::noteUpdate() {
-    float noteVoltage = Hardware::hw.channel2InputPin.analogRead();
-    Note note = chordQuantizer.quantize(noteVoltage);
-    //Note note = scaleQuantizer.quantize(noteVoltage);
-
-    Hardware::hw.cvOutputPins[CV_OUTPUT_START+3]->analogWrite(note.voltage + transpose);
+    triggerOutputs[i].trigger();
 }

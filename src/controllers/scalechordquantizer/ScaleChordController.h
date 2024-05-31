@@ -2,9 +2,8 @@
 #define ScaleChordController_h
 
 #include "Controller.h"
-#include "lib/quantizer/data/Tuning12EDO.h"
+#include "controllers/TuningSelection.h"
 #include "lib/quantizer/ScaleFactory.h"
-#include "lib/quantizer/filesystem/TuningsManager.h"
 #include "lib/quantizer/QuantizerScale.h"
 #include "lib/quantizer/QuantizerChord.h"
 #include "ScaleChordInterface.h"
@@ -12,7 +11,7 @@
 
 using namespace eurorack;
 
-class ScaleChordController : public ParameterizedController<4> {
+class ScaleChordController : public ParameterizedController<4>, TuningSelection {
     public:
 
         enum Parameter {
@@ -42,7 +41,7 @@ class ScaleChordController : public ParameterizedController<4> {
         // LinearInput<AnalogInputPinT> linearScaleOffsetPot = LinearInput<AnalogInputPinT>(Hardware::hw.channel1PotPin, -5, 5, 0, 1);
         // IntegerInput<AnalogInputPinT> chordQuality = IntegerInput<AnalogInputPinT>(Hardware::hw.channel2PotPin, -5, 5, 0, 1);
         // IntegerInput<AnalogInputPinT> chordInversion = IntegerInput<AnalogInputPinT>(Hardware::hw.channel3PotPin, -5, 5, 0, 1);
-        // IntegerInput<AnalogInputPinT> chordVoicing = IntegerInput<AnalogInputPinT>(Hardware::hw.channel4PotPin, -5, 5, 0, 3);
+        AnalogGateInput<AnalogInputPinT> noQuantizeInput = AnalogGateInput<AnalogInputPinT>(Hardware::hw.channel4CvPin);
 
         GateInput<> triggerInputs[4] = {
             GateInput<>(*Hardware::hw.triggerInputPins[0]),
@@ -52,22 +51,19 @@ class ScaleChordController : public ParameterizedController<4> {
         };
 
         AnalogTriggerOutput<DAC8164Device> triggerOutputs[4] = {
-            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[0]),
-            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[1]),
-            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[2]),
-            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[3])
+            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[0], 50000),
+            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[1], 50000),
+            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[2], 50000),
+            AnalogTriggerOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[3], 50000)
         };
 
         ScaleChordInterface interface;
 
-        StaticTuningData* defaultTuningData = &Tuning12EDO::data;
-        TuningData* tuningData = nullptr;
-
-        Tuning* tuning = defaultTuningData->tuning;
         Scale* scale = &defaultTuningData->scales[0];
         ChordDef* chordDef = &scale->getChordDefs()[0];
-
         Chord chord;
+
+        bool fixedOutput[4];
 
         QuantizerScale scaleQuantizer = QuantizerScale(*scale);
         QuantizerChord chordQuantizer = QuantizerChord(*scale, chord);
@@ -78,9 +74,8 @@ class ScaleChordController : public ParameterizedController<4> {
         void setScale(int index);
         void setChord(int index);
         void updateOffset();
-        void chordUpdate();
-        void chordOutput();
-        void noteUpdate();
+        void updateChord();
+        void updateOutput(int index);
 };
 
 #endif

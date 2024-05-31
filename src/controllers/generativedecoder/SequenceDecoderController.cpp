@@ -1,7 +1,8 @@
 #include "SequenceDecoderController.h"
 
 #define BTN_PAUSECLOCK 0  // Pause clock until next reset
-#define BTN_INFERENCE 2  // Manual inference /  button
+#define BTN_RESET 1  // Manual reset 
+#define BTN_INFERENCE 2  // Manual inference / button
 
 
 void SequenceDecoderController::init(float sampleRate) {
@@ -77,6 +78,13 @@ void SequenceDecoderController::update() {
         Serial.println("button 1 press");
         pauseClock = true;
         Hardware::hw.led1OutputPin.digitalWrite(true);
+    }
+
+    // Press button 2 to do a manual reset
+    Hardware::hw.pushButtons[BTN_RESET].update();
+    if (Hardware::hw.pushButtons[BTN_RESET].pressed()) {
+        Serial.println("button 2 press");
+        reset();
     }
 
     // Hold button 3 to toggle manual inference mode
