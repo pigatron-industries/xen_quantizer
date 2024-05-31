@@ -3,7 +3,7 @@ order: 2
 ---
 # User Manual
 
-{% include img.html src="images/quantizer_panel.png" height="640" %}
+{% include img.html src="images/quantizer_panel_guide.drawio.png" height="640" %}
 
 Change the mode by holding down the left encoder switch and turning clockwise or anticlockwise.
 
