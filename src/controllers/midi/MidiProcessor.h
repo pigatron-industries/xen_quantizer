@@ -28,6 +28,7 @@ class MidiProcessor {
     private:
         uint8_t numChannels = MAX_OUTPUT_CHANNELS;
         OutputChannelState outputChannelState[MAX_OUTPUT_CHANNELS];
+        int8_t lastChannel = -1;
         
         void handleNoteOn(uint8_t channel, uint8_t note, uint8_t velocity);
         void handleNoteOff(uint8_t channel, uint8_t note);

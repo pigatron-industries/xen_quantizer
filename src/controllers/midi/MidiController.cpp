@@ -153,5 +153,5 @@ void MidiController::setVelocity(uint8_t outputChannel, float velocity) {
 float MidiController::convertNote(int8_t note) {
     int periodNum = note / tuning->size();
     int noteNum = note - (periodNum * tuning->size());
-    return tuning->getNoteVoltage(periodNum, noteNum);
+    return tuning->getNoteVoltage(periodNum, noteNum) - 5;
 }
