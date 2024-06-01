@@ -7,10 +7,11 @@ void MidiController::init(float sampleRate) {
     configParam(Parameter::TUNING, 0, Hardware::hw.tuningsManager.getTuningCount()-1, false);
     interface.init();
     interface.focusTuning();
-    for(int i = 0; i < 4; i++) {
-        configParam(Parameter::CHANNEL0 + i, i, 15);
-        setOutputChannel(i, parameters[i].value);
-        interface.setChannel(i, parameters[i].value);
+    for(int outChannel = 0; outChannel < OUTPUT_CHANNELS; outChannel++) {
+        uint8_t parameterNum = outChannel + Parameter::CHANNEL0;
+        configParam(parameterNum, outChannel, CHANNEL_NONE);
+        setOutputChannel(outChannel, parameters[parameterNum].value);
+        interface.setChannel(outChannel, parameters[parameterNum].value);
     }
     setTuning(parameters[Parameter::TUNING].value);
     init();

@@ -1,4 +1,5 @@
 #include "MidiInterface.h"
+#include "MidiProcessor.h"
 
 void MidiInterface::init() {
     page.addComponent(&title);
@@ -33,7 +34,17 @@ void MidiInterface::setTuning(Tuning* tuning) {
 }
 
 void MidiInterface::setChannel(int outputChannel, int midiChannel) {
-    channelFields[outputChannel].setValue(midiChannel);
+    switch (midiChannel) {
+        case CHANNEL_NONE:
+            channelFields[outputChannel].setValue("OFF");
+            break;
+        case CHANNEL_ALL:
+            channelFields[outputChannel].setValue("ALL");
+            break;
+        default:
+            channelFields[outputChannel].setValue(midiChannel);
+            break;
+    }
 }
 
 void MidiInterface::focusTuning() {

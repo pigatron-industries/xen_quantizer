@@ -60,8 +60,8 @@ void MidiProcessor::handleNoteOn(uint8_t channel, uint8_t note, uint8_t velocity
 
     // pitch cv
     float notePitch = convertNote(note);
-    Serial.println(note);
-    Serial.println(notePitch);
+    // Serial.println(note);
+    // Serial.println(notePitch);
 
     float totalPitch = notePitch; // + _channelPitchBend[channel]; //TODO add channel pitch bend
     setPitch(outputChannel, totalPitch);
@@ -120,7 +120,8 @@ void MidiProcessor::setOutputChannel(int8_t outputChannel, int8_t midiChannel) {
 int8_t MidiProcessor::getOutputChannel(int8_t midiChannel) {
     for(int8_t i = 0; i < numChannels; i++) {
         int8_t outputChannel = (lastChannel+i+1)%numChannels;
-        if(outputChannelState[outputChannel].midiChannel == midiChannel && outputChannelState[outputChannel].note == -1) {
+        int8_t outputMidiChannel = outputChannelState[outputChannel].midiChannel;
+        if((outputMidiChannel == CHANNEL_ALL || outputMidiChannel == midiChannel) && outputChannelState[outputChannel].note == -1) {
             lastChannel = outputChannel;
             return outputChannel;
         }

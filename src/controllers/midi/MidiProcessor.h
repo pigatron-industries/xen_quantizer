@@ -6,10 +6,13 @@
 #define MAX_VOLTAGE 5
 #define MAX_OUTPUT_CHANNELS 16
 
+#define CHANNEL_ALL 16
+#define CHANNEL_NONE 17
+
 class OutputChannelState {
     public:
         OutputChannelState() {}
-        int8_t midiChannel = 0;
+        int8_t midiChannel = CHANNEL_ALL;
         int8_t note = -1;
 };
 
