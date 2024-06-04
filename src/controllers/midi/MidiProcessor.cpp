@@ -27,7 +27,6 @@ void MidiProcessor::handleMessage(uint8_t type, uint8_t channel, uint8_t data1, 
             handleNotePressure(channel, data1, data2);
             break;
         case COMMAND_CONTROL_CHANGE:
-            Serial.println("Control change");
             handleControlChange(channel, data1, data2);
             break;
         case COMMAND_PROGRAM_CHANGE:
@@ -39,7 +38,7 @@ void MidiProcessor::handleMessage(uint8_t type, uint8_t channel, uint8_t data1, 
             break;
         case COMMAND_PITCH_BEND:
             Serial.println("Pitch bend");
-            handlePitchBend(channel, data1);
+            handlePitchBend(channel, data1 | (data2 << 7));
             break;
         case COMMAND_SYSTEM:
             if(channel == SYSTEM_EXCLUSIVE) {
@@ -57,18 +56,38 @@ void MidiProcessor::handleNoteOn(uint8_t channel, uint8_t note, uint8_t velocity
     }
 
     outputChannelState[outputChannel].note = note;
+    outputChannelState[outputChannel].mpeChannel = channel;
+
+    Serial.print("channel ");
+    Serial.print(outputChannel);
+    Serial.print(" note ");
+    Serial.println(note);
 
     // pitch cv
-    float notePitch = convertNote(note);
-    // Serial.println(note);
-    // Serial.println(notePitch);
-
-    float totalPitch = notePitch; // + _channelPitchBend[channel]; //TODO add channel pitch bend
+    float notePitch = convertNote(outputChannelState[outputChannel].note);
+    float totalPitch = notePitch + 0; //convertBend(channel, 0);
     setPitch(outputChannel, totalPitch);
 
     // velocity cv
     float velocityVoltage = convertVelocity(velocity);
     setVelocity(outputChannel, velocityVoltage);
+}
+
+void MidiProcessor::handlePitchBend(uint8_t channel, int16_t bend) {
+    int8_t outputChannel = getOutputChannelForMPE(channel);
+    if(outputChannel == -1) {
+        return;
+    }
+
+    Serial.print("channel ");
+    Serial.print(outputChannel);
+    Serial.print(" note ");
+    Serial.println(outputChannelState[outputChannel].note);
+
+    // pitch cv
+    float notePitch = convertNote(outputChannelState[outputChannel].note);
+    float totalPitch = notePitch + convertBend(channel, bend);
+    setPitch(outputChannel, totalPitch);
 }
 
 void MidiProcessor::handleNoteOff(uint8_t channel, uint8_t note) {
@@ -78,11 +97,61 @@ void MidiProcessor::handleNoteOff(uint8_t channel, uint8_t note) {
     }
 
     outputChannelState[outputChannel].note = -1;
+    outputChannelState[outputChannel].mpeChannel = -1;
     setVelocity(outputChannel, 0);
 }
 
 void MidiProcessor::handleControlChange(uint8_t channel, uint8_t controlNumber, uint8_t value) {
+    switch(controlNumber) {
+        case CONTROL_MUTE:
+            Serial.println("Mute");
+            handleMuteChannel(channel);
+            break;
+        case CONTROL_RPN_PARAM_LSB:
+            midiChannelData[channel].rpnParam = value;
+            break;
+        case CONTROL_RPN_PARAM_MSB:
+            midiChannelData[channel].rpnParam |= (value << 7);
+            break;
+        case CONTROL_RPN_VALUE_COARSE:
+            midiChannelData[channel].rpnValueCoarse = value;
+            break;
+        case CONTROL_RPN_VALUE_FINE:
+            midiChannelData[channel].rpnValueFine = value;
+            handleRPNParameterChange(channel, midiChannelData[channel].rpnParam, midiChannelData[channel].rpnValueCoarse, midiChannelData[channel].rpnValueFine);
+            break;
+        default:
+            Serial.println("Unhandled Control Change");
+            Serial.println(channel);
+            Serial.println(controlNumber);
+            Serial.println(value);
+            break;
+    }
+}
 
+void MidiProcessor::handleMuteChannel(uint8_t channel) {
+    for (int8_t outputChannel = 0; outputChannel < numChannels; outputChannel++) {
+        if(outputChannelState[outputChannel].midiChannel == channel) {
+            outputChannelState[outputChannel].note = -1;
+            setVelocity(outputChannel, 0);
+        }
+    }
+}
+
+void MidiProcessor::handleRPNParameterChange(uint8_t channel, uint16_t param, uint16_t valueCoarse, uint16_t valueFine) {
+    switch (param) {
+        case RPN_PARAM_PITCH_BEND_RANGE:
+            Serial.println("Pitch bend range");
+            midiChannelData[channel].pitchBendRangeCents = valueCoarse*100 + valueFine;
+            break;
+        default:
+            Serial.println("Unhandled RPN Parameter Change");
+            Serial.println(channel);
+            Serial.println(param);
+            Serial.println(valueCoarse);
+            Serial.println(valueFine);
+            break;
+    }
 }
 
 void MidiProcessor::handleNotePressure(uint8_t channel, uint8_t note, uint8_t pressure) {
@@ -90,10 +159,6 @@ void MidiProcessor::handleNotePressure(uint8_t channel, uint8_t note, uint8_t pr
 }
 
 void MidiProcessor::handleChannelPressure(uint8_t channel, uint8_t pressure) {
-
-}
-
-void MidiProcessor::handlePitchBend(uint8_t channel, uint8_t bend) {
 
 }
 
@@ -130,9 +195,20 @@ int8_t MidiProcessor::getOutputChannel(int8_t midiChannel) {
     return -1;
 }
 
-int8_t MidiProcessor::getOutputChannelForNote(int8_t channel, int8_t note) {
+int8_t MidiProcessor::getOutputChannelForMPE(int8_t midiChannel) {
     for(int8_t outputChannel = 0; outputChannel < numChannels; outputChannel++) {
-        if(outputChannelState[outputChannel].note == note) {
+        int8_t mpeChannel = outputChannelState[outputChannel].mpeChannel;
+        if(mpeChannel == midiChannel && outputChannelState[outputChannel].note >= 0) {
+            return outputChannel;
+        }
+    }
+    return -1;
+} 
+
+int8_t MidiProcessor::getOutputChannelForNote(int8_t midiChannel, int8_t note) {
+    for(int8_t outputChannel = 0; outputChannel < numChannels; outputChannel++) {
+        int8_t outputMidiChannel = outputChannelState[outputChannel].midiChannel;
+        if((outputMidiChannel == CHANNEL_ALL || outputMidiChannel == midiChannel) && outputChannelState[outputChannel].note == note) {
             return outputChannel;
         }
     }
@@ -146,8 +222,8 @@ float MidiProcessor::convertNote(int8_t note) {
     return cents / 1200;
 }
 
-float MidiProcessor::convertBend(int16_t bend) {
-    return (float(bend) / 8192) / 12;
+float MidiProcessor::convertBend(uint8_t channel, int16_t bend) {
+    return (float(bend-8192) / 8192) * (float(midiChannelData[channel].pitchBendRangeCents) / 1200);
 }
 
 float MidiProcessor::convertVelocity(uint8_t velocity) {
