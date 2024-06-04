@@ -1,4 +1,20 @@
 import math
+from dataclasses import dataclass
+
+
+@dataclass
+class Note:
+    tuning: int
+    num: int
+    note: int
+    period: int
+
+    def add(self, interval:int):
+        num = self.num + interval
+        note = num % self.tuning
+        period = num // self.tuning
+        return Note(self.tuning, num, note, period)
+
 
 class Tuning():
     """
@@ -49,6 +65,10 @@ class Tuning():
             intervals.append(repeatInterval/divisions*note)
             autoIntervalName.append(intervalName)
         return cls(name, intervals, repeatInterval, autoIntervalName)
+    
+    def getNote(self, note, period):
+        num = note + period*len(self.intervals)
+        return Note(len(self.intervals), num, note % len(self.intervals), period)
     
 
 def ratioToOctaves(ratio):

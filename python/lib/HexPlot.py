@@ -1,23 +1,16 @@
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import lib.sethares as sethares
-from lib.tuning import Tuning
+from lib.tuning import Tuning, Note
 from dataclasses import dataclass
+from typing import List
 
 
 @dataclass
 class HighlightNote:
     name: str
-    note: int
-    period: int
+    note: Note
     colour: str
-
-
-@dataclass
-class Note:
-    num: int
-    note: int
-    period: int
 
 
 class HexPlot():
@@ -26,18 +19,16 @@ class HexPlot():
         self.width = width
         self.height = height
         self.hex_size = hex_size
-        self.highlights = []
+        self.highlights:List[HighlightNote] = []
 
 
-    def highlightNote(self, name, note, period, colour):
-        self.highlights.append(HighlightNote(name, note, period, colour))
-
-    
+    def highlightNote(self, name, note, colour):
+        self.highlights.append(HighlightNote(name, note, colour))
 
 
     def getHighlight(self, note, period):
         for highlight in self.highlights:
-            if highlight.note == note and highlight.period == period:
+            if highlight.note.note == note and highlight.note.period == period:
                 return highlight
         return None
 
@@ -74,11 +65,11 @@ class HexPlot():
         plt.show()
 
 
-    def getNoteAtIsomorphic(self, x, y, start_note, x_increment, y_increment):
+    def getNoteAtIsomorphic(self, x, y, start_note, x_increment, y_increment) -> Note:
         row_start_note = start_note
         for row in range(y):
             row_start_note += y_increment
             if(row%2 == 1):
                 row_start_note -= x_increment
         note = row_start_note + x * x_increment
-        return Note(note, note % len(self.tuning.intervals), note // len(self.tuning.intervals))
+        return self.tuning.getNote(note % len(self.tuning.intervals), note // len(self.tuning.intervals))
