@@ -14,16 +14,18 @@ class MidiInterface {
         void setTuningName(char* name);
         void setTuning(Tuning* tuning);
         void setChannel(int outputChannel, int midiChannel);
+        void setRotate(bool rotate);
 
         void focusTuning();
         void focusChannel(int outputChannel);
+        void focusRotate();
 
         void showMessage(const char* message);
 
     private:
         FocusManager<TFTDisplay> focusManager;
 
-        VerticalContainer<TFTDisplay, 3> page;
+        VerticalContainer<TFTDisplay, 4> page;
         TextComponent<TFTDisplay> title = TextComponent<TFTDisplay>(TFTDisplay::WIDTH, "MIDI INPUT", 2, TFT_ORANGE);
         FieldComponent<TFTDisplay> tuningField = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 50, "TUNING:");
 
@@ -34,6 +36,8 @@ class MidiInterface {
             FieldComponent<TFTDisplay>(TFTDisplay::WIDTH/4, TFTDisplay::WIDTH/8, "CH2:"),
             FieldComponent<TFTDisplay>(TFTDisplay::WIDTH/4, TFTDisplay::WIDTH/8, "CH3:")
         };
+
+        FieldComponent<TFTDisplay> rotateField = FieldComponent<TFTDisplay>(TFTDisplay::WIDTH, 50, "ROTATE:");
 
         MessageBoxComponent<TFTDisplay> messageBox = MessageBoxComponent<TFTDisplay>(TFTDisplay::WIDTH*0.5, TFTDisplay::HEIGHT*0.5, 2, TFT_ORANGE);
 };

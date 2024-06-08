@@ -34,6 +34,7 @@ class MidiProcessor {
         MidiProcessor(uint8_t numChannels);
         MidiProcessor() : MidiProcessor(MAX_OUTPUT_CHANNELS) {}
         void handleMessage(uint8_t command, uint8_t channel, uint8_t data1, uint8_t data2);
+        void setRotateOutputChannels(bool rotateOutputChannels) { this->rotateOutputChannels = rotateOutputChannels; }
 
     protected:
         virtual void setPitch(uint8_t outputChannel, float pitch) = 0;
@@ -43,7 +44,9 @@ class MidiProcessor {
     private:
         uint8_t numChannels = MAX_OUTPUT_CHANNELS;
         OutputChannelState outputChannelState[MAX_OUTPUT_CHANNELS];
+
         int8_t lastChannel = -1;
+        bool rotateOutputChannels = false;
 
         MidiChannelData midiChannelData[16];
         

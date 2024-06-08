@@ -5,6 +5,7 @@ void MidiInterface::init() {
     page.addComponent(&title);
     page.addComponent(&tuningField);
     page.addComponent(&channelsRow);
+    page.addComponent(&rotateField);
     channelsRow.addComponent(&channelFields[0]);
     channelsRow.addComponent(&channelFields[1]);
     channelsRow.addComponent(&channelFields[2]);
@@ -47,12 +48,20 @@ void MidiInterface::setChannel(int outputChannel, int midiChannel) {
     }
 }
 
+void MidiInterface::setRotate(bool rotate) {
+    rotateField.setValue(rotate ? "ON" : "OFF");
+}
+
 void MidiInterface::focusTuning() {
     focusManager.setFocus(&tuningField);
 }
 
 void MidiInterface::focusChannel(int outputChannel) {
     focusManager.setFocus(&channelFields[outputChannel]);
+}
+
+void MidiInterface::focusRotate() {
+    focusManager.setFocus(&rotateField);
 }
 
 void MidiInterface::showMessage(const char* message) {

@@ -9,7 +9,7 @@
 #define MAX_VOLTAGE 5
 #define OUTPUT_CHANNELS 4
 
-class MidiController : public ParameterizedController<5>, public MidiProcessor, public TuningSelection {   
+class MidiController : public ParameterizedController<6>, public MidiProcessor, public TuningSelection {   
     public:
 
         enum Parameter {
@@ -17,7 +17,8 @@ class MidiController : public ParameterizedController<5>, public MidiProcessor, 
             CHANNEL0,
             CHANNEL1,
             CHANNEL2,
-            CHANNEL3
+            CHANNEL3,
+            ROTATECHANNELS
         };
 
         MidiController() : ParameterizedController(), MidiProcessor(OUTPUT_CHANNELS) {}

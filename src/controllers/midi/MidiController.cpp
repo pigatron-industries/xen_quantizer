@@ -5,6 +5,7 @@
 void MidiController::init(float sampleRate) {
     Controller::init(sampleRate);
     configParam(Parameter::TUNING, 0, Hardware::hw.tuningsManager.getTuningCount()-1, false);
+    configParam(Parameter::ROTATECHANNELS, 0, 1);
     interface.init();
     interface.focusTuning();
     for(int outChannel = 0; outChannel < OUTPUT_CHANNELS; outChannel++) {
@@ -14,6 +15,7 @@ void MidiController::init(float sampleRate) {
         interface.setChannel(outChannel, parameters[parameterNum].value);
     }
     setTuning(parameters[Parameter::TUNING].value);
+    interface.setRotate(parameters[Parameter::ROTATECHANNELS].value == 1);
     init();
 }
 
@@ -34,6 +36,9 @@ int MidiController::cycleParameter(int amount) {
         case Parameter::CHANNEL3:
             interface.focusChannel(parameters.getSelectedIndex() - Parameter::CHANNEL0);
             break;
+        case Parameter::ROTATECHANNELS:
+            interface.focusRotate();
+            break;
     }
     return parameters.getSelectedIndex();
 }
@@ -52,6 +57,10 @@ void MidiController::cycleValue(int amount) {
         case Parameter::CHANNEL3:
             setOutputChannel(parameters.getSelectedIndex() - Parameter::CHANNEL0, value);
             interface.setChannel(parameters.getSelectedIndex() - Parameter::CHANNEL0, value);
+            break;
+        case Parameter::ROTATECHANNELS:
+            setRotateOutputChannels(value == 1);
+            interface.setRotate(value == 1);
             break;
     }
     save();
