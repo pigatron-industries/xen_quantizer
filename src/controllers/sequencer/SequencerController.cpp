@@ -1,5 +1,8 @@
 #include "SequencerController.h"
 
+#include "controllers/midi/MidiController.h"
+
+
 void SequencerController::init(float sampleRate) {
     Controller::init(sampleRate);
     interface.init();
@@ -10,6 +13,8 @@ void SequencerController::init(float sampleRate) {
 void SequencerController::init() {
     Serial.println("Sequencer");
     interface.render();
+    // TODO get parameters from MidiController and use them to set up midi processor for sequencer
+    // MidiController::getInstance()->getParameterValue(MidiController::ROTATECHANNELS);
 }
 
 

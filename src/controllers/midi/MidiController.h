@@ -12,6 +12,13 @@
 class MidiController : public ParameterizedController<6>, public MidiProcessor, public TuningSelection {   
     public:
 
+        static MidiController* getInstance() {
+            if (instance == nullptr) {
+                instance = new MidiController();
+            }
+            return instance;
+        }
+
         enum Parameter {
             TUNING,
             CHANNEL0,
@@ -21,7 +28,9 @@ class MidiController : public ParameterizedController<6>, public MidiProcessor, 
             ROTATECHANNELS
         };
 
-        MidiController() : ParameterizedController(), MidiProcessor(OUTPUT_CHANNELS) {}
+        MidiController() : ParameterizedController(), MidiProcessor(OUTPUT_CHANNELS) {
+            instance = this;
+        }
         void init(float sampleRate);
         void init();
 
@@ -38,6 +47,7 @@ class MidiController : public ParameterizedController<6>, public MidiProcessor, 
         void setVelocity(uint8_t outputChannel, float velocity);
 
     private:
+        static MidiController* instance;
     
         MidiInterface interface;
 
