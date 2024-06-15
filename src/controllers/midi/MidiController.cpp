@@ -2,6 +2,9 @@
 #include "MidiConstants.h"
 
 
+MidiController* MidiController::instance = nullptr;
+
+
 void MidiController::init(float sampleRate) {
     Controller::init(sampleRate);
     configParam(Parameter::TUNING, 0, Hardware::hw.tuningsManager.getTuningCount()-1, false);
@@ -118,7 +121,7 @@ void MidiController::readMidi() {
         uint8_t channel = usbMIDI.getChannel() - 1;
         uint8_t data1 = usbMIDI.getData1();
         uint8_t data2 = usbMIDI.getData2();
-        sendMidi(port, type, data1, data2, channel, nullptr);
+        sendMidi(port, type, data1, data2, channel);
         handleMessage(type, data1, data2, channel);
     }
     #endif

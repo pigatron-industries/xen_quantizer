@@ -13,9 +13,6 @@ class MidiController : public ParameterizedController<6>, public MidiProcessor, 
     public:
 
         static MidiController* getInstance() {
-            if (instance == nullptr) {
-                instance = new MidiController();
-            }
             return instance;
         }
 
