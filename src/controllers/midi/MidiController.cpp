@@ -14,10 +14,11 @@ void MidiController::init(float sampleRate) {
     for(int outChannel = 0; outChannel < OUTPUT_CHANNELS; outChannel++) {
         uint8_t parameterNum = outChannel + Parameter::CHANNEL0;
         configParam(parameterNum, outChannel, CHANNEL_NONE);
-        setOutputChannel(outChannel, parameters[parameterNum].value);
+        setOutputChannelParam(outChannel, parameters[parameterNum].value);
         interface.setChannel(outChannel, parameters[parameterNum].value);
     }
     setTuning(parameters[Parameter::TUNING].value);
+    setRotateOutputChannels(parameters[Parameter::ROTATECHANNELS].value == 1);
     interface.setRotate(parameters[Parameter::ROTATECHANNELS].value == 1);
     init();
 }
@@ -58,7 +59,7 @@ void MidiController::cycleValue(int amount) {
         case Parameter::CHANNEL1:
         case Parameter::CHANNEL2:
         case Parameter::CHANNEL3:
-            setOutputChannel(parameters.getSelectedIndex() - Parameter::CHANNEL0, value);
+            setOutputChannelParam(parameters.getSelectedIndex() - Parameter::CHANNEL0, value);
             interface.setChannel(parameters.getSelectedIndex() - Parameter::CHANNEL0, value);
             break;
         case Parameter::ROTATECHANNELS:
@@ -101,46 +102,6 @@ void MidiController::update() {
     readMidi();
 }
 
-void MidiController::readMidi() {
-    int port = 0;
-    for (MIDIDevice* midiDevice : Hardware::hw.midiDevice) {
-        if (midiDevice->read()) {
-            uint8_t type =       midiDevice->getType();
-            uint8_t data1 =      midiDevice->getData1();
-            uint8_t data2 =      midiDevice->getData2();
-            uint8_t channel =    midiDevice->getChannel();
-            // const uint8_t *sys = midiDevice->getSysExArray();
-            sendMidi(port, type, data1, data2, channel);
-            handleMessage(type, channel-1, data1, data2);
-        }
-        port++;
-    }
-    #ifdef USB_MIDI
-    if(usbMIDI.read(0)) {
-        uint8_t type = usbMIDI.getType();
-        uint8_t channel = usbMIDI.getChannel() - 1;
-        uint8_t data1 = usbMIDI.getData1();
-        uint8_t data2 = usbMIDI.getData2();
-        sendMidi(port, type, data1, data2, channel);
-        handleMessage(type, data1, data2, channel);
-    }
-    #endif
-}
-
-void MidiController::sendMidi(int fromPort, uint8_t type, uint8_t data1, uint8_t data2, uint8_t channel) {
-    int port = 0;
-    for (MIDIDevice* midiDevice : Hardware::hw.midiDevice) {
-        if (port != fromPort) {
-            midiDevice->send(type, data1, data2, channel);
-        }
-        port++;
-    }
-    #ifdef USB_MIDI
-    if (port != fromPort) {
-        usbMIDI.send(type, data1, data2, channel);
-    }
-    #endif
-}
 
 void MidiController::process() {
     // trigger input to midi clock
@@ -166,5 +127,5 @@ void MidiController::setVelocity(uint8_t outputChannel, float velocity) {
 float MidiController::convertNote(int8_t note) {
     int periodNum = note / tuning->size();
     int noteNum = note - (periodNum * tuning->size());
-    return tuning->getNoteVoltage(periodNum, noteNum) - 5;
+    return tuning->getNoteVoltage(periodNum, noteNum);
 }

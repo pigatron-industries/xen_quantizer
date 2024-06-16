@@ -4,11 +4,13 @@
 #include "Controller.h"
 #include "Sequencer.h"
 #include "SequencerInterface.h"
+#include "controllers/midi/MidiProcessor.h"
 
+#define OUTPUT_CHANNELS 4
 
-class SequencerController : public ParameterizedController<1> {
+class SequencerController : public ParameterizedController<1>, public MidiProcessor {
     public:
-        SequencerController() {}
+        SequencerController() : ParameterizedController(), MidiProcessor(OUTPUT_CHANNELS) {}
         void init(float sampleRate);
         void init();
         void update();
@@ -44,8 +46,12 @@ class SequencerController : public ParameterizedController<1> {
 
         bool recording[4] = {false, false, false, false};
 
+        void setPitch(uint8_t outputChannel, float pitch);
+        void setVelocity(uint8_t outputChannel, float velocity);
+
         void tick();
         void reset();
+        float getInputValue(int channel);
         void recordInputValue(int channel);
         void outputSequenceValue(int channel);
 };

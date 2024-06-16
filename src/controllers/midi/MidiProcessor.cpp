@@ -6,8 +6,50 @@ MidiProcessor::MidiProcessor(uint8_t numChannels) {
     this->numChannels = numChannels;
     // default midi channels 1-4 for output channels 1-4
     for(int8_t outputChannel = 0; outputChannel < numChannels; outputChannel++) {
-        setOutputChannel(outputChannel, outputChannel);
+        setOutputChannelParam(outputChannel, outputChannel);
     }
+}
+
+
+void MidiProcessor::readMidi() {
+    int port = 0;
+    for (MIDIDevice* midiDevice : Hardware::hw.midiDevice) {
+        if (midiDevice->read()) {
+            uint8_t type =       midiDevice->getType();
+            uint8_t data1 =      midiDevice->getData1();
+            uint8_t data2 =      midiDevice->getData2();
+            uint8_t channel =    midiDevice->getChannel();
+            // const uint8_t *sys = midiDevice->getSysExArray();
+            sendMidi(port, type, data1, data2, channel);
+            handleMessage(type, channel-1, data1, data2);
+        }
+        port++;
+    }
+    #ifdef USB_MIDI
+    if(usbMIDI.read(0)) {
+        uint8_t type = usbMIDI.getType();
+        uint8_t channel = usbMIDI.getChannel() - 1;
+        uint8_t data1 = usbMIDI.getData1();
+        uint8_t data2 = usbMIDI.getData2();
+        sendMidi(port, type, data1, data2, channel, nullptr);
+        handleMessage(type, data1, data2, channel);
+    }
+    #endif
+}
+
+void MidiProcessor::sendMidi(int fromPort, uint8_t type, uint8_t data1, uint8_t data2, uint8_t channel) {
+    int port = 0;
+    for (MIDIDevice* midiDevice : Hardware::hw.midiDevice) {
+        if (port != fromPort) {
+            midiDevice->send(type, data1, data2, channel);
+        }
+        port++;
+    }
+    #ifdef USB_MIDI
+    if (port != fromPort) {
+        usbMIDI.send(type, data1, data2, channel);
+    }
+    #endif
 }
 
 
@@ -64,8 +106,9 @@ void MidiProcessor::handleNoteOn(uint8_t channel, uint8_t note, uint8_t velocity
     Serial.println(note);
 
     // pitch cv
-    float notePitch = convertNote(outputChannelState[outputChannel].note);
+    float notePitch = convertNote(outputChannelState[outputChannel].note) + pitchOffset;
     float totalPitch = notePitch + 0; //convertBend(channel, 0);
+    outputChannelState[outputChannel].pitch = totalPitch;
     setPitch(outputChannel, totalPitch);
 
     // velocity cv
@@ -85,8 +128,9 @@ void MidiProcessor::handlePitchBend(uint8_t channel, int16_t bend) {
     Serial.println(outputChannelState[outputChannel].note);
 
     // pitch cv
-    float notePitch = convertNote(outputChannelState[outputChannel].note);
+    float notePitch = convertNote(outputChannelState[outputChannel].note) + pitchOffset;
     float totalPitch = notePitch + convertBend(channel, bend);
+    outputChannelState[outputChannel].pitch = totalPitch;
     setPitch(outputChannel, totalPitch);
 }
 
@@ -178,8 +222,12 @@ void MidiProcessor::handleReset() {
 
 }
 
-void MidiProcessor::setOutputChannel(int8_t outputChannel, int8_t midiChannel) {
+void MidiProcessor::setOutputChannelParam(int8_t outputChannel, int8_t midiChannel) {
     outputChannelState[outputChannel].midiChannel = midiChannel;
+}
+
+int8_t MidiProcessor::getOutputChannelParam(int8_t outputChannel) {
+    return outputChannelState[outputChannel].midiChannel;
 }
 
 int8_t MidiProcessor::getOutputChannel(int8_t midiChannel) {

@@ -55,9 +55,6 @@ class MidiController : public ParameterizedController<6>, public MidiProcessor, 
             GateInput<>(*Hardware::hw.triggerInputPins[3])
         };
 
-        void readMidi();
-        void sendMidi(int fromPort, uint8_t type, uint8_t data1, uint8_t data2, uint8_t channel);
-
         float convertNote(int8_t note);
 };
 

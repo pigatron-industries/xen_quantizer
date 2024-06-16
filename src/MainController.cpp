@@ -28,7 +28,7 @@ void MainController::controllerInit() {
     interruptTimer.end();
     saveState();
 
-    if(controllers.getSelected()->getSampleRate() > 0) {
+    if(controllers.getSelected()->isInited() > 0) {
         controllers.getSelected()->init();
     } else {
         controllers.getSelected()->init(sampleRate);

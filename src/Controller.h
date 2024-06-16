@@ -12,6 +12,7 @@ class Controller : virtual public AbstractController {
         virtual void update() = 0;
         virtual void process() = 0;
         float getSampleRate() { return sampleRate; }
+        bool isInited() { return sampleRate > 0; }
     
     protected: 
         float sampleRate = 0;

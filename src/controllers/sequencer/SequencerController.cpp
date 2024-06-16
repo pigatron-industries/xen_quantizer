@@ -7,18 +7,26 @@ void SequencerController::init(float sampleRate) {
     Controller::init(sampleRate);
     interface.init();
     interface.setSequencer(&sequencer);
+    if(!MidiController::getInstance()->isInited()) {
+        MidiController::getInstance()->init(sampleRate);
+    }
     init();
 }
 
 void SequencerController::init() {
     Serial.println("Sequencer");
     interface.render();
-    // TODO get parameters from MidiController and use them to set up midi processor for sequencer
-    // MidiController::getInstance()->getParameterValue(MidiController::ROTATECHANNELS);
+    // copy settings from MidiController
+    setRotateOutputChannels(MidiController::getInstance()->getRotateOutputChannels());
+    for(int outChannel = 0; outChannel < OUTPUT_CHANNELS; outChannel++) {
+        setOutputChannelParam(outChannel, MidiController::getInstance()->getOutputChannelParam(outChannel));
+    }
 }
 
 
 void SequencerController::update() {
+    readMidi();
+
     for(int i = 0; i < NUM_TRACKS; i++) {
         Hardware::hw.pushButtons[i].update();
         if (Hardware::hw.pushButtons[i].released() && Hardware::hw.pushButtons[i].previousDuration() < 2000) {
@@ -30,6 +38,19 @@ void SequencerController::update() {
         }
     }
 }
+
+void SequencerController::setPitch(uint8_t outputChannel, float pitch) {
+    if(getOutputChannelState(outputChannel).noteOn()) {
+        recordInputValue(outputChannel);
+    }
+}
+
+void SequencerController::setVelocity(uint8_t outputChannel, float velocity) {
+    if(velocity > 0) {
+        recordInputValue(outputChannel);
+    }
+}
+
 
 void SequencerController::process() {    
     bool triggers[4];
@@ -66,7 +87,7 @@ void SequencerController::tick() {
     interface.setCurrentTick(sequencer.getCurrentStep());
 
     for(int i = 0; i < NUM_TRACKS; i++) {
-        if(triggerInputs[i].getValue()) {
+        if(triggerInputs[i].getValue() || getOutputChannelState(i).noteOn()) {
             recordInputValue(i);
         } else {
             outputSequenceValue(i);
@@ -74,9 +95,19 @@ void SequencerController::tick() {
     }
 }
 
+float SequencerController::getInputValue(int channel) {
+    float value = 0;
+    if(getOutputChannelState(channel).noteOn()) {
+        value = getOutputChannelState(channel).pitch;
+    } else {
+        valueInputs[channel].update();
+        value = valueInputs[channel].getVoltage();
+    }
+    return value;
+}
+
 void SequencerController::recordInputValue(int channel) {
-    valueInputs[channel].update();
-    float value = valueInputs[channel].getVoltage();
+    float value = getInputValue(channel);
 
     if(recording[channel]) {
         sequencer.getStep(channel, sequencer.getCurrentStep()).voltage = value;

@@ -9,8 +9,8 @@
 #define CONTROLLERS \
 ScaleChordController, \
 HarmonicWalkController, \
+MidiController, \
 SequencerController, \
 NoteSequenceDecoderController, \
 DrumSequenceDecoderController, \
-MidiController, \
 CalibrationController
