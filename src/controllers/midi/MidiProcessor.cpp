@@ -234,7 +234,7 @@ int8_t MidiProcessor::getOutputChannel(int8_t midiChannel) {
     for(int8_t i = 0; i < numChannels; i++) {
         int8_t outputChannel = i;
         if (rotateOutputChannels) {
-            outputChannel = (lastChannel + 1) % numChannels;
+            outputChannel = (lastChannel + i + 1) % numChannels;
         }
         int8_t outputMidiChannel = outputChannelState[outputChannel].midiChannel;
         if((outputMidiChannel == CHANNEL_ALL || outputMidiChannel == midiChannel) && outputChannelState[outputChannel].note == -1) {
