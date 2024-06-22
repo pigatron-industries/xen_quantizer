@@ -5,7 +5,10 @@
 
 void SequencerController::init(float sampleRate) {
     Controller::init(sampleRate);
+    configParam(Parameter::PATTERN, 0, NUM_PATTERNS-1, false);
     interface.init();
+    interface.setPattern(parameters[Parameter::PATTERN].getValue());
+    sequencer.setCurrentPattern(parameters[Parameter::PATTERN].getValue());
     interface.setSequencer(&sequencer);
     if(!MidiController::getInstance()->isInited()) {
         MidiController::getInstance()->init(sampleRate);
@@ -20,6 +23,30 @@ void SequencerController::init() {
     setRotateOutputChannels(MidiController::getInstance()->getRotateOutputChannels());
     for(int outChannel = 0; outChannel < OUTPUT_CHANNELS; outChannel++) {
         setOutputChannelParam(outChannel, MidiController::getInstance()->getOutputChannelParam(outChannel));
+    }
+}
+
+
+int SequencerController::cycleParameter(int amount) {
+    parameters.cycle(amount);
+
+    switch(parameters.getSelectedIndex()) {
+        case Parameter::PATTERN:
+            interface.focusPattern();
+            break;
+    }
+
+    return parameters.getSelectedIndex();
+}
+
+
+void SequencerController::cycleValue(int amount) {
+    int value = parameters.getSelected().cycle(amount);
+    switch(parameters.getSelectedIndex()) {
+        case Parameter::PATTERN:
+            sequencer.setCurrentPattern(value);
+            interface.setPattern(value);
+            break;
     }
 }
 

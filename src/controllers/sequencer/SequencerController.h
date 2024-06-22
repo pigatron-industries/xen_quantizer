@@ -10,9 +10,19 @@
 
 class SequencerController : public ParameterizedController<1>, public MidiProcessor {
     public:
+
+        enum Parameter {
+            PATTERN,
+        };
+
         SequencerController() : ParameterizedController(), MidiProcessor(OUTPUT_CHANNELS) {}
         void init(float sampleRate);
         void init();
+
+        int cycleParameter(int amount);
+        void cycleValue(int amount);
+
+
         void update();
         void process();
 

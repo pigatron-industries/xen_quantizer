@@ -3,16 +3,21 @@
 
 Sequencer::Sequencer() {
     SequenceStep step;
-    for (int i = 0; i < NUM_TRACKS; i++) {
-        tracks[i].init(step, MAX_STEPS);
-    }
+    addPattern();
 }
 
 void Sequencer::clearTrack(int track) {
     for (int i = 0; i < numSteps; i++) {
-        tracks[track].get(i).trigger = false;
-        tracks[track].get(i).voltage = 0;
+        patterns[currentPattern][track].get(i).trigger = false;
+        patterns[currentPattern][track].get(i).voltage = 0;
     }
+}
+
+int Sequencer::addPattern() {
+    SequenceStep step;
+    TrackPattern track = TrackPattern(step, MAX_STEPS);
+    Pattern pattern = Pattern(track, NUM_TRACKS);
+    return patterns.add(pattern);
 }
 
 void Sequencer::tick() {

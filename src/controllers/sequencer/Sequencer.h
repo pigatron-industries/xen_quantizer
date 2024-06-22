@@ -5,6 +5,7 @@
 
 #define MAX_STEPS 32
 #define NUM_TRACKS 4
+#define NUM_PATTERNS 64
 
 
 class SequenceStep {
@@ -13,18 +14,21 @@ class SequenceStep {
         float voltage = 0;
 };
 
-typedef Array<SequenceStep, MAX_STEPS> Sequence;
+typedef Array<SequenceStep, MAX_STEPS> TrackPattern;
+typedef Array<TrackPattern, NUM_TRACKS> Pattern;
 
 
 class Sequencer {
     public:
         Sequencer();
-        int getNumTracks() { return tracks.size(); }
+        int getNumTracks() { return numTracks; }
         int getNumSteps() { return numSteps; }
         int getCurrentStep() { return currentStep; }
-        Sequence& getTrack(int index) { return tracks[index]; }
-        SequenceStep& getStep(int trackIndex, int stepIndex) { return tracks[trackIndex].get(stepIndex); }
+        TrackPattern& getTrack(int index) { return patterns[currentPattern][index]; }
+        SequenceStep& getStep(int trackIndex, int stepIndex) { return patterns[currentPattern][trackIndex].get(stepIndex); }
 
+        void setCurrentPattern(int pattern) { currentPattern = pattern; }
+        int addPattern();
         void setNumSteps(int numSteps) { this->numSteps = numSteps; }
         void clearTrack(int track);
 
@@ -32,8 +36,11 @@ class Sequencer {
         void reset();
 
     private:
-        Array<Sequence, NUM_TRACKS> tracks = Array<Sequence, NUM_TRACKS>(NUM_TRACKS);
+        Array<Pattern, NUM_PATTERNS> patterns = Array<Pattern, NUM_PATTERNS>();
+
         int currentStep = -1;
+        int currentPattern = 0;
+        int numTracks = NUM_TRACKS;
         int numSteps = MAX_STEPS;
 };
 
