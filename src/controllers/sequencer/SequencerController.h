@@ -7,6 +7,7 @@
 #include "controllers/midi/MidiProcessor.h"
 
 #define OUTPUT_CHANNELS 4
+#define MAX_EVENTS_PER_TICK 16
 
 class SequencerController : public ParameterizedController<1>, public MidiProcessor {
     public:
@@ -54,7 +55,15 @@ class SequencerController : public ParameterizedController<1>, public MidiProces
             AnalogGateOutput<DAC8164Device>(*Hardware::hw.cvOutputPins[3])
         };
 
-        bool recording[4] = {false, false, false, false};
+        int sampleCounter = 0;
+        int prevStep = 0;
+        bool recording[OUTPUT_CHANNELS] = {false, false, false, false};
+        Array<SequenceStepEvent, MAX_EVENTS_PER_TICK> recordedEvents[OUTPUT_CHANNELS] = {
+            Array<SequenceStepEvent, MAX_EVENTS_PER_TICK>(),
+            Array<SequenceStepEvent, MAX_EVENTS_PER_TICK>(),
+            Array<SequenceStepEvent, MAX_EVENTS_PER_TICK>(),
+            Array<SequenceStepEvent, MAX_EVENTS_PER_TICK>()
+        };
 
         void setPitch(uint8_t outputChannel, float pitch);
         void setVelocity(uint8_t outputChannel, float velocity);
@@ -62,8 +71,9 @@ class SequencerController : public ParameterizedController<1>, public MidiProces
         void tick();
         void reset();
         float getInputValue(int channel);
-        void recordInputValue(int channel);
-        void outputSequenceValue(int channel);
+        void recordEvent(int channel);
+        void quantizeEvents(int channel);
+        void outputSequenceStep(int channel);
 };
 
 

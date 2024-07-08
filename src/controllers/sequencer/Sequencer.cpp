@@ -8,7 +8,7 @@ Sequencer::Sequencer() {
 
 void Sequencer::clearTrack(int track) {
     for (int i = 0; i < numSteps; i++) {
-        patterns[currentPattern][track].get(i).trigger = false;
+        patterns[currentPattern][track].get(i).gate = false;
         patterns[currentPattern][track].get(i).voltage = 0;
     }
 }

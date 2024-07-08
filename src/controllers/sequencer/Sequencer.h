@@ -10,8 +10,14 @@
 
 class SequenceStep {
     public:
-        bool trigger = false;
+        bool gate = false;
         float voltage = 0;
+};
+
+class SequenceStepEvent {
+    public:
+        int time = 0;
+        SequenceStep step;
 };
 
 typedef Array<SequenceStep, MAX_STEPS> TrackPattern;

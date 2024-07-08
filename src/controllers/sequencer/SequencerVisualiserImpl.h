@@ -58,7 +58,7 @@ template<class G>
 void SequencerVisualiser<G>::renderTick(int tick, uint16_t tickLeft) {
     for (int track = 0; track < sequencer->getNumTracks(); track++) {
         SequenceStep& step = sequencer->getStep(track, tick);
-        if(step.trigger) {
+        if(step.gate) {
             this->graphicsContext->fillRectangle(tickLeft, bottom - trackHeight - (track * trackHeight), tickWidth-1, trackHeight, TFT_WHITE);
         }
     }
